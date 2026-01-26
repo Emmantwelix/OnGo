@@ -16,12 +16,12 @@ OnGo integrates flight search, booking, and post-booking management into one uni
 
 ## Target Users
 
-OnGo is designed for a broad range of travelers, with particular focus on three groups. 1. Business travelers, who require efficient booking, timely reminders, and easy itinerary changes. 2. Families and group travelers, who need tools to manage multiple passengers, seat selections, and shared itineraries. And finally, OnGo is for Frequent and occasional flyers who value a clear, intuitive interface over feature-heavy platforms.
+OnGo is designed for a broad range of travelers, with a particular focus on three groups. Firstly are business travelers, who require efficient booking, timely reminders, and easy itinerary changes. Secondly families and/or group travelers, who need tools to manage multiple passengers, seat selections, and shared itineraries. And finally, OnGo is for Frequent and occasional flyers who value a clear, intuitive interface over feature-heavy platforms.
 
 
 ## Value to Users
 
-OnGo delivers value by reducing friction throughout the travel planning process. Users benefit from having all flight-related tasks centralized in one platform, minimizing confusion and saving time. Business travelers gain improved reliability through automated reminders and straightforward modification options, reducing missed flights and scheduling conflicts. Families and groups benefit from simplified coordination, as OnGo makes it easier to manage multiple travelers within a single booking. Overall, OnGo improves user confidence, efficiency, and satisfaction by allowing travelers to focus on their journey rather than the booking process.
+OnGo delivers value by reducing friction throughout the travel planning process. Users benefit from having all flight-related tasks centralized in one platform, minimizing confusion and saving time. Business travelers gain improved reliability through automated reminders and straightforward flight modification options, reducing missed flights and scheduling conflicts. Families and groups benefit from simplified coordination, as OnGo makes it easier to manage multiple travelers within a single booking, and users can share flight or booking info with other family or group members. OnGo's streamline booking system allows for spontaneous travelers to quickly book flights to there preferred destination. Overall, OnGo improves user confidence, efficiency, and satisfaction by allowing travelers to focus on their journey rather than the booking process.
 
 ## Success Criteria
 
