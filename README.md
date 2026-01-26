@@ -1,16 +1,28 @@
-# Team Members
+# OnGo: A Simplified Air Travel Booking and Management Platform
 
-- Noor Shamil
-- Tomas Hagos
-- Emmanuel Opoola
-- Ohang Satishkumar Patel
 
-# Features
-- [Feature List](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/issues?sort=created_asc&state=opened&or%5Blabel_name%5D%5B%5D=Feature&first_page_size=20)
 
-# User Stories
-- [User Story List](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/issues?sort=created_asc&state=opened&label_name%5B%5D=User%20Story&first_page_size=20)
+### Single-sentence project summary:
 
- [Vision stament](https://docs.google.com/document/d/18jqd0RirCJn209fv7JKaOSTVoM3sX5uhFxnuLDgee8I/edit?tab=t.5gupfs7h3y1f)
+OnGo is a streamlined air travel booking and management application that enables travelers to search, book, and manage flights in one intuitive, user-focused platform.
 
- [Team Working agreement](https://umanitoba-my.sharepoint.com/:w:/r/personal/shamiln_myumanitoba_ca/Documents/3350_Team%20Working%20Agreement.docx?d=w8a23f77452ef44e6b72341419f6f875a&csf=1&web=1&e=itCB8g)
+## Project Description
+
+Air travel booking systems today are often fragmented, confusing, and overloaded with unnecessary features that distract users from completing essential tasks. Travelers frequently need to navigate multiple websites or apps to search for flights, complete bookings, manage itineraries, and make changes, resulting in frustration, inefficiency, and avoidable errors. OnGo is designed to address this problem by providing a single, cohesive platform that focuses on simplicity, clarity, and reliability.
+
+
+
+OnGo integrates flight search, booking, and post-booking management into one unified experience. The application prioritizes the most common and critical tasks travelers need to complete—finding suitable flights, securing reservations, selecting seats, receiving reminders, and modifying bookings when plans change. By reducing cognitive load and eliminating unnecessary complexity, OnGo enables users to confidently plan and manage their trips without switching between systems.
+
+## Target Users
+
+OnGo is designed for a broad range of travelers, with particular focus on three groups. 1. Business travelers, who require efficient booking, timely reminders, and easy itinerary changes. 2. Families and group travelers, who need tools to manage multiple passengers, seat selections, and shared itineraries. And finally, OnGo is for Frequent and occasional flyers who value a clear, intuitive interface over feature-heavy platforms.
+
+
+## Value to Users
+
+OnGo delivers value by reducing friction throughout the travel planning process. Users benefit from having all flight-related tasks centralized in one platform, minimizing confusion and saving time. Business travelers gain improved reliability through automated reminders and straightforward modification options, reducing missed flights and scheduling conflicts. Families and groups benefit from simplified coordination, as OnGo makes it easier to manage multiple travelers within a single booking. Overall, OnGo improves user confidence, efficiency, and satisfaction by allowing travelers to focus on their journey rather than the booking process.
+
+## Success Criteria
+
+Users should be able to complete a flight search and booking in under five minutes. At least 80% of users should be able to successfully manage their bookings including seat selection, itinerary review, and modifications without external assistance. User satisfaction should reach a minimum rating of 4 out of 5 in post-use surveys focused on ease of use. In addition, OnGo should reduce booking errors, such as incorrect passenger or seat selections, by at least 30% compared to traditional booking platforms. Finally, the platform should achieve at least 70% user retention for repeat travel planning within a six-month period.
