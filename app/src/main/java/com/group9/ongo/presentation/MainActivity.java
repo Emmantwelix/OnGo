@@ -1,12 +1,14 @@
 package com.group9.ongo.presentation;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.FlightService;
@@ -33,6 +35,22 @@ public class MainActivity extends AppCompatActivity {
 
         FlightAdapter adapter = new FlightAdapter(flights);
         recyclerView.setAdapter(adapter);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_home) {
+                Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (itemId == R.id.navigation_search) {
+                Toast.makeText(this, "Search selected", Toast.LENGTH_SHORT).show();
+                return true;
+            } else if (itemId == R.id.navigation_settings) {
+                Toast.makeText(this, "Settings selected", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+            return false;
+        });
 
     }
 }
