@@ -7,7 +7,7 @@ public class Flight {
     private int landTime;
     private String destination;
     private int capacity;
-    private int flightid;
+    private int flightId;
 
     public Flight(String airline, String destination, int departTime, int landTime, int capacity) {
         this.airline = airline;
@@ -15,7 +15,7 @@ public class Flight {
         this.departTime = departTime;
         this.landTime = landTime;
         this.capacity = capacity;
-        this.flightid = num_flights;
+        this.flightId = num_flights;
         num_flights++;
     }
 
@@ -32,5 +32,5 @@ public class Flight {
 
     public int getCapacity () { return  capacity; }
 
-    public int getFlightid () { return flightid; }
+    public int getFlightId () { return flightId; }
 }
