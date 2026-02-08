@@ -18,7 +18,7 @@ public class FlightServiceImpl implements FlightService {
         return repo.getAll();
     }
 
-    public List<FlightClass> getFlightById() {
-        return 0;
+    public FlightClass getFlightById(int flightId) {
+        return repo.getFlightById(flightId);
     }
 }
