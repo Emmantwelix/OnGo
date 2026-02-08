@@ -1,6 +1,6 @@
 package com.group9.ongo.business.services;
 
-import com.group9.ongo.models.Flight;
+import com.group9.ongo.models.FlightClass;
 import com.group9.ongo.persistence.FlightRepository;
 
 import java.util.List;
@@ -14,7 +14,11 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> getAllFlights() {
+    public List<FlightClass> getAllFlights() {
         return repo.getAll();
+    }
+
+    public List<FlightClass> getFlightById() {
+        return 0;
     }
 }

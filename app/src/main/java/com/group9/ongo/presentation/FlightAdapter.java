@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.group9.ongo.R;
-import com.group9.ongo.models.Flight;
+import com.group9.ongo.models.FlightClass;
 
 import java.util.List;
 
 public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightViewHolder> {
 
-    private List<Flight> flights;
+    private List<FlightClass> flights;
 
-    public FlightAdapter(List<Flight> flights) {
+    public FlightAdapter(List<FlightClass> flights) {
         this.flights = flights;
     }
 
@@ -31,7 +31,7 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
 
     @Override
     public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {
-        Flight flight = flights.get(position);
+        FlightClass flight = flights.get(position);
         holder.airline.setText(flight.getAirline());
         holder.destination.setText(flight.getDestination());
     }
