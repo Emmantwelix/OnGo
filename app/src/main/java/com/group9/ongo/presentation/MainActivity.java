@@ -4,19 +4,12 @@ import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.group9.ongo.R;
-import com.group9.ongo.application.OnGoApp;
-import com.group9.ongo.business.services.FlightService;
-import com.group9.ongo.models.FlightClass;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    private FlightService flightService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +17,33 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        flightService = ((OnGoApp) getApplication()).getFlightService();
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        RecyclerView recyclerView = findViewById(R.id.flightRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Set default fragment (Home) on launch
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new HomeFragment())
+                    .commit();
+        }
 
-        List<FlightClass> flights = flightService.getAllFlights();
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
 
-        FlightAdapter adapter = new FlightAdapter(flights);
-        recyclerView.setAdapter(adapter);
+            if (itemId == R.id.navigation_home) {
+                selectedFragment = new HomeFragment();
+            } else if (itemId == R.id.navigation_search) {
+                selectedFragment = new SearchFragment();
+            } else if (itemId == R.id.navigation_settings) {
+                selectedFragment = new SettingsFragment();
+            }
 
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, selectedFragment)
+                        .commit();
+            }
+            return true;
+        });
     }
 }
