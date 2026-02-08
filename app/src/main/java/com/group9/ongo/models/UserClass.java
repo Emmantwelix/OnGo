@@ -1,6 +1,6 @@
 package com.group9.ongo.models;
 
-public class UserClass implements User {
+public class UserClass{
     private static int num_users = 0; //used to determine user id
     private int userId;
     private String username;

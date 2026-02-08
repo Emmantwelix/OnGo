@@ -1,6 +1,6 @@
 package com.group9.ongo.models;
 
-public class FlightClass implements Flight{
+public class FlightClass{
     private static int num_flights = 0; //used to determine flight id
     private String airline;
     private int departTime;
