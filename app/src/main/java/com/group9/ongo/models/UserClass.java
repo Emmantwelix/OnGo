@@ -1,7 +1,6 @@
 package com.group9.ongo.models;
 
 public class UserClass{
-    private static int num_users = 0; //used to determine user id
     private int userId;
     private String username;
     private String email;
@@ -11,8 +10,7 @@ public class UserClass{
         this.username = username;
         this.email = email;
         this.phone = phone;
-        this.userId = num_users;
-        num_users++;
+        this.userId = userId;
     }
 
     public int getUserId() { return userId; }

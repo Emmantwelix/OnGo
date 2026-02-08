@@ -40,4 +40,14 @@ public class FakeFlightRepository implements FlightRepository {
     public List<FlightClass> getAll() {
         return Collections.unmodifiableList(flights);
     }
+
+    @Override
+    public FlightClass getFlightById(int flightId) {
+        for (FlightClass flight : flights) {
+            if (flight.getFlightId() == flightId) {
+                return flight;
+            }
+        }
+        return null;
+    }
 }
