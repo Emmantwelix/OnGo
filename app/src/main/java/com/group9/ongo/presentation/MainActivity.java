@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.FlightService;
-import com.group9.ongo.models.Flight;
+import com.group9.ongo.models.FlightClass;
 
 import java.util.List;
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.flightRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Flight> flights = flightService.getAllFlights();
+        List<FlightClass> flights = flightService.getAllFlights();
 
         FlightAdapter adapter = new FlightAdapter(flights);
         recyclerView.setAdapter(adapter);
