@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface FlightService {
     List<Flight> getAllFlights();
+    Flight getFlightById(int flightId);
 
 }
