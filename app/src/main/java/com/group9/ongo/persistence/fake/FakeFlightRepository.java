@@ -1,6 +1,6 @@
 package com.group9.ongo.persistence.fake;
 
-import com.group9.ongo.models.FlightClass;
+import com.group9.ongo.models.Flight;
 import com.group9.ongo.persistence.FlightRepository;
 
 import java.util.ArrayList;
@@ -27,23 +27,23 @@ public class FakeFlightRepository implements FlightRepository {
 
 
 
-    private final List<FlightClass> flights = new ArrayList<>();
+    private final List<Flight> flights = new ArrayList<>();
 
     public FakeFlightRepository() {
-        flights.add(new FlightClass(AIR_CANADA, VANCOUVER, 1000, 1200, LARGE_CAPACITY));
-        flights.add(new FlightClass(WESTJET, MONTREAL, 1100, 1300, MEDIUM_CAPACITY));
-        flights.add(new FlightClass(AIR_TRANSAT, WINNIPEG, 1200, 1400, SMALL_CAPACITY));
-        flights.add(new FlightClass(PORTER_AIRLINES, Toronto, 1300, 1500, LARGE_CAPACITY));
+        flights.add(new Flight(AIR_CANADA, VANCOUVER, 1000, 1200, LARGE_CAPACITY));
+        flights.add(new Flight(WESTJET, MONTREAL, 1100, 1300, MEDIUM_CAPACITY));
+        flights.add(new Flight(AIR_TRANSAT, WINNIPEG, 1200, 1400, SMALL_CAPACITY));
+        flights.add(new Flight(PORTER_AIRLINES, Toronto, 1300, 1500, LARGE_CAPACITY));
     }
 
     @Override
-    public List<FlightClass> getAll() {
+    public List<Flight> getAll() {
         return Collections.unmodifiableList(flights);
     }
 
     @Override
-    public FlightClass getFlightById(int flightId) {
-        for (FlightClass flight : flights) {
+    public Flight getFlightById(int flightId) {
+        for (Flight flight : flights) {
             if (flight.getFlightId() == flightId) {
                 return flight;
             }

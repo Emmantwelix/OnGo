@@ -1,10 +1,10 @@
 package com.group9.ongo.business.services;
 
-import com.group9.ongo.models.FlightClass;
+import com.group9.ongo.models.Flight;
 
 import java.util.List;
 
 public interface FlightService {
-    List<FlightClass> getAllFlights();
+    List<Flight> getAllFlights();
 
 }

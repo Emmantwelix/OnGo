@@ -1,8 +1,8 @@
 package com.group9.ongo.business.services;
 
-import com.group9.ongo.models.UserClass;
+import com.group9.ongo.models.User;
 
 public interface UserService {
-    UserClass getUserById(int userId);
+    User getUserById(int userId);
 
 }
