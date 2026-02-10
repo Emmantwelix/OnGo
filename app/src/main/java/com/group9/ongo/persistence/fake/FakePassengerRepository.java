@@ -45,14 +45,9 @@ public class FakePassengerRepository implements PassengerRepository {
 
     @Override
     public boolean deletePassengersByBookingId(int bookingId) {
-        for (int i = 0; i < passengers.size(); i++) {
-            if (passengers.get(i).getBookingId() == bookingId) {
-                passengers.remove(i);
-                return true;
-            }
-        }
-        return false;
+        return passengers.removeIf(p -> p.getBookingId() == bookingId);
     }
+
 
 
 }
