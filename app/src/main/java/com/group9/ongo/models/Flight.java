@@ -1,7 +1,6 @@
 package com.group9.ongo.models;
 
 public class Flight {
-    private static int num_flights = 0; //used to determine flight id
     private String airline;
     private int departTime;
     private int landTime;
@@ -9,14 +8,13 @@ public class Flight {
     private int capacity;
     private int flightId;
 
-    public Flight(String airline, String destination, int departTime, int landTime, int capacity) {
+    public Flight(int flightId, String airline, String destination, int departTime, int landTime, int capacity) {
         this.airline = airline;
         this.destination = destination;
         this.departTime = departTime;
         this.landTime = landTime;
         this.capacity = capacity;
-        this.flightId = num_flights;
-        num_flights++;
+        this.flightId = flightId;
     }
 
     public String getDestination() {
@@ -27,10 +25,19 @@ public class Flight {
         return airline;
     }
 
-    public int getDepartTime() { return departTime; }
-    public int getLandTime() { return landTime; }
+    public int getDepartTime() {
+        return departTime;
+    }
 
-    public int getCapacity () { return  capacity; }
+    public int getLandTime() {
+        return landTime;
+    }
 
-    public int getFlightId () { return flightId; }
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getFlightId() {
+        return flightId;
+    }
 }
