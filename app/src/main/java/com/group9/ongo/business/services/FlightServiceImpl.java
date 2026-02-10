@@ -18,7 +18,20 @@ public class FlightServiceImpl implements FlightService {
         return repo.getAll();
     }
 
+    @Override
     public Flight getFlightById(int flightId) {
         return repo.getFlightById(flightId);
     }
+
+    @Override
+    public boolean addFlight(Flight flight) {
+        return repo.addFlight(flight);
+    }
+
+    @Override
+    public boolean deleteFlight(int flightId) {
+        return repo.deleteFlight(flightId);
+    }
+
+
 }

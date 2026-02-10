@@ -8,4 +8,9 @@ public interface FlightRepository {
     List<Flight> getAll();
 
     Flight getFlightById(int flightId);
+
+    boolean addFlight(Flight flight);
+
+    boolean deleteFlight(int flightId);
+
 }

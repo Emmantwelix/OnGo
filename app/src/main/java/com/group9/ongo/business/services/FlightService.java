@@ -9,4 +9,8 @@ public interface FlightService {
 
     Flight getFlightById(int flightId);
 
+    boolean addFlight(Flight flight);
+
+    boolean deleteFlight(int flightId);
+
 }

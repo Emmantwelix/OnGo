@@ -48,4 +48,24 @@ public class FakeFlightRepository implements FlightRepository {
         }
         return null;
     }
+
+    @Override
+    public boolean addFlight(Flight flight) {
+        for (Flight f : flights) {
+            if (f.getFlightId() == flight.getFlightId()) {
+                return false;
+            }
+        }
+        return flights.add(flight);
+    }
+
+    @Override
+    public boolean deleteFlight(int flightId) {
+        for (Flight flight : flights) {
+            if (flight.getFlightId() == flightId) {
+                return flights.remove(flight);
+            }
+        }
+        return false;
+    }
 }
