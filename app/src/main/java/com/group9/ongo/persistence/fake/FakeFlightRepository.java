@@ -25,15 +25,13 @@ public class FakeFlightRepository implements FlightRepository {
     private final int SMALL_CAPACITY = 100;
 
 
-
-
     private final List<Flight> flights = new ArrayList<>();
 
     public FakeFlightRepository() {
-        flights.add(new Flight(1,AIR_CANADA, VANCOUVER, 1000, 1200, LARGE_CAPACITY));
-        flights.add(new Flight(2,WESTJET, MONTREAL, 1100, 1300, MEDIUM_CAPACITY));
-        flights.add(new Flight(3,AIR_TRANSAT, WINNIPEG, 1200, 1400, SMALL_CAPACITY));
-        flights.add(new Flight(4,PORTER_AIRLINES, Toronto, 1300, 1500, LARGE_CAPACITY));
+        flights.add(new Flight(1, AIR_CANADA, VANCOUVER, 1000, 1200, LARGE_CAPACITY));
+        flights.add(new Flight(2, WESTJET, MONTREAL, 1100, 1300, MEDIUM_CAPACITY));
+        flights.add(new Flight(3, AIR_TRANSAT, WINNIPEG, 1200, 1400, SMALL_CAPACITY));
+        flights.add(new Flight(4, PORTER_AIRLINES, Toronto, 1300, 1500, LARGE_CAPACITY));
     }
 
     @Override

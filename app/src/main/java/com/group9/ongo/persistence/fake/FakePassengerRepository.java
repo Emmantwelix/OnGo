@@ -32,7 +32,7 @@ public class FakePassengerRepository implements PassengerRepository {
     }
 
     @Override
-    public Passenger getPassengerByBookingId (int bookingId) {
+    public Passenger getPassengerByBookingId(int bookingId) {
 
         for (Passenger passenger : passengers) {
             if (passenger.getBookingId() == bookingId) {
@@ -47,7 +47,6 @@ public class FakePassengerRepository implements PassengerRepository {
     public boolean deletePassengersByBookingId(int bookingId) {
         return passengers.removeIf(p -> p.getBookingId() == bookingId);
     }
-
 
 
 }

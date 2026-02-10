@@ -25,10 +25,19 @@ public class Flight {
         return airline;
     }
 
-    public int getDepartTime() { return departTime; }
-    public int getLandTime() { return landTime; }
+    public int getDepartTime() {
+        return departTime;
+    }
 
-    public int getCapacity () { return  capacity; }
+    public int getLandTime() {
+        return landTime;
+    }
 
-    public int getFlightId () { return flightId; }
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public int getFlightId() {
+        return flightId;
+    }
 }
