@@ -9,7 +9,7 @@ public interface FlightService {
 
     Flight getFlightById(int flightId);
 
-    boolean addFlight(Flight flight);
+    boolean addFlight(String airline, String destination, int departTime, int landTime, int capacity);
 
     boolean deleteFlight(int flightId);
 

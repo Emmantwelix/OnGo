@@ -9,7 +9,7 @@ public interface FlightRepository {
 
     Flight getFlightById(int flightId);
 
-    boolean addFlight(Flight flight);
+    boolean createFlight(String airline, String destination, int departTime, int landTime, int capacity);
 
     boolean deleteFlight(int flightId);
 
