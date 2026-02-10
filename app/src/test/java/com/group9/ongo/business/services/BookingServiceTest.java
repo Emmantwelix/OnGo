@@ -1,11 +1,19 @@
 package com.group9.ongo.business.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
+import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Booking;
+import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.persistence.fake.FakeBookingRepository;
+import com.group9.ongo.persistence.fake.FakeFlightRepository;
 import com.group9.ongo.persistence.fake.FakePassengerRepository;
 
 import org.junit.Before;
@@ -13,41 +21,40 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-/**
- * Unit tests for BookingService (excluding getBookingDetailsByUserId).
- *
- * Assumes:
- * - FakeBookingRepository implements: addBooking, getBookingByUserId, getBookingById, updateBooking, deleteBooking
- * - FakePassengerRepository implements: addPassenger(PassengerInput, int), getPassengerByBookingId(int),
- *   deletePassengersByBookingId(int)
- */
 public class BookingServiceTest {
 
     private BookingService bookingService;
     private FakeBookingRepository bookingRepo;
     private FakePassengerRepository passengerRepo;
 
+    private FlightService flightService;
 
     @Before
     public void setUp() {
         bookingRepo = new FakeBookingRepository();
         passengerRepo = new FakePassengerRepository();
-        bookingService = new BookingService(bookingRepo, passengerRepo, null);
+        flightService = new FlightServiceImpl(new FakeFlightRepository());
+        bookingService = new BookingService(bookingRepo, passengerRepo, flightService);
+    }
+
+    @Test
+    public void getBookingByUserId_returnsEmptyList_whenUserHasNoBookings() {
+        List<Booking> bookings = bookingService.getBookingByUserId(999);
+        assertNotNull(bookings);
+        assertTrue(bookings.isEmpty());
     }
 
     @Test
     public void getBookingByUserId_returnsOnlyThatUsersBookings() {
-        // Arrange: create bookings for user 1 and user 2
-        bookingService.createBooking(1, 100, samplePassengerInput("A"));
-        bookingService.createBooking(1, 101, samplePassengerInput("B"));
-        bookingService.createBooking(2, 200, samplePassengerInput("C"));
+        bookingService.createBooking(1, 1, samplePassengerInput("A"));
+        bookingService.createBooking(1, 2, samplePassengerInput("B"));
+        bookingService.createBooking(2, 3, samplePassengerInput("C"));
 
-        // Act
         List<Booking> user1Bookings = bookingService.getBookingByUserId(1);
 
-        // Assert
-        assertNotNull(user1Bookings);
         assertEquals(2, user1Bookings.size());
         for (Booking b : user1Bookings) {
             assertEquals(1, b.getUserId());
@@ -56,23 +63,18 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_createsBookingAndPassengerLinkedToBookingId() {
-        // Arrange
-        int userId = 5;
-        int flightId = 77;
         PassengerInput input = samplePassengerInput("Z");
 
-        // Act
-        Booking booking = bookingService.createBooking(userId, flightId, input);
+        Booking booking = bookingService.createBooking(5, 1, input);
 
-        // Assert booking
         assertNotNull(booking);
-        assertTrue("bookingId should be assigned", booking.getBookingId() > 0);
-        assertEquals(userId, booking.getUserId());
-        assertEquals(flightId, booking.getFlightId());
+        assertTrue(booking.getBookingId() > 0);
+        assertEquals(5, booking.getUserId());
+        assertEquals(1, booking.getFlightId());
 
-        // Assert passenger created + linked
+        //ensure passenger information is correct
         Passenger p = passengerRepo.getPassengerByBookingId(booking.getBookingId());
-        assertNotNull("Passenger should be created for booking", p);
+        assertNotNull(p);
         assertEquals(booking.getBookingId(), p.getBookingId());
         assertEquals(input.firstName, p.getFirstName());
         assertEquals(input.lastName, p.getLastName());
@@ -81,34 +83,231 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void cancelBooking_deletesBookingAndItsPassenger_andReturnsTrue() {
-        // Arrange: create a booking with passenger
-        Booking booking = bookingService.createBooking(9, 555, samplePassengerInput("X"));
-        int bookingId = booking.getBookingId();
-        assertNotNull(passengerRepo.getPassengerByBookingId(bookingId));
+    public void createBooking_throwsValidationException_whenFlightDoesNotExist() {
+        PassengerInput passenger = samplePassengerInput("A");
 
-        // Act
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 9999, passenger)
+        );
+
+        assertEquals(
+                "Flight with id 9999 does not exist",
+                exception.getMessage()
+        );
+    }
+
+    @Test
+    public void createBooking_whenPassengerInputIsNull_throwsExpectedMessage() {
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, null)
+        );
+        assertEquals("Passenger input cannot be null", ex.getMessage());
+    }
+
+
+    @Test
+    public void createBooking_whenFirstNameIsNull_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.firstName = null;
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+        assertEquals("First name is required", ex.getMessage());
+    }
+
+
+    @Test
+    public void createBooking_whenFirstNameIsBlank_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.firstName = "   ";
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertEquals("First name is required", ex.getMessage());
+    }
+
+    @Test
+    public void createBooking_whenLastNameIsNull_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.lastName = null;
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertEquals("Last name is required", ex.getMessage());
+    }
+
+    @Test
+    public void createBooking_whenLastNameIsBlank_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.lastName = "";
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertEquals("Last name is required", ex.getMessage());
+    }
+
+    @Test
+    public void createBooking_whenDateOfBirthIsNull_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.dateOfBirth = null;
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertEquals("Date of birth is required", ex.getMessage());
+    }
+
+    @Test
+    public void createBooking_whenPassportNumberIsNull_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.passportNumber = null;
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertEquals("Passport number is required", ex.getMessage());
+    }
+
+    @Test
+    public void createBooking_whenPassportNumberIsBlank_throwsExpectedMessage() {
+        PassengerInput input = samplePassengerInput("A");
+        input.passportNumber = " ";
+
+        ValidationException ex = assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertEquals("Passport number is required", ex.getMessage());
+    }
+
+
+    @Test
+    public void createBooking_whenPassengerInvalid_doesNotCreateBookingOrPassenger() {
+        PassengerInput input = samplePassengerInput("A");
+        input.firstName = null;
+
+        assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input)
+        );
+
+        assertTrue(bookingService.getBookingByUserId(1).isEmpty());
+    }
+
+
+    @Test
+    public void cancelBooking_deletesBookingAndItsPassenger_andReturnsTrue() {
+        Booking booking = bookingService.createBooking(9, 1, samplePassengerInput("X"));
+        int bookingId = booking.getBookingId();
+
         boolean success = bookingService.cancelBooking(bookingId);
 
-        // Assert
         assertTrue(success);
-        assertNull("Booking should be deleted", bookingRepo.getBookingById(bookingId));
-        assertNull("Passenger should be deleted", passengerRepo.getPassengerByBookingId(bookingId));
+        assertNull(bookingRepo.getBookingById(bookingId));
+        assertNull(passengerRepo.getPassengerByBookingId(bookingId));
     }
 
     @Test
     public void cancelBooking_whenBookingDoesNotExist_returnsFalse_andDoesNotCrash() {
-        // Arrange
-        int missingBookingId = 9999;
-
-        // Act
-        boolean success = bookingService.cancelBooking(missingBookingId);
-
-        // Assert
+        boolean success = bookingService.cancelBooking(9999);
         assertFalse(success);
     }
 
-    // ---------- helpers ----------
+    @Test
+    public void cancelBooking_deletesOnlyPassengersForThatBookingId() {
+        Booking b1 = bookingService.createBooking(1, 1, samplePassengerInput("A"));
+        Booking b2 = bookingService.createBooking(1, 2, samplePassengerInput("B"));
+
+        boolean success = bookingService.cancelBooking(b1.getBookingId());
+
+        assertTrue(success);
+        //ensure passenger and booking are deleted
+        assertNull(passengerRepo.getPassengerByBookingId(b1.getBookingId()));
+        assertNull(bookingRepo.getBookingById(b1.getBookingId()));
+
+        //ensure other passengers and bookings are not deleted
+        assertNotNull(passengerRepo.getPassengerByBookingId(b2.getBookingId()));
+        assertNotNull(bookingRepo.getBookingById(b2.getBookingId()));
+    }
+
+    @Test
+    public void getBookingDetailsByUserId_whenUserHasNoBookings_returnsEmptyList() {
+        List<BookingDetails> details = bookingService.getBookingDetailsByUserId(999);
+        assertNotNull(details);
+        assertTrue(details.isEmpty());
+    }
+
+
+    @Test
+    public void getBookingDetailsByUserId_returnsBookingPassengerAndFlight() {
+        PassengerInput samplePassenger = samplePassengerInput("A");
+
+        Booking b1 = bookingService.createBooking(1, 1, samplePassenger);
+        Booking b2 = bookingService.createBooking(1, 2, samplePassenger);
+        bookingService.createBooking(2, 3, samplePassengerInput("C"));
+
+        List<BookingDetails> details = bookingService.getBookingDetailsByUserId(1);
+
+        // Correct number of results
+        assertEquals(2, details.size());
+
+        // Correct bookings returned
+        Set<Integer> bookingIds =
+                details.stream()
+                        .map(d -> d.getBooking().getBookingId())
+                        .collect(Collectors.toSet());
+
+        assertEquals(
+                Set.of(b1.getBookingId(), b2.getBookingId()),
+                bookingIds
+        );
+
+        // Validate each BookingDetails object
+        for (BookingDetails detail : details) {
+            assertNotNull(detail.getBooking());
+            assertNotNull(detail.getFlight());
+            assertNotNull(detail.getPassenger());
+
+            // Ownership
+            assertEquals(1, detail.getBooking().getUserId());
+
+            // Ensure Each passenger and bookings are correctly related
+            assertEquals(
+                    detail.getBooking().getBookingId(),
+                    detail.getPassenger().getBookingId()
+            );
+
+            // Passenger data
+            assertEquals("FirstA", detail.getPassenger().getFirstName());
+        }
+
+        // Correct flights returned
+        Set<Integer> flightIds =
+                details.stream()
+                        .map(d -> d.getFlight().getFlightId())
+                        .collect(Collectors.toSet());
+
+        assertEquals(Set.of(1, 2), flightIds);
+    }
+
 
     private PassengerInput samplePassengerInput(String tag) {
         PassengerInput input = new PassengerInput();
