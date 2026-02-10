@@ -1,5 +1,6 @@
 package com.group9.ongo.business.services;
 
+import com.group9.ongo.business.validation.BookingValidator;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Flight;
@@ -17,6 +18,7 @@ public class BookingService {
     private PassengerRepository passengerRepo;
 
     private FlightService flightService;
+
     public BookingService(BookingRepository bookingsRepo, PassengerRepository passengerRepo,
                           FlightService flightService) {
         this.bookingsRepo = bookingsRepo;
@@ -29,6 +31,7 @@ public class BookingService {
     }
 
     public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo) {
+        BookingValidator.validate(flightService.getFlightById(flightId), flightId, passengerInfo);
         Booking booking = bookingsRepo.addBooking(new Booking(0, userId, flightId));
         passengerRepo.addPassenger(passengerInfo, booking.getBookingId());
         return booking;
@@ -44,12 +47,14 @@ public class BookingService {
         List<BookingDetails> detailsList = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            //Flight flight = flightService.getFlightById(booking.getFlightId());
+            Flight flight = flightService.getFlightById(booking.getFlightId());
+
+            //only one passenger per flight for now
             Passenger passenger =
                     passengerRepo.getPassengerByBookingId(booking.getBookingId());
 
             detailsList.add(
-                    new BookingDetails(booking, null, passenger)
+                    new BookingDetails(booking, flight, passenger)
             );
         }
         return detailsList;
