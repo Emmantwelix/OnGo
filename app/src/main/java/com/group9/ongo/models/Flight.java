@@ -1,6 +1,6 @@
 package com.group9.ongo.models;
 
-public class FlightClass{
+public class Flight {
     private static int num_flights = 0; //used to determine flight id
     private String airline;
     private int departTime;
@@ -9,7 +9,7 @@ public class FlightClass{
     private int capacity;
     private int flightId;
 
-    public FlightClass(String airline, String destination, int departTime, int landTime, int capacity) {
+    public Flight(String airline, String destination, int departTime, int landTime, int capacity) {
         this.airline = airline;
         this.destination = destination;
         this.departTime = departTime;

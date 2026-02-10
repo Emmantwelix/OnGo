@@ -1,7 +1,7 @@
 package com.group9.ongo.persistence;
 
-import com.group9.ongo.models.UserClass;
+import com.group9.ongo.models.User;
 
 public interface UserRepository {
-    UserClass getUserById(int userId);
+    User getUserById(int userId);
 }

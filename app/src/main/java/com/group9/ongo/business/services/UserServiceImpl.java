@@ -1,6 +1,6 @@
 package com.group9.ongo.business.services;
 
-import com.group9.ongo.models.UserClass;
+import com.group9.ongo.models.User;
 import com.group9.ongo.persistence.UserRepository;
 
 public class UserServiceImpl implements UserService {
@@ -11,7 +11,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserClass getUserById(int userId) {
+    public User getUserById(int userId) {
         return repo.getUserById(userId);
     }
 }

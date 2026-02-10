@@ -1,12 +1,12 @@
 package com.group9.ongo.models;
 
-public class UserClass{
+public class User {
     private int userId;
     private String username;
     private String email;
     private int phone;
 
-    public UserClass(int userId, String username, String email, int phone) {
+    public User(int userId, String username, String email, int phone) {
         this.username = username;
         this.email = email;
         this.phone = phone;
