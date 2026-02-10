@@ -14,7 +14,7 @@ public class FakeFlightRepository implements FlightRepository {
     private final String AIR_TRANSAT = "Air Transat";
     private final String PORTER_AIRLINES = "Porter Airlines";
     //places
-    private final String Toronto = "Toronto";
+    private final String TORONTO = "Toronto";
     private final String MONTREAL = "Montreal";
     private final String VANCOUVER = "Vancouver";
     private final String WINNIPEG = "Winnipeg";
@@ -28,10 +28,10 @@ public class FakeFlightRepository implements FlightRepository {
     private final List<Flight> flights = new ArrayList<>();
 
     public FakeFlightRepository() {
-        flights.add(new Flight(1, AIR_CANADA, VANCOUVER, 1000, 1200, LARGE_CAPACITY));
-        flights.add(new Flight(2, WESTJET, MONTREAL, 1100, 1300, MEDIUM_CAPACITY));
-        flights.add(new Flight(3, AIR_TRANSAT, WINNIPEG, 1200, 1400, SMALL_CAPACITY));
-        flights.add(new Flight(4, PORTER_AIRLINES, Toronto, 1300, 1500, LARGE_CAPACITY));
+        flights.add(new Flight(1,AIR_CANADA, TORONTO, VANCOUVER, "10:00", "12:00", LARGE_CAPACITY));
+        flights.add(new Flight(2,WESTJET, WINNIPEG, MONTREAL, "11:00", "13:00", MEDIUM_CAPACITY));
+        flights.add(new Flight(3,AIR_TRANSAT,VANCOUVER, WINNIPEG, "12:00", "14:00", SMALL_CAPACITY));
+        flights.add(new Flight(4,PORTER_AIRLINES,MONTREAL, TORONTO, "13:00", "15:00", LARGE_CAPACITY));
     }
 
     @Override

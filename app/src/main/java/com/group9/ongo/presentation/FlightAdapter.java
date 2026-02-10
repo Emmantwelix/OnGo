@@ -32,8 +32,11 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
     @Override
     public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {
         Flight flight = flights.get(position);
-        holder.airline.setText(flight.getAirline());
+        holder.origin.setText(flight.getOrigin());
         holder.destination.setText(flight.getDestination());
+        holder.departTime.setText(flight.getDepartTime());
+        holder.landTime.setText(flight.getLandTime());
+        holder.airlines.setText(flight.getAirline());
     }
 
     @Override
@@ -42,12 +45,15 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
     }
 
     static class FlightViewHolder extends RecyclerView.ViewHolder {
-        TextView airline, destination;
+        TextView origin, destination, departTime, landTime, airlines;
 
         public FlightViewHolder(@NonNull View itemView) {
             super(itemView);
-            airline = itemView.findViewById(R.id.tvAirline);
-            destination = itemView.findViewById(R.id.tvDestination);
+            origin = itemView.findViewById(R.id.originText);
+            destination = itemView.findViewById(R.id.destinationText);
+            departTime = itemView.findViewById(R.id.originTime);
+            landTime = itemView.findViewById(R.id.destinationTime);
+            airlines = itemView.findViewById(R.id.airlines);
         }
     }
 }

@@ -8,13 +8,28 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.group9.ongo.R;
+import com.group9.ongo.application.OnGoApp;
+import com.group9.ongo.business.services.FlightService;
 
 public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        // Setup RecyclerView here
+        RecyclerView recyclerView = view.findViewById(R.id.flightRecyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
+        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights());
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
+
 }

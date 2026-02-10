@@ -2,14 +2,17 @@ package com.group9.ongo.models;
 
 public class Flight {
     private String airline;
-    private int departTime;
-    private int landTime;
+
+    private String origin;
+    private String departTime;
+    private String landTime;
     private String destination;
     private int capacity;
     private int flightId;
 
-    public Flight(int flightId, String airline, String destination, int departTime, int landTime, int capacity) {
+    public Flight(int flightId, String airline, String origin, String destination, String departTime, String landTime, int capacity) {
         this.airline = airline;
+        this.origin = origin;
         this.destination = destination;
         this.departTime = departTime;
         this.landTime = landTime;
@@ -21,15 +24,20 @@ public class Flight {
         return destination;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+
     public String getAirline() {
         return airline;
     }
 
-    public int getDepartTime() {
+    public String getDepartTime() {
         return departTime;
     }
 
-    public int getLandTime() {
+    public String getLandTime() {
         return landTime;
     }
 

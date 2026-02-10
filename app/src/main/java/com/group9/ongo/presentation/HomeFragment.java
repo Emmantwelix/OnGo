@@ -20,16 +20,17 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate a layout file (e.g., fragment_home.xml) that contains your RecyclerView
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
-        
-        // Setup RecyclerView here
-        RecyclerView recyclerView = view.findViewById(R.id.flightRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        
-        FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
-        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights());
-        recyclerView.setAdapter(adapter);
-        
-        return view;
+//        View view = inflater.inflate(R.layout.fragment_home, container, false);
+//
+//        // Setup RecyclerView here
+//        RecyclerView recyclerView = view.findViewById(R.id.flightRecyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+//
+//        FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
+//        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights());
+//        recyclerView.setAdapter(adapter);
+        // FIXXX
+        // TODO
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }
