@@ -14,7 +14,7 @@ public class FakeFlightRepository implements FlightRepository {
     private final String AIR_TRANSAT = "Air Transat";
     private final String PORTER_AIRLINES = "Porter Airlines";
     //places
-    private final String Toronto = "Toronto";
+    private final String TORONTO = "Toronto";
     private final String MONTREAL = "Montreal";
     private final String VANCOUVER = "Vancouver";
     private final String WINNIPEG = "Winnipeg";
@@ -28,7 +28,12 @@ public class FakeFlightRepository implements FlightRepository {
 
     private final List<Flight> flights = new ArrayList<>();
 
-    public FakeFlightRepository() {}
+    public FakeFlightRepository() {
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "10:00", "12:00", LARGE_CAPACITY);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "12:00", "14:00", MEDIUM_CAPACITY);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "14:00", "16:00", SMALL_CAPACITY);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "16:00", "18:00", LARGE_CAPACITY);
+    }
 
     @Override
     public List<Flight> getAll() {
@@ -46,10 +51,14 @@ public class FakeFlightRepository implements FlightRepository {
     }
 
     @Override
-    public boolean createFlight(String airline, String destination, int departTime, int landTime, int capacity) {
-        Flight flight = new Flight(nextId, airline, destination, departTime, landTime, capacity);
+    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity) {
+        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity);
+        if (!flights.add(flight))
+        {
+               return -1;
+        }
         nextId++;
-        return flights.add(flight);
+        return nextId - 1;
     }
 
     @Override

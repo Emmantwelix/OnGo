@@ -26,11 +26,11 @@ public class FakeUserRepository implements UserRepository {
     }
     @Override
     public boolean CreateUser(String name, String email, int phone) {
+        User user = new User(nextUserId, name, email, phone);
         nextUserId++;
-        return users.add(new User(nextUserId-1, name, email, phone));
+        return users.add(user);
     }
-    @Override
-    public boolean UpdateUser(int userId) {return true;}
+
     @Override
     public boolean DeleteUser(int userId) {
         for (User user : users) {

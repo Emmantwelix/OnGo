@@ -21,10 +21,6 @@ public class UserServiceImpl implements UserService {
         return repo.CreateUser(name, email, phone);
     }
     @Override
-    public boolean UpdateUser(int userId) {
-        return repo.UpdateUser(userId);
-    }
-    @Override
     public boolean DeleteUser(int userId) {
         return repo.DeleteUser(userId);
     }

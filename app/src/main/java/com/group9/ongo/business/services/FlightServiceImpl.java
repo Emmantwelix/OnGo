@@ -13,7 +13,6 @@ public class FlightServiceImpl implements FlightService {
         this.repo = repo;
     }
 
-
     @Override
     public List<Flight> getAllFlights() {
         return repo.getAll();
@@ -25,9 +24,10 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public boolean addFlight(String airline, String destination, int departTime, int landTime, int capacity) {
-        FlightValidator.validateNewFlight(airline, destination, departTime, landTime, capacity);
-        return repo.createFlight(airline, destination, departTime, landTime, capacity);
+    public int addFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity) {
+        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity);
+
+        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity);
     }
 
     @Override

@@ -9,7 +9,8 @@ public interface FlightService {
 
     Flight getFlightById(int flightId);
 
-    boolean addFlight(String airline, String destination, int departTime, int landTime, int capacity);
+    //returns the id of the flight that was added, -1 if invalid
+    int addFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity);
 
     boolean deleteFlight(int flightId);
 
