@@ -23,7 +23,7 @@ public class UserServiceTest {
     private final String WEIRD_VALID_EMAIL = "X@Y.Z";
     private final String INVALID_EMAIL = "@.";
     private final String VALID_PHONE = "2045566812";
-    private final String INVALID_PHONE = "1203567823";
+    private final String INVALID_PHONE = "14203567823";
 
     private UserService userService;
     private UserRepository userRepository;

@@ -4,7 +4,7 @@ import com.group9.ongo.models.User;
 
 public class UserValidator {
     private static final int MAX_LENGTH_NAME = 10;
-    private static final int MIN_LENGTH_NAME = 4;
+    private static final int MIN_LENGTH_NAME = 3;
     private static final int LENGTH_PHONE = 10;
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
