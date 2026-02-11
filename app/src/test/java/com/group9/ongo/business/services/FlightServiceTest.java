@@ -198,13 +198,13 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void getFlightByID_whenItemDoesNotExist_returnsNull() {
-        //arrange
-        int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "2340", "0500", 100);
-        //act
-        Flight returnedFlight = service.getFlightById(flightId + 1);
-        //assert
-        assertNull(returnedFlight);
+    public void getFlightByID_whenItemDoesNotExist_throwsException() {
+        //arrange + act + assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.getFlightById(20)
+        );
+        assertEquals("Flight not found", exception.getMessage());
     }
 
     @Test
