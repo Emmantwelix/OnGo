@@ -24,6 +24,11 @@ public class Flight {
         return destination;
     }
 
+    public String getOrigin() {
+        return origin;
+    }
+
+
     public String getAirline() {
         return airline;
     }
