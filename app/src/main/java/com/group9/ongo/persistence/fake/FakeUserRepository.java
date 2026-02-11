@@ -12,7 +12,7 @@ public class FakeUserRepository implements UserRepository {
 
 
     public FakeUserRepository() {
-        users.add(new User(1, "JohnDoe", "john@example.com", 123456789));
+        this.addUser("john doe", "johnd@example.com", "2042345433");
     }
 
     @Override
@@ -25,14 +25,15 @@ public class FakeUserRepository implements UserRepository {
         return null;
     }
     @Override
-    public boolean CreateUser(String name, String email, int phone) {
+    public int addUser(String name, String email, String phone) {
         User user = new User(nextUserId, name, email, phone);
+        users.add(user);
         nextUserId++;
-        return users.add(user);
+        return user.getUserId();
     }
 
     @Override
-    public boolean DeleteUser(int userId) {
+    public boolean deleteUser(int userId) {
         for (User user : users) {
             if (user.getUserId() == userId) {
                 users.remove(user);
