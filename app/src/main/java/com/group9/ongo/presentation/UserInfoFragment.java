@@ -1,7 +1,7 @@
 package com.group9.ongo.presentation;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +15,16 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.group9.ongo.R;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
+import com.group9.ongo.application.OnGoApp;
+import com.group9.ongo.business.services.BookingService;
+import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.PassengerInput;
 
 public class UserInfoFragment extends Fragment {
+
+    public interface OnBookingSuccessListener {
+        void onBookingSuccess();
+    }
 
     private static final String ARG_FLIGHT_ID = "flight_id";
     private int flightId;
@@ -28,6 +32,7 @@ public class UserInfoFragment extends Fragment {
     private TextInputEditText editFirstName, editLastName, editBirthDate, editPassportNumber;
     private TextView textFlightId;
     private Button btnConfirm;
+    private OnBookingSuccessListener listener;
 
     public static UserInfoFragment newInstance(int flightId) {
         UserInfoFragment fragment = new UserInfoFragment();
@@ -35,6 +40,16 @@ public class UserInfoFragment extends Fragment {
         args.putInt(ARG_FLIGHT_ID, flightId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnBookingSuccessListener) {
+            listener = (OnBookingSuccessListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnBookingSuccessListener");
+        }
     }
 
     @Override
@@ -67,54 +82,57 @@ public class UserInfoFragment extends Fragment {
     private void validateAndConfirm() {
         String firstName = editFirstName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
-        String birthDate = editBirthDate.getText().toString().trim();
+        String birthDateStr = editBirthDate.getText().toString().trim();
         String passportNumber = editPassportNumber.getText().toString().trim();
 
-        if (TextUtils.isEmpty(firstName)) {
-            editFirstName.setError("First name is required");
-            return;
-        }
+        PassengerInput input = new PassengerInput(firstName, lastName, birthDateStr, passportNumber);
 
-        if (TextUtils.isEmpty(lastName)) {
-            editLastName.setError("Last name is required");
-            return;
-        }
+        BookingService bookingService = ((OnGoApp) getActivity().getApplication()).getBookingService();
 
-        if (TextUtils.isEmpty(birthDate)) {
-            editBirthDate.setError("Birth date is required");
-            return;
-        }
+        try {
+            // This calls the business layer which does the validation
+            // For now, using a hardcoded userId 1 as we don't have auth yet
+            bookingService.createBooking(1, flightId, input);
 
-        if (!isValidDate(birthDate)) {
-            editBirthDate.setError("Use format YYYY-MM-DD (e.g., 1990-01-01)");
-            return;
-        }
+            Toast.makeText(getContext(), "Booking confirmed for flight " + flightId + " for " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
 
-        if (TextUtils.isEmpty(passportNumber)) {
-            editPassportNumber.setError("Passport number is required");
-            return;
-        }
+            // Notify the activity that booking was successful
+            if (listener != null) {
+                listener.onBookingSuccess();
+            }
 
-        // Validation passed
-        Toast.makeText(getContext(), "Booking confirmed for flight " + flightId + " for " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
-        
-        // Go back to Home
-        getParentFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, new HomeFragment())
-                .commit();
+        } catch (ValidationException e) {
+            String message = e.getMessage();
+            String field = e.getField();
+
+            if (field == null) {
+                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            switch (field) {
+                case "firstName":
+                    editFirstName.setError(message);
+                    break;
+                case "lastName":
+                    editLastName.setError(message);
+                    break;
+                case "birthDate":
+                    editBirthDate.setError(message);
+                    break;
+                case "passport":
+                    editPassportNumber.setError(message);
+                    break;
+                default:
+                    Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
     }
 
-    private boolean isValidDate(String dateStr) {
-        if (!dateStr.matches("\\d{4}-\\d{2}-\\d{2}")) {
-            return false;
-        }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        sdf.setLenient(false);
-        try {
-            sdf.parse(dateStr);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 }
