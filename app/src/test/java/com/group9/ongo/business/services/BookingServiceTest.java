@@ -76,10 +76,10 @@ public class BookingServiceTest {
         Passenger p = passengerRepo.getPassengerByBookingId(booking.getBookingId());
         assertNotNull(p);
         assertEquals(booking.getBookingId(), p.getBookingId());
-        assertEquals(input.firstName, p.getFirstName());
-        assertEquals(input.lastName, p.getLastName());
-        assertEquals(input.dateOfBirth, p.getDateOfBirth());
-        assertEquals(input.passportNumber, p.getPassportNumber());
+        assertEquals(input.getFirstName(), p.getFirstName());
+        assertEquals(input.getLastName(), p.getLastName());
+        assertEquals(input.getDateOfBirth(), p.getDateOfBirth());
+        assertEquals(input.getPassportNumber(), p.getPassportNumber());
     }
 
     @Test
@@ -109,8 +109,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenFirstNameIsNull_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.firstName = null;
+        PassengerInput input = new PassengerInput(null, "Last", "2000-01-01", "P123");
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -122,8 +121,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenFirstNameIsBlank_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.firstName = "   ";
+        PassengerInput input = new PassengerInput("   ", "Last", "2000-01-01", "P123");
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -135,8 +133,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenLastNameIsNull_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.lastName = null;
+        PassengerInput input = new PassengerInput("First", null, "2000-01-01", "P123");
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -148,8 +145,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenLastNameIsBlank_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.lastName = "";
+        PassengerInput input = new PassengerInput("First", "", "2000-01-01", "P123");
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -161,8 +157,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenDateOfBirthIsNull_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.dateOfBirth = null;
+        PassengerInput input = new PassengerInput("First", "Last", null, "P123");
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -174,8 +169,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenPassportNumberIsNull_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.passportNumber = null;
+        PassengerInput input = new PassengerInput("First", "Last", "2000-01-01", null);
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -187,8 +181,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenPassportNumberIsBlank_throwsExpectedMessage() {
-        PassengerInput input = samplePassengerInput("A");
-        input.passportNumber = " ";
+        PassengerInput input = new PassengerInput("First", "Last", "2000-01-01", " ");
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
@@ -201,8 +194,7 @@ public class BookingServiceTest {
 
     @Test
     public void createBooking_whenPassengerInvalid_doesNotCreateBookingOrPassenger() {
-        PassengerInput input = samplePassengerInput("A");
-        input.firstName = null;
+        PassengerInput input = new PassengerInput(null, "Last", "2000-01-01", "P123");
 
         assertThrows(
                 ValidationException.class,
@@ -310,11 +302,11 @@ public class BookingServiceTest {
 
 
     private PassengerInput samplePassengerInput(String tag) {
-        PassengerInput input = new PassengerInput();
-        input.firstName = "First" + tag;
-        input.lastName = "Last" + tag;
-        input.dateOfBirth = LocalDate.of(2000, 1, 1);
-        input.passportNumber = "P" + tag + "12345";
-        return input;
+        return new PassengerInput(
+            "First" + tag,
+            "Last" + tag,
+            "2000-01-01",
+            "P" + tag + "12345"
+        );
     }
 }

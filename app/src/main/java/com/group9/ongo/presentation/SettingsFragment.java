@@ -12,6 +12,11 @@ import androidx.fragment.app.Fragment;
 import com.group9.ongo.R;
 
 public class SettingsFragment extends Fragment {
+
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

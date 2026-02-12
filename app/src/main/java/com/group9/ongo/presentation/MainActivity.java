@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.group9.ongo.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements UserInfoFragment.OnBookingSuccessListener {
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +19,11 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         // Set default fragment (Home) on launch
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment())
-                    .commit();
+            navigateToHome();
         }
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -31,11 +31,11 @@ public class MainActivity extends AppCompatActivity {
             int itemId = item.getItemId();
 
             if (itemId == R.id.navigation_home) {
-                selectedFragment = new HomeFragment();
+                selectedFragment = HomeFragment.newInstance();
             } else if (itemId == R.id.navigation_search) {
-                selectedFragment = new SearchFragment();
+                selectedFragment = SearchFragment.newInstance();
             } else if (itemId == R.id.navigation_settings) {
-                selectedFragment = new SettingsFragment();
+                selectedFragment = SettingsFragment.newInstance();
             }
 
             if (selectedFragment != null) {
@@ -45,5 +45,17 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    @Override
+    public void onBookingSuccess() {
+        navigateToHome();
+        bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+    }
+
+    private void navigateToHome() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, HomeFragment.newInstance())
+                .commit();
     }
 }

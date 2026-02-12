@@ -33,7 +33,13 @@ public class BookingService {
     public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo) {
         BookingValidator.validate(flightService.getFlightById(flightId), flightId, passengerInfo);
         Booking booking = bookingsRepo.addBooking(new Booking(0, userId, flightId));
-        passengerRepo.addPassenger(passengerInfo, booking.getBookingId());
+        Passenger passenger = passengerRepo.addPassenger(passengerInfo, booking.getBookingId());
+
+        if (passenger == null) {
+            bookingsRepo.deleteBooking(booking.getBookingId());
+            throw new RuntimeException("Failed to create passenger. Booking has been rolled back.");
+        }
+
         return booking;
     }
 
@@ -53,9 +59,11 @@ public class BookingService {
             Passenger passenger =
                     passengerRepo.getPassengerByBookingId(booking.getBookingId());
 
-            detailsList.add(
-                    new BookingDetails(booking, flight, passenger)
-            );
+            if (flight != null && passenger != null) {
+                detailsList.add(
+                        new BookingDetails(booking, flight, passenger)
+                );
+            }
         }
         return detailsList;
     }
