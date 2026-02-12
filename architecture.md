@@ -1,5 +1,7 @@
 # Architecture Overview
-picture here
+
+![OnGo Architecture](Architecture_diagram_iteration_1.png)
+
 
 ## General Description
 
