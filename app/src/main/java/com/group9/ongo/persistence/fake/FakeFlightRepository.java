@@ -53,10 +53,6 @@ public class FakeFlightRepository implements FlightRepository {
     @Override
     public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity) {
         Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity);
-        if (!flights.add(flight))
-        {
-               return -1;
-        }
         nextId++;
         return nextId - 1;
     }
