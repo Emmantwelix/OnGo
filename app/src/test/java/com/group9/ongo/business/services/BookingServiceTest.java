@@ -78,7 +78,7 @@ public class BookingServiceTest {
         assertEquals(booking.getBookingId(), p.getBookingId());
         assertEquals(input.getFirstName(), p.getFirstName());
         assertEquals(input.getLastName(), p.getLastName());
-        assertEquals(input.getDateOfBirth(), p.getDateOfBirth());
+        assertEquals(input.getDateOfBirth(), p.getDateOfBirth().toString());
         assertEquals(input.getPassportNumber(), p.getPassportNumber());
     }
 
