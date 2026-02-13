@@ -1,6 +1,6 @@
 # Architecture Overview
 
-![OnGo Architecture](Architecuture_diagram_iteration_1.png)
+![OnGo Architecture](Architecuture_diagram_Iteration_1.png)
 
 
 ## General Description
