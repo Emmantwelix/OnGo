@@ -21,7 +21,7 @@ public class OnGoApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FlightRepository flightRepo = new FakeFlightRepository();
+        FlightRepository flightRepo = new FakeFlightRepository(true);
         flightService = new FlightServiceImpl(flightRepo);
 
         BookingRepository bookingRepo = new FakeBookingRepository();
