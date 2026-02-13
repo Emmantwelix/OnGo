@@ -55,7 +55,7 @@ Fakes are stub implementations of the interfaces made for testing.
 ### Color Meaning (Interaction / Flow)
 
 Colors represent logical groupings and interaction flow between components:
-example: 
+**examples:**
 * **Light Blue** – User-related components
   (`User`, `UserValidator`, `UserRepo`, etc.)
 
@@ -63,7 +63,7 @@ example:
   Represent pages within our system
 
 The colors consistency visually communicates which components collaborate most closely.
----
+
 
 ### Border Meaning
 
@@ -73,10 +73,10 @@ The colors consistency visually communicates which components collaborate most c
 
 ### Group Boxes
 
-* Large labeled boxes (Application, Presentation, Logic, Models, Persistence)
+* **Large labeled boxes** (Application, Presentation, Logic, Models, Persistence)
   → Architectural layers/packages
 
-* Subgroup boxes (services, validators,exceptions, fakes)
+* **Subgroup boxes** (services, validators,exceptions, fakes)
   → Logical categorization within a layer/subpackage
 
 
@@ -92,4 +92,4 @@ Logic (via interfaces)
 Persistence (via interfaces)
 ```
 
-Models are shared across layers for data transfer
+Models are shared across layers to transfer data
