@@ -4,7 +4,7 @@ import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.PassengerInput;
 
 public class BookingValidator {
-    public static void validate(Flight flight, int flightId, PassengerInput input) {
+    public static void validate(Flight flight, PassengerInput input) {
         PassengerInputValidator.validate(input);
         FlightValidator.validate(flight);
 
