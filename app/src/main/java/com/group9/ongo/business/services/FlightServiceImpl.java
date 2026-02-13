@@ -27,10 +27,10 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity) {
-        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity);
+    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
+        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price);
 
-        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity);
+        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price);
     }
 
     @Override

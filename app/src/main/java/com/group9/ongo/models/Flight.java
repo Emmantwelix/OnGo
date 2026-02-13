@@ -8,8 +8,10 @@ public class Flight {
     private String destination;
     private int capacity;
     private int flightId;
+    private double price;
+    private int duration;
 
-    public Flight(int flightId, String airline, String origin, String destination, String departTime, String landTime, int capacity) {
+    public Flight(int flightId, String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
         this.airline = airline;
         this.origin = origin;
         this.destination = destination;
@@ -17,7 +19,38 @@ public class Flight {
         this.landTime = landTime;
         this.capacity = capacity;
         this.flightId = flightId;
+        this.price = price;
+        this.duration = calculateDuration();
     }
+
+    private int calculateDuration() {
+        int departMinutes = toMinutes(departTime);
+        int landMinutes = toMinutes(landTime);
+        //handle overnight flights
+        if (landMinutes < departMinutes) {
+            landMinutes += 24 * 60;
+        }
+        //handle 24hr flights
+        if ( landMinutes == departMinutes )
+        {
+            return 24;
+        }
+
+        float result = (float) (landMinutes - departMinutes) / 60;
+
+        if (result < 1) {
+            return 1;
+        }
+
+        return Math.round(result);
+    }
+    private static int toMinutes(String time) {
+        int hours = Integer.parseInt(time.substring(0, 2));
+        int minutes = Integer.parseInt(time.substring(2, 4));
+        return hours * 60 + minutes;
+    }
+
+
 
 
     public String getDestination() {
@@ -37,9 +70,7 @@ public class Flight {
         return departTime;
     }
 
-    public String getLandTime() {
-        return landTime;
-    }
+    public String getLandTime() { return landTime; }
 
     public int getCapacity() {
         return capacity;
@@ -49,4 +80,9 @@ public class Flight {
         return flightId;
     }
 
+    public double getPrice() { return price; }
+    public int getDuration() { return duration; }
+
+
 }
+
