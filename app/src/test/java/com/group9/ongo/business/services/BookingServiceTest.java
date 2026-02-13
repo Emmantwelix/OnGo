@@ -19,7 +19,6 @@ import com.group9.ongo.persistence.fake.FakePassengerRepository;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
