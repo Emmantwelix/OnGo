@@ -60,7 +60,7 @@ Colors represent logical groupings and interaction flow between components:
   (`User`, `UserValidator`, `UserRepo`, etc.)
 
 * **Yellow** – UI components
-  Represent pages within our system
+  Represent UI pages within our system
 
 The colors consistency visually communicates which components collaborate most closely.
 
