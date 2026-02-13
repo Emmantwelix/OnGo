@@ -128,6 +128,10 @@ public class UserInfoFragment extends Fragment {
                     break;
             }
         }
+        catch (RuntimeException e) {
+            // Catch unexpected runtime exceptions (like rollbacks)
+            Toast.makeText(getContext(), "Critical Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
