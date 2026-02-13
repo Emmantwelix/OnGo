@@ -26,13 +26,23 @@ public class FlightServiceTest {
     //places
     private final String TORONTO = "Toronto";
     private final String MONTREAL = "Montreal";
-    private final String VANCOUVER = "Vancouver";
     private final String WINNIPEG = "Winnipeg";
-
+    private final String INVALID_ORIGIN = "wrong origin";
+    private final String INVALID_DESTINATION = "wrong destination";
     //capacity
-    private final int LARGE_CAPACITY = 200;
-    private final int MEDIUM_CAPACITY = 150;
-    private final int SMALL_CAPACITY = 100;
+    private final int VALID_CAPACITY = 200;
+    private final int INVALID_CAPACITY = 0;
+    private final int INVALID_CAPACITY2 = 501;
+    //price
+    private final double VALID_PRICE = 500.34;
+    private final double WEIRD_VALID_PRICE = 0.01;
+    private final double INVALID_PRICE = 5001.01;
+    private final double INVALID_PRICE2 = 0;
+    private final String INVALID_TIME = "9999";
+    private final String INVALID_TIME2 = "";
+    private final String VALID_TIME = "0456";
+    private final String VALID_TIME2 = "2359";
+
     private FlightRepository repo;
     private FlightService service;
 
@@ -54,7 +64,7 @@ public class FlightServiceTest {
     @Test
     public void addItem_addsValidItem(){
         //arrange + act
-        int flightID = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, "1000", "1200", 200);
+        int flightID = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
         Flight flight = service.getFlightById(flightID);
         //assert
         assertEquals(1, service.getAllFlights().size());
@@ -62,9 +72,10 @@ public class FlightServiceTest {
         assertEquals(AIR_CANADA, flight.getAirline());
         assertEquals(WINNIPEG, flight.getOrigin());
         assertEquals(TORONTO, flight.getDestination());
-        assertEquals("1000", flight.getDepartTime());
-        assertEquals("1200", flight.getLandTime());
-        assertEquals(200, flight.getCapacity());
+        assertEquals(VALID_TIME, flight.getDepartTime());
+        assertEquals(VALID_TIME2, flight.getLandTime());
+        assertEquals(VALID_CAPACITY, flight.getCapacity());
+        assertEquals(VALID_PRICE, flight.getPrice(), 0.01);
     }
 
     @Test
@@ -72,7 +83,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(WESTJET, "wrong origin", TORONTO, "1111", "1200", 200)
+                () -> service.createFlight(WESTJET, INVALID_ORIGIN, TORONTO, VALID_TIME, VALID_TIME, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Invalid origin", exception.getMessage());
     }
@@ -82,7 +93,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(WESTJET, WINNIPEG, "wrong destination", "1111", "1200", 200)
+                () -> service.createFlight(WESTJET, WINNIPEG, INVALID_DESTINATION, VALID_TIME2, VALID_TIME, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Invalid destination", exception.getMessage());
     }
@@ -92,7 +103,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(WESTJET, TORONTO, TORONTO, "1111", "1200", 200)
+                () -> service.createFlight(WESTJET, TORONTO, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Origin and destination cannot be the same", exception.getMessage());
     }
@@ -102,7 +113,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "1111", "1200", 0)
+            () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, INVALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Capacity must be greater than 0", exception.getMessage());
     }
@@ -112,7 +123,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "1111", "1200", 501)
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, INVALID_CAPACITY2, VALID_PRICE)
         );
         assertEquals("Capacity must be less than 501", exception.getMessage());
     }
@@ -122,7 +133,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "11911", "1200", 500)
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, INVALID_TIME, VALID_TIME, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Invalid departure time", exception.getMessage());
     }
@@ -132,7 +143,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "", "1200", 23)
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, INVALID_TIME2, VALID_TIME, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Invalid departure time", exception.getMessage());
     }
@@ -142,7 +153,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "2340", "124333", 300)
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, INVALID_TIME, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Invalid landing time", exception.getMessage());
     }
@@ -152,7 +163,7 @@ public class FlightServiceTest {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "2340", "", 10)
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, INVALID_TIME2, VALID_CAPACITY, VALID_PRICE)
         );
         assertEquals("Invalid landing time", exception.getMessage());
     }
@@ -163,7 +174,7 @@ public class FlightServiceTest {
     @Test
     public void deleteItem_deletesItem_returnsTrue(){
         //arrange
-        int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "2340", "0500", 100);
+        int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME, VALID_CAPACITY, VALID_PRICE);
         //act
         boolean success = service.deleteFlight(flightId);
         //assert
@@ -184,7 +195,7 @@ public class FlightServiceTest {
     @Test
     public void getFlightById_whenItemExists_returnsItem() {
         //arrange
-        int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, "2340", "0500", 100);
+        int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
         //act
         Flight returnedFlight = service.getFlightById(flightId);
         //assert
@@ -192,9 +203,10 @@ public class FlightServiceTest {
         assertEquals(AIR_TRANSAT, returnedFlight.getAirline());
         assertEquals(MONTREAL, returnedFlight.getOrigin());
         assertEquals(TORONTO, returnedFlight.getDestination());
-        assertEquals("2340", returnedFlight.getDepartTime());
-        assertEquals("0500", returnedFlight.getLandTime());
-        assertEquals(100, returnedFlight.getCapacity());
+        assertEquals(VALID_TIME, returnedFlight.getDepartTime());
+        assertEquals(VALID_TIME2, returnedFlight.getLandTime());
+        assertEquals(VALID_CAPACITY, returnedFlight.getCapacity());
+        assertEquals(VALID_PRICE, returnedFlight.getPrice(), 0.01);
     }
 
     @Test
@@ -210,9 +222,9 @@ public class FlightServiceTest {
     @Test
     public void getAllFlights_returnsAllFlights() {
         //arrange
-        int id1 = service.createFlight(AIR_TRANSAT, MONTREAL, VANCOUVER, "0930", "0600", 200);
-        int id2 = service.createFlight(AIR_CANADA, MONTREAL, WINNIPEG, "2359", "1000", 100);
-        int id3 = service.createFlight(PORTER_AIRLINES, VANCOUVER, WINNIPEG, "2000", "1100", 450);
+        int id1 = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
+        int id2 = service.createFlight(AIR_CANADA, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
+        int id3 = service.createFlight(WESTJET, MONTREAL, TORONTO, VALID_TIME2, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
         //act
         List<Flight> flights = service.getAllFlights();
         //assert
@@ -220,6 +232,36 @@ public class FlightServiceTest {
         assertEquals(id1, flights.get(0).getFlightId());
         assertEquals(id2, flights.get(1).getFlightId());
         assertEquals(id3, flights.get(2).getFlightId());
+    }
+
+    @Test
+    public void testWeirdValidPrice_returnsFlightId() {
+        //arrange + act
+        int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, WEIRD_VALID_PRICE);
+        Flight flight = service.getFlightById(flightId);
+        //assert
+        assertEquals(1, flightId);
+        assertEquals(flight.getPrice(), WEIRD_VALID_PRICE, 0.01);
+    }
+
+    @Test
+    public void testInvalidFlightPrice_throwsException() {
+        //arrange + act + assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, INVALID_PRICE)
+        );
+        assertEquals("Price must be less than 5001", exception.getMessage());
+    }
+
+    @Test
+    public void testInvalidFlightPrice2_throwsException() {
+        //arrange + act + assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, INVALID_PRICE2)
+        );
+        assertEquals("Price must be greater than 0", exception.getMessage());
     }
 }
 

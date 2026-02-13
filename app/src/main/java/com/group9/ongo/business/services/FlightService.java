@@ -10,7 +10,7 @@ public interface FlightService {
     Flight getFlightById(int flightId);
 
     //returns the id of the flight that was added, will throw if invalid
-    int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity);
+    int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price);
 
     boolean deleteFlight(int flightId);
 
