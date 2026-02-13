@@ -49,7 +49,4 @@ public class Flight {
         return flightId;
     }
 
-    public String getOrigin() { return origin; }
-
-
 }
