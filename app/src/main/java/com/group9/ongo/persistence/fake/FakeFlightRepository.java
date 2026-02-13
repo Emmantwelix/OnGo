@@ -29,6 +29,13 @@ public class FakeFlightRepository implements FlightRepository {
     private final List<Flight> flights = new ArrayList<>();
 
     public FakeFlightRepository() {
+
+    }
+
+    public FakeFlightRepository(boolean populate) {
+        if (populate) {
+            populate_with_sample_data();
+        }
     }
 
     @Override
@@ -62,5 +69,12 @@ public class FakeFlightRepository implements FlightRepository {
             }
         }
         return false;
+    }
+
+    private void populate_with_sample_data() {
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "10:00", "12:00", LARGE_CAPACITY);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "12:00", "14:00", MEDIUM_CAPACITY);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "14:00", "16:00", SMALL_CAPACITY);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "16:00", "18:00", LARGE_CAPACITY);
     }
 }

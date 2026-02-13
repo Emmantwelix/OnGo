@@ -16,9 +16,15 @@ import java.util.List;
 public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightViewHolder> {
 
     private List<Flight> flights;
+    private OnFlightClickListener listener;
 
-    public FlightAdapter(List<Flight> flights) {
+    public interface OnFlightClickListener {
+        void onFlightClick(Flight flight);
+    }
+
+    public FlightAdapter(List<Flight> flights, OnFlightClickListener listener) {
         this.flights = flights;
+        this.listener = listener;
     }
 
     @NonNull
@@ -37,6 +43,12 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
         holder.departTime.setText(flight.getDepartTime());
         holder.landTime.setText(flight.getLandTime());
         holder.airlines.setText(flight.getAirline());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onFlightClick(flight);
+            }
+        });
     }
 
     @Override

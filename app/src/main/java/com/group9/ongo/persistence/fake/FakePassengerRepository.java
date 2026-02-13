@@ -4,6 +4,7 @@ import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.persistence.PassengerRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,10 @@ public class FakePassengerRepository implements PassengerRepository {
         Passenger newPassenger = new Passenger(
                 id,
                 bookingId,
-                info.firstName,
-                info.lastName,
-                info.dateOfBirth,
-                info.passportNumber
+                info.getFirstName(),
+                info.getLastName(),
+                LocalDate.parse(info.getDateOfBirth()),
+                info.getPassportNumber()
         );
 
         passengers.add(newPassenger);
