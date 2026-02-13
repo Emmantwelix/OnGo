@@ -72,9 +72,9 @@ public class FakeFlightRepository implements FlightRepository {
     }
 
     private void populate_with_sample_data() {
-        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "10:00", "12:00", LARGE_CAPACITY);
-        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "12:00", "14:00", MEDIUM_CAPACITY);
-        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "14:00", "16:00", SMALL_CAPACITY);
-        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "16:00", "18:00", LARGE_CAPACITY);
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "10:00", "12:00", LARGE_CAPACITY, 603.49);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "12:00", "14:00", MEDIUM_CAPACITY, 979.52);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "14:00", "16:00", SMALL_CAPACITY, 200.01);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "16:00", "18:00", LARGE_CAPACITY, 417.38);
     }
 }
