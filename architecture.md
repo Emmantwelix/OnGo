@@ -47,10 +47,37 @@ This layer handles the brunt of the workflow ochastration, it communicates with 
 
   * Repository interfaces: `BookingRepository`, `PassengerRepository`, `FlightRepository`, `UserRepository`
   * Fake implementations: `FakeBookingRepository`, `FakePassengerRepository`, `FakeUserRepository`, `FakeFlightRepository`
-  * Real database implementations: n/a
 
 Fakes are stub implementations of the interfaces made for testing.
 
+## Legend
+
+### Color Meaning (Interaction / Flow)
+
+Colors represent logical groupings and interaction flow between components:
+example: 
+* **Light Blue** – User-related components
+  (`User`, `UserValidator`, `UserRepo`, etc.)
+
+* **Yellow** – UI components
+  Represent pages within our system
+
+The colors consistency visually communicates which components collaborate most closely.
+---
+
+### Border Meaning
+
+* **Solid Border** → Concrete class
+* **Dotted Border** → Interface
+---
+
+### Group Boxes
+
+* Large labeled boxes (Application, Presentation, Logic, Models, Persistence)
+  → Architectural layers/packages
+
+* Subgroup boxes (services, validators,exceptions, fakes)
+  → Logical categorization within a layer/subpackage
 
 
 ## Dependency Direction
