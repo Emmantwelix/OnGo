@@ -3,6 +3,7 @@ package com.group9.ongo.application;
 import android.app.Application;
 
 import com.group9.ongo.business.services.BookingService;
+import com.group9.ongo.business.services.BookingServiceImpl;
 import com.group9.ongo.business.services.FlightService;
 import com.group9.ongo.business.services.FlightServiceImpl;
 import com.group9.ongo.persistence.BookingRepository;
@@ -26,7 +27,7 @@ public class OnGoApp extends Application {
 
         BookingRepository bookingRepo = new FakeBookingRepository();
         PassengerRepository passengerRepo = new FakePassengerRepository();
-        bookingService = new BookingService(bookingRepo, passengerRepo, flightService);
+        bookingService = new BookingServiceImpl(bookingRepo, passengerRepo, flightService);
     }
 
     public FlightService getFlightService() {

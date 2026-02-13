@@ -36,7 +36,7 @@ public class BookingServiceTest {
         bookingRepo = new FakeBookingRepository();
         passengerRepo = new FakePassengerRepository();
         flightService = new FlightServiceImpl(new FakeFlightRepository(true));
-        bookingService = new BookingService(bookingRepo, passengerRepo, flightService);
+        bookingService = new BookingServiceImpl(bookingRepo, passengerRepo, flightService);
     }
 
     @Test
