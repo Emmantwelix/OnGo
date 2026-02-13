@@ -16,6 +16,11 @@ import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.FlightService;
 
 public class SearchFragment extends Fragment {
+
+    public static SearchFragment newInstance() {
+        return new SearchFragment();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -26,10 +31,17 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
-        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights());
+
+        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights(), flight -> {
+            // Navigate to UserInfoFragment when a flight is clicked, passing the flightId
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, UserInfoFragment.newInstance(flight.getFlightId()))
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         recyclerView.setAdapter(adapter);
 
         return view;
     }
-
 }
