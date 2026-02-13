@@ -2,7 +2,6 @@ package com.group9.ongo.models;
 
 public class Flight {
     private String airline;
-
     private String origin;
     private String departTime;
     private String landTime;
@@ -19,6 +18,7 @@ public class Flight {
         this.capacity = capacity;
         this.flightId = flightId;
     }
+
 
     public String getDestination() {
         return destination;
@@ -48,4 +48,8 @@ public class Flight {
     public int getFlightId() {
         return flightId;
     }
+
+    public String getOrigin() { return origin; }
+
+
 }

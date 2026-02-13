@@ -1,5 +1,7 @@
 package com.group9.ongo.business.services;
 
+import com.group9.ongo.business.validation.UserValidator;
+import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.User;
 import com.group9.ongo.persistence.UserRepository;
 
@@ -12,6 +14,25 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int userId) {
-        return repo.getUserById(userId);
+        User user = repo.getUserById(userId);
+        UserValidator.validate(user);
+        return user;
+    }
+    @Override
+    public int createUser(String name, String email, String phone) {
+        UserValidator.validateNewUser(name, email, phone);
+        return repo.addUser(name, email, phone);
+    }
+    @Override
+    public boolean deleteUser(int userId) {
+        boolean success = repo.deleteUser(userId);
+        if ( success )
+        {
+            return true;
+        }
+        else
+        {
+           throw new ValidationException("User could not be deleted, since user does not exist");
+        }
     }
 }

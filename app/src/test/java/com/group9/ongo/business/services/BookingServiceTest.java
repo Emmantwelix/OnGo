@@ -92,7 +92,7 @@ public class BookingServiceTest {
         );
 
         assertEquals(
-                "Flight with id 9999 does not exist",
+                "Flight not found",
                 exception.getMessage()
         );
     }

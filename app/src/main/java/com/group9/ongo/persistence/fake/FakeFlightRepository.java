@@ -24,14 +24,15 @@ public class FakeFlightRepository implements FlightRepository {
     private final int MEDIUM_CAPACITY = 150;
     private final int SMALL_CAPACITY = 100;
 
+    private int nextId = 1;
 
     private final List<Flight> flights = new ArrayList<>();
 
     public FakeFlightRepository() {
-        flights.add(new Flight(1,AIR_CANADA, TORONTO, VANCOUVER, "10:00", "12:00", LARGE_CAPACITY));
-        flights.add(new Flight(2,WESTJET, WINNIPEG, MONTREAL, "11:00", "13:00", MEDIUM_CAPACITY));
-        flights.add(new Flight(3,AIR_TRANSAT,VANCOUVER, WINNIPEG, "12:00", "14:00", SMALL_CAPACITY));
-        flights.add(new Flight(4,PORTER_AIRLINES,MONTREAL, TORONTO, "13:00", "15:00", LARGE_CAPACITY));
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "10:00", "12:00", LARGE_CAPACITY);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "12:00", "14:00", MEDIUM_CAPACITY);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "14:00", "16:00", SMALL_CAPACITY);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "16:00", "18:00", LARGE_CAPACITY);
     }
 
     @Override
@@ -47,5 +48,22 @@ public class FakeFlightRepository implements FlightRepository {
             }
         }
         return null;
+    }
+
+    @Override
+    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity) {
+        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity);
+        nextId++;
+        return nextId - 1;
+    }
+
+    @Override
+    public boolean deleteFlight(int flightId) {
+        for (Flight flight : flights) {
+            if (flight.getFlightId() == flightId) {
+                return flights.remove(flight);
+            }
+        }
+        return false;
     }
 }

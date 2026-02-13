@@ -6,9 +6,7 @@ import com.group9.ongo.models.PassengerInput;
 public class BookingValidator {
     public static void validate(Flight flight, int flightId, PassengerInput input) {
         PassengerInputValidator.validate(input);
+        FlightValidator.validate(flight);
 
-        if (flight == null) {
-            throw new ValidationException("Flight with id " + flightId + " does not exist");
-        }
     }
 }

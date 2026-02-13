@@ -4,9 +4,9 @@ public class User {
     private int userId;
     private String username;
     private String email;
-    private int phone;
+    private String phone;
 
-    public User(int userId, String username, String email, int phone) {
+    public User(int userId, String username, String email, String phone) {
         this.username = username;
         this.email = email;
         this.phone = phone;
@@ -25,7 +25,7 @@ public class User {
         return email;
     }
 
-    public int getPhone() {
+    public String getPhone() {
         return phone;
     }
 }
