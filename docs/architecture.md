@@ -42,6 +42,7 @@ UserInfoFragment does not store any user data, at the moment we only handle one 
     * `UserService`
     * `BookingService`
     * Validators
+    * Exceptions
 
 This layer handles the brunt of the workflow ochastration, it communicates with the repositories of our system to fetch and store data at the request of the presentation layer and validates the data being passed through. This class additionally throws domain specific exceptions to the presentation layer.
 
