@@ -7,7 +7,7 @@ import java.time.DateTimeException;
 
 public class PassengerInputValidator {
 
-    public static void validate(PassengerInput input) {
+    public static void validate(PassengerInput input) throws ValidationException {
         if (input == null) {
             throw new ValidationException("Passenger input cannot be null");
         }
@@ -25,7 +25,7 @@ public class PassengerInputValidator {
         }
     }
 
-    private static void validateBirthDate(String dob) {
+    private static void validateBirthDate(String dob) throws ValidationException {
         if (dob == null || dob.isBlank()) {
             throw new ValidationException("Date of birth is required", "birthDate");
         }
