@@ -62,7 +62,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void addItem_addsValidItem(){
+    public void addItem_addsValidItem() throws ValidationException {
         //arrange + act
         int flightID = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
         Flight flight = service.getFlightById(flightID);
@@ -172,7 +172,7 @@ public class FlightServiceTest {
 
 
     @Test
-    public void deleteItem_deletesItem_returnsTrue(){
+    public void deleteItem_deletesItem_returnsTrue() throws ValidationException {
         //arrange
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME, VALID_CAPACITY, VALID_PRICE);
         //act
@@ -193,7 +193,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void getFlightById_whenItemExists_returnsItem() {
+    public void getFlightById_whenItemExists_returnsItem() throws ValidationException {
         //arrange
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
         //act
@@ -220,7 +220,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void getAllFlights_returnsAllFlights() {
+    public void getAllFlights_returnsAllFlights() throws ValidationException {
         //arrange
         int id1 = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
         int id2 = service.createFlight(AIR_CANADA, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, VALID_PRICE);
@@ -235,7 +235,7 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void testWeirdValidPrice_returnsFlightId() {
+    public void testWeirdValidPrice_returnsFlightId() throws ValidationException {
         //arrange + act
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_CAPACITY, WEIRD_VALID_PRICE);
         Flight flight = service.getFlightById(flightId);

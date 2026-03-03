@@ -47,7 +47,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void getBookingByUserId_returnsOnlyThatUsersBookings() {
+    public void getBookingByUserId_returnsOnlyThatUsersBookings() throws BookingException, ValidationException {
         bookingService.createBooking(1, 1, samplePassengerInput("A"));
         bookingService.createBooking(1, 2, samplePassengerInput("B"));
         bookingService.createBooking(2, 3, samplePassengerInput("C"));
@@ -61,7 +61,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void createBooking_createsBookingAndPassengerLinkedToBookingId() {
+    public void createBooking_createsBookingAndPassengerLinkedToBookingId() throws BookingException, ValidationException {
         PassengerInput input = samplePassengerInput("Z");
 
         Booking booking = bookingService.createBooking(5, 1, input);
@@ -82,7 +82,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void createBooking_throwsValidationException_whenFlightDoesNotExist() {
+    public void createBooking_throwsValidationException_whenFlightDoesNotExist()  {
         PassengerInput passenger = samplePassengerInput("A");
 
         ValidationException exception = assertThrows(
@@ -205,7 +205,7 @@ public class BookingServiceTest {
 
 
     @Test
-    public void cancelBooking_deletesBookingAndItsPassenger_andReturnsTrue() {
+    public void cancelBooking_deletesBookingAndItsPassenger_andReturnsTrue() throws BookingException, ValidationException {
         Booking booking = bookingService.createBooking(9, 1, samplePassengerInput("X"));
         int bookingId = booking.getBookingId();
 
@@ -223,7 +223,7 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void cancelBooking_deletesOnlyPassengersForThatBookingId() {
+    public void cancelBooking_deletesOnlyPassengersForThatBookingId() throws BookingException, ValidationException {
         Booking b1 = bookingService.createBooking(1, 1, samplePassengerInput("A"));
         Booking b2 = bookingService.createBooking(1, 2, samplePassengerInput("B"));
 
@@ -248,7 +248,7 @@ public class BookingServiceTest {
 
 
     @Test
-    public void getBookingDetailsByUserId_returnsBookingPassengerAndFlight() {
+    public void getBookingDetailsByUserId_returnsBookingPassengerAndFlight() throws BookingException, ValidationException {
         PassengerInput samplePassenger = samplePassengerInput("A");
 
         Booking b1 = bookingService.createBooking(1, 1, samplePassenger);

@@ -11,14 +11,14 @@ public class FlightValidator {
     private static final double MIN_PRICE = 0; //0 is invalid
     
 
-    public static void validate(Flight flight) {
+    public static void validate(Flight flight) throws ValidationException {
         if (flight == null) {
             throw new ValidationException("Flight not found");
         }
     }
 
 
-    public static void validateNewFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
+    public static void validateNewFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) throws ValidationException {
         boolean validDestination = false;
         boolean validOrigin = false;
 

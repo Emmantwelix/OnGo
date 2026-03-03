@@ -13,18 +13,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(int userId) {
+    public User getUserById(int userId) throws ValidationException {
         User user = repo.getUserById(userId);
         UserValidator.validate(user);
         return user;
     }
     @Override
-    public int createUser(String name, String email, String phone) {
+    public int createUser(String name, String email, String phone) throws ValidationException {
         UserValidator.validateNewUser(name, email, phone);
         return repo.addUser(name, email, phone);
     }
     @Override
-    public boolean deleteUser(int userId) {
+    public boolean deleteUser(int userId) throws ValidationException {
         boolean success = repo.deleteUser(userId);
         if ( success )
         {

@@ -8,23 +8,23 @@ public class UserValidator {
     private static final int LENGTH_PHONE = 10;
     private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
 
-    public static void validate(User user) {
+    public static void validate(User user) throws ValidationException {
         if (user == null) {
             throw new ValidationException("User cannot be found");
         }
     }
     
-    public static void validateNewUser(String name, String email, String phone) {
+    public static void validateNewUser(String name, String email, String phone) throws ValidationException {
         if (name == null || name.length() < MIN_LENGTH_NAME) {
-            throw new ValidationException("Name is to short");
+            throw new ValidationException("Name is too short");
         }
         else if (name.length() > MAX_LENGTH_NAME) {
-            throw new ValidationException("Name is to long");
+            throw new ValidationException("Name is too long");
         }
-        else if (phone.length() != LENGTH_PHONE) {
+        else if (phone == null || phone.length() != LENGTH_PHONE) {
             throw new ValidationException("Invalid phone number, should be 10 digits");
         }
-        else if (!email.matches(EMAIL_REGEX)) {
+        else if (email == null || !email.matches(EMAIL_REGEX)) {
             throw new ValidationException("Invalid email format");
         }
     }

@@ -1,6 +1,6 @@
 package com.group9.ongo.business.validation;
 
-public class ValidationException extends RuntimeException {
+public class ValidationException extends Exception {
     private final String field;
 
     public ValidationException(String message) {
