@@ -1,26 +1,38 @@
 package com.group9.ongo.business.validation;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_AIRLINE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_DESTINATION;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_DTIME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_LTIME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_ORIGIN;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_CAPACITY;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_PRICE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_CAPACITY;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_PRICE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_NOT_FOUND;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_SAME_ORIGIN_DESTINATION;
+import static com.group9.ongo.business.constants.FlightConstants.MAX_CAPACITY;
+import static com.group9.ongo.business.constants.FlightConstants.MAX_PRICE;
+import static com.group9.ongo.business.constants.FlightConstants.MAX_TIME_LENGTH;
+import static com.group9.ongo.business.constants.FlightConstants.MIN_CAPACITY;
+import static com.group9.ongo.business.constants.FlightConstants.MIN_PRICE;
+import static com.group9.ongo.business.constants.FlightConstants.arrAirlines;
+import static com.group9.ongo.business.constants.FlightConstants.arrLocations;
+
 import com.group9.ongo.models.Flight;
 
 public class FlightValidator {
-    private static final String[] arrLocations = {"Toronto", "Montreal", "Vancouver", "Winnipeg"};
-    private static final int MAX_TIME_LENGTH = 4;
-    private static final int MAX_CAPACITY = 500;
-    private static final int MIN_CAPACITY = 1;
-    private static final double MAX_PRICE = 5000;
-    private static final double MIN_PRICE = 0; //0 is invalid
-    
 
     public static void validate(Flight flight) {
         if (flight == null) {
-            throw new ValidationException("Flight not found");
+            throw new ValidationException(FLIGHT_NOT_FOUND);
         }
     }
-
 
     public static void validateNewFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
         boolean validDestination = false;
         boolean validOrigin = false;
+        boolean validAirline = false;
 
         for (String location : arrLocations)
         {
@@ -31,37 +43,48 @@ public class FlightValidator {
                 validOrigin = true;
             }
         }
-        if (!validOrigin)
+
+        for (String airlineName : arrAirlines)
         {
-            throw new ValidationException("Invalid origin");
+            if (airlineName.equals(airline)) {
+                validAirline = true;
+            }
+        }
+
+        if (!validAirline) {
+            throw new ValidationException(FLIGHT_INVALID_AIRLINE);
+        }
+        else if (!validOrigin)
+        {
+            throw new ValidationException(FLIGHT_INVALID_ORIGIN);
         }
         else if (!validDestination)
         {
-            throw new ValidationException("Invalid destination");
+            throw new ValidationException(FLIGHT_INVALID_DESTINATION);
         }
         else if ( capacity > MAX_CAPACITY) {
-            throw new ValidationException("Capacity must be less than 501");
+            throw new ValidationException(FLIGHT_MAX_CAPACITY);
         }
         else if ( capacity < MIN_CAPACITY ){
-            throw new ValidationException("Capacity must be greater than 0");
+            throw new ValidationException(FLIGHT_MIN_CAPACITY);
         }
         else if ( !isValidTime(departTime) )
         {
-            throw new ValidationException("Invalid departure time");
+            throw new ValidationException(FLIGHT_INVALID_DTIME);
         }
         else if ( !isValidTime(landTime) )
         {
-            throw new ValidationException("Invalid landing time");
+            throw new ValidationException(FLIGHT_INVALID_LTIME);
         }
         else if ( origin.equals(destination) )
         {
-            throw new ValidationException("Origin and destination cannot be the same");
+            throw new ValidationException(FLIGHT_SAME_ORIGIN_DESTINATION);
         }
         else if (price <= MIN_PRICE) {
-            throw new ValidationException("Price must be greater than 0");
+            throw new ValidationException(FLIGHT_MIN_PRICE);
         }
         else if (price > MAX_PRICE) {
-            throw new ValidationException("Price must be less than 5001");
+            throw new ValidationException(FLIGHT_MAX_PRICE);
         }
     }
 

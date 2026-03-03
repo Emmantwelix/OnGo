@@ -1,9 +1,14 @@
 package com.group9.ongo.business.services;
 
+import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
+import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
+import static com.group9.ongo.business.constants.FlightConstants.LARGE_CAPACITY;
+import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
+import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
+import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
+import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
@@ -12,6 +17,7 @@ import com.group9.ongo.models.Flight;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.fake.FakeFlightRepository;
 
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,18 +25,12 @@ import java.util.List;
 
 
 public class FlightServiceTest {
-    private final String AIR_CANADA = "Air Canada";
-    private final String WESTJET = "Westjet";
-    private final String AIR_TRANSAT = "Air Transat";
-    private final String PORTER_AIRLINES = "Porter Airlines";
     //places
-    private final String TORONTO = "Toronto";
-    private final String MONTREAL = "Montreal";
-    private final String WINNIPEG = "Winnipeg";
     private final String INVALID_ORIGIN = "wrong origin";
     private final String INVALID_DESTINATION = "wrong destination";
+
     //capacity
-    private final int VALID_CAPACITY = 200;
+    private final int VALID_CAPACITY = LARGE_CAPACITY;
     private final int INVALID_CAPACITY = 0;
     private final int INVALID_CAPACITY2 = 501;
     //price

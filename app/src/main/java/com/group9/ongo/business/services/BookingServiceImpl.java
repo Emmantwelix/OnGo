@@ -1,5 +1,7 @@
 package com.group9.ongo.business.services;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_PASSENGER_ERROR;
+
 import com.group9.ongo.business.validation.BookingValidator;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;
@@ -37,7 +39,7 @@ public class BookingServiceImpl implements BookingService {
 
         if (passenger == null) {
             bookingsRepo.deleteBooking(booking.getBookingId());
-            throw new RuntimeException("Failed to create passenger. Booking has been rolled back.");
+            throw new RuntimeException(BOOKING_PASSENGER_ERROR);
         }
 
         return booking;
