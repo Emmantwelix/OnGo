@@ -54,8 +54,8 @@ public class FakeFlightRepository implements FlightRepository {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
-        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity, price);
+    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price, int duration) {
+        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity, price, duration);
         flights.add(flight);
         nextId++;
         return nextId - 1;
@@ -72,9 +72,9 @@ public class FakeFlightRepository implements FlightRepository {
     }
 
     private void populate_with_sample_data() {
-        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "1000", "1200", LARGE_CAPACITY, 603.49);
-        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "1200", "1400", MEDIUM_CAPACITY, 979.52);
-        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "1400", "1600", SMALL_CAPACITY, 200.01);
-        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "1600", "1800", LARGE_CAPACITY, 417.38);
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, "1000", "1200", LARGE_CAPACITY, 603.49, 2);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, "1200", "1400", MEDIUM_CAPACITY, 979.52, 4);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, "1400", "1600", SMALL_CAPACITY, 200.01 , 3);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, "1600", "1800", LARGE_CAPACITY, 417.38, 4);
     }
 }
