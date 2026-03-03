@@ -36,7 +36,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateValidUser_returnsUserId() {
+    public void testCreateValidUser_returnsUserId() throws ValidationException {
         //arrange + act
         int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
         //assert
@@ -49,7 +49,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateUserWithWeirdName_retrunsUserId() {
+    public void testCreateUserWithWeirdName_retrunsUserId() throws ValidationException {
         //arrange + act
         int userId = userService.createUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE);
         //assert
@@ -65,7 +65,7 @@ public class UserServiceTest {
                 ValidationException.class,
                 () -> userService.createUser(LONG_NAME, VALID_EMAIL, VALID_PHONE)
         );
-        assertEquals("Name is to long", exception.getMessage());
+        assertEquals("Name is too long", exception.getMessage());
     }
 
     @Test
@@ -75,11 +75,11 @@ public class UserServiceTest {
                 ValidationException.class,
                 () -> userService.createUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE)
         );
-        assertEquals("Name is to short", exception.getMessage());
+        assertEquals("Name is too short", exception.getMessage());
     }
 
     @Test
-    public void testCreateUser_withWeirdEmail_returnsUserId() {
+    public void testCreateUser_withWeirdEmail_returnsUserId() throws ValidationException {
         //arrange + act
         int userId = userService.createUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE);
         //assert
@@ -89,7 +89,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateUser_withInvalidEmail_throwsException() {
+    public void testCreateUser_withInvalidEmail_throwsException() throws ValidationException {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
@@ -99,7 +99,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testCreateUser_withInvalidPhone_throwsException() {
+    public void testCreateUser_withInvalidPhone_throwsException() throws ValidationException {
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
@@ -109,7 +109,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testGetUserByID_withValidID_returnsUser() {
+    public void testGetUserByID_withValidID_returnsUser() throws ValidationException {
         //arrange
         userService.createUser("tom", "tom@gmail.com", "4325329946");
         userService.createUser("bob", "bob@gmail.com", "5203028203");
@@ -136,7 +136,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testDeleteUser_withValidID_returnsTrue() {
+    public void testDeleteUser_withValidID_returnsTrue() throws ValidationException {
         //arrange
         int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
         //act

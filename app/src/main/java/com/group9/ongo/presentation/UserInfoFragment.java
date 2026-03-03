@@ -2,6 +2,7 @@ package com.group9.ongo.presentation;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +17,14 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
+import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.services.BookingService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.PassengerInput;
 
 public class UserInfoFragment extends Fragment {
+
+    private static final String TAG = "UserInfoFragment";
 
     public interface OnBookingSuccessListener {
         void onBookingSuccess();
@@ -48,7 +52,7 @@ public class UserInfoFragment extends Fragment {
         if (context instanceof OnBookingSuccessListener) {
             listener = (OnBookingSuccessListener) context;
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnBookingSuccessListener");
+            Log.e(TAG, context.toString() + " must implement OnBookingSuccessListener");
         }
     }
 
@@ -127,10 +131,9 @@ public class UserInfoFragment extends Fragment {
                     Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                     break;
             }
-        }
-        catch (RuntimeException e) {
-            // Catch unexpected runtime exceptions (like rollbacks)
-            Toast.makeText(getContext(), "Critical Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (BookingException e) {
+            // Catch specific business logic exceptions
+            Toast.makeText(getContext(), "Booking Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

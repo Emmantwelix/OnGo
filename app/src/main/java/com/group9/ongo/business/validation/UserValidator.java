@@ -13,13 +13,18 @@ import static com.group9.ongo.business.constants.UserConstants.MIN_LENGTH_NAME;
 import com.group9.ongo.models.User;
 
 public class UserValidator {
-    public static void validate(User user) {
+    private static final int MAX_LENGTH_NAME = 10;
+    private static final int MIN_LENGTH_NAME = 3;
+    private static final int LENGTH_PHONE = 10;
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
+
+    public static void validate(User user) throws ValidationException {
         if (user == null) {
             throw new ValidationException(USER_NOT_FOUND);
         }
     }
     
-    public static void validateNewUser(String name, String email, String phone) {
+    public static void validateNewUser(String name, String email, String phone) throws ValidationException {
         if (name == null || name.length() < MIN_LENGTH_NAME) {
             throw new ValidationException(USER_NAME_TO_SHORT);
         }

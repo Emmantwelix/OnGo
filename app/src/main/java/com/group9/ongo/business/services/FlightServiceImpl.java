@@ -22,21 +22,21 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public Flight getFlightById(int flightId) {
+    public Flight getFlightById(int flightId) throws ValidationException {
         Flight flight = repo.getFlightById(flightId);
         FlightValidator.validate(flight);
         return flight;
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
+    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) throws ValidationException {
         FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price);
 
         return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price);
     }
 
     @Override
-    public boolean deleteFlight(int flightId) {
+    public boolean deleteFlight(int flightId) throws ValidationException {
         boolean success = repo.deleteFlight(flightId);
         if ( success )
         {

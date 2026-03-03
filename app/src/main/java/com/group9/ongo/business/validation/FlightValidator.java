@@ -23,13 +23,14 @@ import com.group9.ongo.models.Flight;
 
 public class FlightValidator {
 
-    public static void validate(Flight flight) {
+    public static void validate(Flight flight) throws ValidationException {
         if (flight == null) {
             throw new ValidationException(FLIGHT_NOT_FOUND);
         }
     }
 
-    public static void validateNewFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
+
+    public static void validateNewFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) throws ValidationException {
         boolean validDestination = false;
         boolean validOrigin = false;
         boolean validAirline = false;
