@@ -33,5 +33,16 @@ public class ErrorMessageConstants {
     //BOOKING ERROR MESSAGES
     public static final String BOOKING_PASSENGER_ERROR = "Failed to create passenger. Booking has been rolled back.";
 
+    //PASSENGER ERROR MESSAGES
+    public static final String FIRST_NAME = "firstName";
+    public static final String LAST_NAME = "lastName";
+    public static final String DATE_OF_BIRTH = "birthDate";
+    public static final String PASSPORT = "passport";
+    public static final String PASSENGER_NULL_INPUT = "Passenger input cannot be null";
+    public static final String PASSENGER_NO_FIRSTNAME = "First name is required";
+    public static final String PASSENGER_NO_LASTNAME = "Last name is required";
+    public static final String PASSENGER_NO_BIRTHDATE = "Date of birth is required";
+    public static final String PASSENGER_INVALID_BIRTHDATE = "Date of birth must be in format YYYY-MM-DD";
+    public static final String PASSENGER_NO_PNUMBER = "Passport number is required";
 
 }
