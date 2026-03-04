@@ -6,8 +6,8 @@ public class ErrorMessageConstants {
 
     //USER ERROR MESSAGES
     public static final String USER_DELETE_ERROR = "User could not be deleted, since user does not exist";
-    public static final String USER_NAME_TO_LONG = "Name is to long";
-    public static final String USER_NAME_TO_SHORT = "Name is to short";
+    public static final String USER_NAME_TO_LONG = "Name is too long";
+    public static final String USER_NAME_TO_SHORT = "Name is too short";
     public static final String USER_INVALID_EMAIL = "Invalid email format";
     public static final String USER_INVALID_PHONE = "Invalid phone number, should be 10 digits";
     public static final String USER_NOT_FOUND = "User not found";
@@ -22,8 +22,12 @@ public class ErrorMessageConstants {
     public static final String FLIGHT_INVALID_DESTINATION = "Invalid destination";
     public static final String FLIGHT_MAX_CAPACITY = "Capacity must be less than 501";
     public static final String FLIGHT_MIN_CAPACITY = "Capacity must be greater than 0";
-    public static final String FLIGHT_INVALID_DTIME = "Invalid departure time";
-    public static final String FLIGHT_INVALID_LTIME = "Invalid landing time";
+
+    public static final String FLIGHT_DTIME_NULL = "departure time cannot be null";
+
+    public static final String FLIGHT_LTIME_NULL = "landing time cannot be null";
+
+    public static final String FLIGHT_INVALID_TIME_SEQUENCE = "Landing time cannot be equal to depart time";
     public static final String FLIGHT_SAME_ORIGIN_DESTINATION = "Origin and destination cannot be the same";
     public static final String FLIGHT_MIN_PRICE = "Price must be greater than 0";
     public static final String FLIGHT_MAX_PRICE = "Price must be less than 5001";

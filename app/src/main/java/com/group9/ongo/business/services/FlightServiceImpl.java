@@ -7,7 +7,10 @@ import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.persistence.FlightRepository;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Locale;
 
 public class FlightServiceImpl implements FlightService {
 
@@ -29,10 +32,10 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) throws ValidationException {
+    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price) throws ValidationException {
         FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price);
 
-        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price, calculateDuration(departTime, landTime));
+        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price);
     }
 
     @Override
@@ -48,31 +51,28 @@ public class FlightServiceImpl implements FlightService {
         }
     }
 
-    private int calculateDuration(String departTime, String landTime) {
-        int departMinutes = toMinutes(departTime);
-        int landMinutes = toMinutes(landTime);
-        //handle overnight flights
-        if (landMinutes < departMinutes) {
-            landMinutes += 24 * 60;
-        }
-        //handle 24hr flights
-        if ( landMinutes == departMinutes )
-        {
-            return 24;
+
+    //calculates the total minutes
+    private int calculateDuration(Flight flight) {
+        Duration duration = Duration.between(flight.getDepartTime(), flight.getLandTime());
+
+        // handle overnight flights
+        if (duration.isNegative()) {
+            duration = duration.plusHours(24);
         }
 
-        float result = (float) (landMinutes - departMinutes) / 60;
-
-        if (result < 1) {
-            return 1;
-        }
-
-        return Math.round(result);
+        return (int) duration.toMinutes();
     }
-    private static int toMinutes(String time) {
-        int hours = Integer.parseInt(time.substring(0, 2));
-        int minutes = Integer.parseInt(time.substring(2, 4));
-        return hours * 60 + minutes;
+
+    public int getDurationHours(Flight flight) {
+        int totalMinutes = calculateDuration(flight);
+        return totalMinutes / 60;
+    }
+
+
+    public int getDurationRemainingMinutes(Flight flight) {
+        int totalMinutes = calculateDuration(flight);
+        return totalMinutes % 60;
     }
 
 

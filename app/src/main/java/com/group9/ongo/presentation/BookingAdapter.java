@@ -40,8 +40,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         holder.passengerName.setText(passenger.getFirstName() + " " + passenger.getLastName());
         holder.origin.setText(flight.getOrigin());
         holder.destination.setText(flight.getDestination());
-        holder.originTime.setText(flight.getDepartTime());
-        holder.destinationTime.setText(flight.getLandTime());
+        holder.originTime.setText(flight.getDepartTimeString());
+        holder.destinationTime.setText(flight.getLandTimeString());
         holder.airline.setText(flight.getAirline());
     }
 

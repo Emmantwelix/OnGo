@@ -40,8 +40,8 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
         Flight flight = flights.get(position);
         holder.origin.setText(flight.getOrigin());
         holder.destination.setText(flight.getDestination());
-        holder.departTime.setText(flight.getDepartTime());
-        holder.landTime.setText(flight.getLandTime());
+        holder.departTime.setText(flight.getDepartTimeString());
+        holder.landTime.setText(flight.getLandTimeString());
         holder.airlines.setText(flight.getAirline());
 
         holder.itemView.setOnClickListener(v -> {

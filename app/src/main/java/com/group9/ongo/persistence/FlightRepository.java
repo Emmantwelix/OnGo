@@ -2,6 +2,7 @@ package com.group9.ongo.persistence;
 
 import com.group9.ongo.models.Flight;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface FlightRepository {
@@ -10,7 +11,7 @@ public interface FlightRepository {
     Flight getFlightById(int flightId);
 
     //return the id of the flight that was added, -1 if invalid
-    int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price, int duration);
+    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price);
 
     boolean deleteFlight(int flightId);
 
