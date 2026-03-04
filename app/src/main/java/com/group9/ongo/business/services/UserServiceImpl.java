@@ -1,5 +1,7 @@
 package com.group9.ongo.business.services;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
+
 import com.group9.ongo.business.validation.UserValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.User;
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
         }
         else
         {
-           throw new ValidationException("User could not be deleted, since user does not exist");
+           throw new ValidationException(USER_DELETE_ERROR);
         }
     }
 }

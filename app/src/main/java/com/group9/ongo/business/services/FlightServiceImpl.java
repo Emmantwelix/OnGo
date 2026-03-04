@@ -1,5 +1,7 @@
 package com.group9.ongo.business.services;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
+
 import com.group9.ongo.business.validation.FlightValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
@@ -42,7 +44,7 @@ public class FlightServiceImpl implements FlightService {
         }
         else
         {
-           throw new ValidationException("Flight could not be deleted, since flight does not exist");
+           throw new ValidationException(FLIGHT_DELETE_ERROR);
         }
     }
 
