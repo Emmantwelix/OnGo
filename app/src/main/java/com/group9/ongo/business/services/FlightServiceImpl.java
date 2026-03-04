@@ -32,7 +32,7 @@ public class FlightServiceImpl implements FlightService {
     public int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) throws ValidationException {
         FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price);
 
-        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price);
+        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price, calculateDuration(departTime, landTime));
     }
 
     @Override
@@ -46,6 +46,33 @@ public class FlightServiceImpl implements FlightService {
         {
            throw new ValidationException(FLIGHT_DELETE_ERROR);
         }
+    }
+
+    private int calculateDuration(String departTime, String landTime) {
+        int departMinutes = toMinutes(departTime);
+        int landMinutes = toMinutes(landTime);
+        //handle overnight flights
+        if (landMinutes < departMinutes) {
+            landMinutes += 24 * 60;
+        }
+        //handle 24hr flights
+        if ( landMinutes == departMinutes )
+        {
+            return 24;
+        }
+
+        float result = (float) (landMinutes - departMinutes) / 60;
+
+        if (result < 1) {
+            return 1;
+        }
+
+        return Math.round(result);
+    }
+    private static int toMinutes(String time) {
+        int hours = Integer.parseInt(time.substring(0, 2));
+        int minutes = Integer.parseInt(time.substring(2, 4));
+        return hours * 60 + minutes;
     }
 
 

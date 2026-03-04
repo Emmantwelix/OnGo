@@ -11,7 +11,7 @@ public class Flight {
     private double price;
     private int duration;
 
-    public Flight(int flightId, String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) {
+    public Flight(int flightId, String airline, String origin, String destination, String departTime, String landTime, int capacity, double price, int duration) {
         this.airline = airline;
         this.origin = origin;
         this.destination = destination;
@@ -20,38 +20,8 @@ public class Flight {
         this.capacity = capacity;
         this.flightId = flightId;
         this.price = price;
-        this.duration = calculateDuration();
+        this.duration = duration;
     }
-
-    private int calculateDuration() {
-        int departMinutes = toMinutes(departTime);
-        int landMinutes = toMinutes(landTime);
-        //handle overnight flights
-        if (landMinutes < departMinutes) {
-            landMinutes += 24 * 60;
-        }
-        //handle 24hr flights
-        if ( landMinutes == departMinutes )
-        {
-            return 24;
-        }
-
-        float result = (float) (landMinutes - departMinutes) / 60;
-
-        if (result < 1) {
-            return 1;
-        }
-
-        return Math.round(result);
-    }
-    private static int toMinutes(String time) {
-        int hours = Integer.parseInt(time.substring(0, 2));
-        int minutes = Integer.parseInt(time.substring(2, 4));
-        return hours * 60 + minutes;
-    }
-
-
-
 
     public String getDestination() {
         return destination;
@@ -82,7 +52,5 @@ public class Flight {
 
     public double getPrice() { return price; }
     public int getDuration() { return duration; }
-
-
 }
 
