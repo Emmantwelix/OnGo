@@ -12,7 +12,7 @@ public interface FlightService {
     Flight getFlightById(int flightId) throws ValidationException;
 
     //returns the id of the flight that was added, will throw if invalid
-    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price) throws ValidationException;
+    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType) throws ValidationException;
 
     boolean deleteFlight(int flightId) throws ValidationException;
 

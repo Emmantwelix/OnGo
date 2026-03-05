@@ -9,14 +9,18 @@ import com.group9.ongo.persistence.FlightRepository;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 
 public class FlightServiceImpl implements FlightService {
 
     private final FlightRepository repo;
-    public FlightServiceImpl(FlightRepository repo) {
+    private final Generator fnGenerator;
+
+    public FlightServiceImpl(FlightRepository repo, Generator fnGenerator) {
         this.repo = repo;
+        this.fnGenerator = fnGenerator;
     }
 
     @Override
@@ -32,10 +36,17 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price) throws ValidationException {
-        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price);
+    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType) throws ValidationException {
+        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price, planeType);
 
-        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price);
+        int duration = calculateDuration(departTime, landTime);
+        String flightNumber = fnGenerator.generateFlightNum();
+        int[] seats = fnGenerator.generateSeats(capacity);
+        int occupation = calculate_occupation(seats);
+        LocalDate date = fnGenerator.generateDate();
+
+
+        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price, duration, flightNumber, planeType, occupation, seats, date);
     }
 
     @Override
@@ -75,5 +86,16 @@ public class FlightServiceImpl implements FlightService {
         return totalMinutes % 60;
     }
 
-
+    private int calculate_occupation(int[] seats)
+    {
+        int count = 0;
+        for ( int i = 0; i < seats.length; i++ )
+        {
+            if ( seats[i] == 1 )
+            {
+                count++;
+            }
+        }
+        return count;
+    }
 }
