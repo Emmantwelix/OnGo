@@ -42,6 +42,9 @@ public class FlightConstants {
     public final static int SMALL_CAPACITY = 100;
     public final static int MAX_CAPACITY = 500;
     public final static int MIN_CAPACITY = 1;
+
+    //OCCUPATION
+    public final static int EMPTY = 0;
     
     //PRICE
     public final static double LARGER_PRICE = 903.94;

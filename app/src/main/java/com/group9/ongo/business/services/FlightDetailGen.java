@@ -16,13 +16,13 @@ public class FlightDetailGen implements Generator {
     public String generateFlightNum() {
         StringBuilder flightNum = new StringBuilder();
 
-        // Add 2 random letters
+        //2 random letters
         for (int i = 0; i < 2; i++) {
             int index = rand.nextInt(ALPHABET.length);
             flightNum.append(ALPHABET[index]);
         }
 
-        // Add 4 random digits
+        //4 random digits
         for (int i = 0; i < 4; i++) {
             int index = rand.nextInt(NUMBERS.length);
             flightNum.append(NUMBERS[index]);
@@ -32,8 +32,9 @@ public class FlightDetailGen implements Generator {
 
     @Override
     public LocalDate generateDate() {
+            //date from current date up to DATE_RANGE days
             LocalDate today = LocalDate.now();
-            return today.plusDays(rand.nextInt(DATE_RANGE));
+            return today.plusDays(rand.nextInt(DATE_RANGE + 1));
     }
 
     @Override

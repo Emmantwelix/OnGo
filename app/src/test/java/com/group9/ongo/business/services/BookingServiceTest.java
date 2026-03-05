@@ -20,6 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,14 +29,16 @@ public class BookingServiceTest {
     private BookingService bookingService;
     private FakeBookingRepository bookingRepo;
     private FakePassengerRepository passengerRepo;
+    private Generator generator;
 
     private FlightService flightService;
 
     @Before
     public void setUp() {
+        generator = new FlightDetailGen(new Random());
         bookingRepo = new FakeBookingRepository();
         passengerRepo = new FakePassengerRepository();
-        flightService = new FlightServiceImpl(new FakeFlightRepository(true));
+        flightService = new FlightServiceImpl(new FakeFlightRepository(true), generator);
         bookingService = new BookingServiceImpl(bookingRepo, passengerRepo, flightService);
     }
 
