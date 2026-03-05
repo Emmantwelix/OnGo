@@ -39,14 +39,13 @@ public class FlightServiceImpl implements FlightService {
     public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType) throws ValidationException {
         FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price, planeType);
 
-        int duration = calculateDuration(departTime, landTime);
         String flightNumber = fnGenerator.generateFlightNum();
         int[] seats = fnGenerator.generateSeats(capacity);
         int occupation = calculate_occupation(seats);
         LocalDate date = fnGenerator.generateDate();
 
 
-        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price, duration, flightNumber, planeType, occupation, seats, date);
+        return repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price, flightNumber, planeType, occupation, seats, date);
     }
 
     @Override

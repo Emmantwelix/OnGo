@@ -268,7 +268,7 @@ public class FlightServiceTest {
                 LocalTime.of(10, 0),
                 LocalTime.of(12, 10),
                 VALID_CAPACITY,
-                VALID_PRICE);
+                VALID_PRICE, AIRBUS_A320);
 
         Flight flight = service.getFlightById(flightId);
 
@@ -288,7 +288,7 @@ public class FlightServiceTest {
                 LocalTime.of(12, 0),
                 LocalTime.of(12, 1),
                 VALID_CAPACITY,
-                VALID_PRICE);
+                VALID_PRICE, AIRBUS_A320);
 
         Flight flight = service.getFlightById(flightId);
 
@@ -308,7 +308,7 @@ public class FlightServiceTest {
                 LocalTime.of(22, 30),
                 LocalTime.of(4, 15),
                 VALID_CAPACITY,
-                VALID_PRICE);
+                VALID_PRICE, AIRBUS_A320);
 
         Flight flight = service.getFlightById(flightId);
 
@@ -328,7 +328,7 @@ public class FlightServiceTest {
                 LocalTime.of(10, 0),
                 LocalTime.of(12, 0),
                 VALID_CAPACITY,
-                VALID_PRICE);
+                VALID_PRICE, AIRBUS_A320);
 
         Flight flight = service.getFlightById(flightId);
 
