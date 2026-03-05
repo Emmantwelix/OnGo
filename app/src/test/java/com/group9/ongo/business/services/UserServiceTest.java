@@ -132,7 +132,7 @@ public class UserServiceTest {
                 ValidationException.class,
                 () -> userService.getUserById(100)
         );
-        assertEquals("User cannot be found", exception.getMessage());
+        assertEquals("User not found", exception.getMessage());
     }
 
     @Test

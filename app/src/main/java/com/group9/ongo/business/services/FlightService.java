@@ -3,6 +3,7 @@ package com.group9.ongo.business.services;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public interface FlightService {
@@ -11,8 +12,11 @@ public interface FlightService {
     Flight getFlightById(int flightId) throws ValidationException;
 
     //returns the id of the flight that was added, will throw if invalid
-    int createFlight(String airline, String origin, String destination, String departTime, String landTime, int capacity, double price) throws ValidationException;
+    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price) throws ValidationException;
 
     boolean deleteFlight(int flightId) throws ValidationException;
 
+    int getDurationHours(Flight flight);
+
+    int getDurationRemainingMinutes(Flight flight);
 }

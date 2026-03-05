@@ -41,6 +41,6 @@ public class FlightConstants {
     public final static double MIN_PRICE = 0; //0 is invalid
     
     //TIME
-    public final static int MAX_TIME_LENGTH = 4;
+    public final static String TIME_FORMAT_PATTERN = "hh:mm a";
     
 }

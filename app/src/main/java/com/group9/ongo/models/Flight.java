@@ -1,17 +1,21 @@
 package com.group9.ongo.models;
 
+import static com.group9.ongo.business.constants.FlightConstants.TIME_FORMAT_PATTERN;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 public class Flight {
     private String airline;
     private String origin;
-    private String departTime;
-    private String landTime;
+    private LocalTime departTime;
+    private LocalTime landTime;
     private String destination;
     private int capacity;
     private int flightId;
     private double price;
-    private int duration;
 
-    public Flight(int flightId, String airline, String origin, String destination, String departTime, String landTime, int capacity, double price, int duration) {
+    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price) {
         this.airline = airline;
         this.origin = origin;
         this.destination = destination;
@@ -20,7 +24,6 @@ public class Flight {
         this.capacity = capacity;
         this.flightId = flightId;
         this.price = price;
-        this.duration = duration;
     }
 
     public String getDestination() {
@@ -36,11 +39,20 @@ public class Flight {
         return airline;
     }
 
-    public String getDepartTime() {
+
+    public LocalTime getDepartTime() {
         return departTime;
     }
 
-    public String getLandTime() { return landTime; }
+    public LocalTime getLandTime() { return landTime; }
+
+    private static final DateTimeFormatter TIME_FORMATTER =
+            DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN);
+    public String getDepartTimeString() {
+        return departTime.format(TIME_FORMATTER);
+    }
+
+    public String getLandTimeString() { return landTime.format(TIME_FORMATTER); }
 
     public int getCapacity() {
         return capacity;
@@ -51,6 +63,5 @@ public class Flight {
     }
 
     public double getPrice() { return price; }
-    public int getDuration() { return duration; }
 }
 
