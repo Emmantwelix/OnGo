@@ -32,7 +32,7 @@ public class SearchFragment extends Fragment {
 
         FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
 
-        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights(), flight -> {
+        FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights(), flightService, flight -> {
             // Navigate to UserInfoFragment when a flight is clicked, passing the flightId
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, UserInfoFragment.newInstance(flight.getFlightId()))
