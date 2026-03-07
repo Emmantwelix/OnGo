@@ -15,41 +15,65 @@
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-
         <TextView
             android:id="@+id/originTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="00:00"
-            android:textColor="#666666"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/originText"
-            app:layout_constraintStart_toStartOf="@id/originText"
+            android:text = "10:00 AM"
+            android:gravity="center"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/planeIcon"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/originText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Toronto"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/planeIcon"
+            app:layout_constraintTop_toBottomOf="@id/originTime"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 
         <TextView
             android:id="@+id/destinationTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="00:00"
-            android:textSize="12sp"
-            android:textColor="#666666"
-            app:layout_constraintStart_toStartOf="@id/destinationText"
-            app:layout_constraintBottom_toTopOf="@id/destinationText"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:textSize="13sp"
+            android:text="2:00 PM"
+            android:gravity="center"
+            app:layout_constraintStart_toEndOf="@id/planeIcon"
+            app:layout_constraintEnd_toStartOf="@id/price"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/destinationText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Winnipeg"
+            app:layout_constraintStart_toEndOf="@id/planeIcon"
+            app:layout_constraintEnd_toStartOf="@id/price"
+            app:layout_constraintTop_toBottomOf="@id/destinationTime"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <TextView
             android:id="@+id/duration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="00:00"
+            android:text="2hr 0min"
             android:textSize="12sp"
             android:textColor="#666666"
-            app:layout_constraintStart_toStartOf="@id/arrowIcon"
-            app:layout_constraintTop_toBottomOf="@id/arrowIcon"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="@id/planeIcon"
+            app:layout_constraintEnd_toEndOf="@id/planeIcon"
+            app:layout_constraintTop_toBottomOf="@id/planeIcon"
             app:layout_constraintBottom_toBottomOf="parent"/>
-
         <TextView
             android:id="@+id/airlines"
             android:layout_width="wrap_content"
@@ -57,60 +81,60 @@
             android:text="Porter Airlines"
             android:textSize="12sp"
             android:textColor="#666666"
-            app:layout_constraintStart_toStartOf="@id/arrowIcon"
-            app:layout_constraintBottom_toTopOf="@id/arrowIcon"
-            app:layout_constraintEnd_toEndOf="@id/arrowIcon"
+            app:layout_constraintStart_toStartOf="@id/planeIcon"
+            app:layout_constraintBottom_toTopOf="@id/planeIcon"
+            app:layout_constraintEnd_toEndOf="@id/planeIcon"
             app:layout_constraintTop_toTopOf="parent"/>
 
-
-        <TextView
-            android:id="@+id/originText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
-            android:text="Toronto"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/arrowIcon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/originTime" />
-
         <ImageView
-            android:id="@+id/arrowIcon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_forward"
-            app:tint="@android:color/black"
-            android:contentDescription="To"
+            android:id="@+id/planeIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/baseline_flight_24"
+            android:rotation="90"
+            app:tint="#424242"
+            android:contentDescription="Flight"
             app:layout_constraintStart_toEndOf="@id/originText"
             app:layout_constraintEnd_toStartOf="@id/destinationText"
             app:layout_constraintTop_toTopOf="@id/originText"
             app:layout_constraintBottom_toBottomOf="@id/originText"/>
 
+        <View
+            android:id="@+id/lineLeft"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#C0C0C0"
+            app:layout_constraintStart_toEndOf="@id/originText"
+            app:layout_constraintEnd_toStartOf="@id/planeIcon"
+            app:layout_constraintTop_toTopOf="@id/planeIcon"
+            app:layout_constraintBottom_toBottomOf="@id/planeIcon"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"/>
 
-        <TextView
-            android:id="@+id/destinationText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vancouver"
-            android:textSize="16sp"
-            android:layout_marginStart="2dp"
-            app:layout_constraintStart_toEndOf="@id/arrowIcon"
-            app:layout_constraintEnd_toEndOf="@id/price"
-            app:layout_constraintTop_toBottomOf="@id/destinationTime"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+        <View
+            android:id="@+id/lineRight"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#C0C0C0"
+            app:layout_constraintStart_toEndOf="@id/planeIcon"
+            app:layout_constraintEnd_toStartOf="@id/destinationText"
+            app:layout_constraintTop_toTopOf="@id/planeIcon"
+            app:layout_constraintBottom_toBottomOf="@id/planeIcon"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"/>
+
 
         <TextView
             android:id="@+id/price"
-            android:layout_width="42dp"
+            android:layout_width="wrap_content"
             android:layout_height="23dp"
-            android:text="$250"
+            android:text="$250.00"
             android:textAlignment="center"
             android:textSize="16sp"
+            android:textColor="#1976D2"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/destinationText"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/destinationText"
             app:layout_constraintTop_toTopOf="@id/destinationText" />
 
