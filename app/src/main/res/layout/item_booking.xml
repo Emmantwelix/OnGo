@@ -62,11 +62,13 @@
                 android:textSize="16sp"/>
 
             <ImageView
-                android:id="@+id/image_arrow"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:id="@+id/image_plane"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/ic_arrow_forward"
+                android:src="@drawable/baseline_flight_24"
+                android:rotation="90"
+                android:contentDescription="Flight"
                 app:tint="@android:color/black"/>
 
             <TextView
