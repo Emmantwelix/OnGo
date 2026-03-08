@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.group9.ongo.R;
 import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Flight;
@@ -43,6 +44,26 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         holder.originTime.setText(flight.getDepartTimeString());
         holder.destinationTime.setText(flight.getLandTimeString());
         holder.airline.setText(flight.getAirline());
+
+        // Set the airline logo
+        holder.airlineLogo.setImageResource(getLogoResource(flight.getAirline()));
+    }
+
+    private int getLogoResource(String airline) {
+        if (airline == null) return R.drawable.baseline_flight_24;
+
+        switch (airline) {
+            case "Air Canada":
+                return R.drawable.logo_aircanada;
+            case "Westjet":
+                return R.drawable.logo_westjet;
+            case "Porter Airlines":
+                return R.drawable.logo_porter;
+            case "Air Transat":
+                return R.drawable.logo_airtransat;
+            default:
+                return R.drawable.baseline_flight_24;
+        }
     }
 
     @Override
@@ -57,6 +78,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     static class BookingViewHolder extends RecyclerView.ViewHolder {
         TextView passengerName, origin, destination, originTime, destinationTime, airline;
+        ShapeableImageView airlineLogo;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +88,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             originTime = itemView.findViewById(R.id.text_origin_time);
             destinationTime = itemView.findViewById(R.id.text_destination_time);
             airline = itemView.findViewById(R.id.text_airline);
+            airlineLogo = itemView.findViewById(R.id.airlineLogo);
         }
     }
 }
