@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
 import com.group9.ongo.R;
+import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Passenger;
@@ -45,25 +46,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         holder.destinationTime.setText(flight.getLandTimeString());
         holder.airline.setText(flight.getAirline());
 
-        // Set the airline logo
-        holder.airlineLogo.setImageResource(getLogoResource(flight.getAirline()));
-    }
-
-    private int getLogoResource(String airline) {
-        if (airline == null) return R.drawable.baseline_flight_24;
-
-        switch (airline) {
-            case "Air Canada":
-                return R.drawable.logo_aircanada;
-            case "Westjet":
-                return R.drawable.logo_westjet;
-            case "Porter Airlines":
-                return R.drawable.logo_porter;
-            case "Air Transat":
-                return R.drawable.logo_airtransat;
-            default:
-                return R.drawable.baseline_flight_24;
-        }
+        // Set the airline logo using the Airline enum
+        holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());
     }
 
     @Override

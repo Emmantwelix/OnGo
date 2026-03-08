@@ -17,6 +17,7 @@ import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Flight;
 
 import java.util.Locale;
@@ -66,8 +67,11 @@ public class FlightDetailsFragment extends Fragment {
         try {
             Flight flight = flightService.getFlightById(flightId);
 
-            imageAirlineLogo.setImageResource(getLogoResource(flight.getAirline()));
+            // Set the airline logo and name using the Airline enum
+            Airline airline = Airline.fromName(flight.getAirline());
+            imageAirlineLogo.setImageResource(airline.getLogoResId());
             textAirline.setText(flight.getAirline());
+            
             textFlightId.setText(String.format("AC %d", flight.getFlightId())); // Mocking prefix
             
             String origin = flight.getOrigin();
@@ -101,22 +105,5 @@ public class FlightDetailsFragment extends Fragment {
         }
 
         return view;
-    }
-
-    private int getLogoResource(String airline) {
-        if (airline == null) return R.drawable.baseline_flight_24;
-
-        switch (airline) {
-            case "Air Canada":
-                return R.drawable.logo_aircanada;
-            case "Westjet":
-                return R.drawable.logo_westjet;
-            case "Porter Airlines":
-                return R.drawable.logo_porter;
-            case "Air Transat":
-                return R.drawable.logo_airtransat;
-            default:
-                return R.drawable.baseline_flight_24;
-        }
     }
 }
