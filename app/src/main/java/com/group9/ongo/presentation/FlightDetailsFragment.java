@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class FlightDetailsFragment extends Fragment {
         TextView textDuration = view.findViewById(R.id.text_duration);
         TextView textCapacity = view.findViewById(R.id.text_capacity);
         TextView textPrice = view.findViewById(R.id.text_price);
+        Button btnNext = view.findViewById(R.id.btn_next);
 
         FlightService flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
 
@@ -69,6 +71,17 @@ public class FlightDetailsFragment extends Fragment {
 
             textCapacity.setText(String.format(Locale.ROOT, "Capacity: %d seats", flight.getCapacity()));
             textPrice.setText(String.format(Locale.ROOT, "Price: $%.2f", flight.getPrice()));
+
+            // Show the NEXT button once details are displayed
+            btnNext.setVisibility(View.VISIBLE);
+
+            btnNext.setOnClickListener(v -> {
+                // Navigate to UserInfoFragment (Booking Information Fragment)
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, UserInfoFragment.newInstance(flightId))
+                        .addToBackStack(null)
+                        .commit();
+            });
 
         } catch (ValidationException e) {
             Toast.makeText(getContext(), "Error loading flight details", Toast.LENGTH_SHORT).show();
