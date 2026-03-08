@@ -46,12 +46,19 @@ public class FlightDetailsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_flight_details, container, false);
 
-        TextView textFlightId = view.findViewById(R.id.text_flight_id);
-        TextView textAirline = view.findViewById(R.id.text_airline);
-        TextView textRoute = view.findViewById(R.id.text_route);
-        TextView textTimes = view.findViewById(R.id.text_times);
+        // Bind views
+        TextView textDepartTime = view.findViewById(R.id.text_depart_time);
+        TextView textOriginCode = view.findViewById(R.id.text_origin_code);
+        TextView textOriginName = view.findViewById(R.id.text_origin_name);
+        
         TextView textDuration = view.findViewById(R.id.text_duration);
-        TextView textCapacity = view.findViewById(R.id.text_capacity);
+        TextView textAirline = view.findViewById(R.id.text_airline);
+        TextView textFlightId = view.findViewById(R.id.text_flight_id);
+        
+        TextView textArrivalTime = view.findViewById(R.id.text_arrival_time);
+        TextView textDestCode = view.findViewById(R.id.text_dest_code);
+        TextView textDestName = view.findViewById(R.id.text_dest_name);
+        
         TextView textPrice = view.findViewById(R.id.text_price);
         Button btnNext = view.findViewById(R.id.btn_next);
 
@@ -60,23 +67,33 @@ public class FlightDetailsFragment extends Fragment {
         try {
             Flight flight = flightService.getFlightById(flightId);
 
-            textFlightId.setText(String.format(Locale.ROOT, "Flight Number: %d", flight.getFlightId()));
-            textAirline.setText(String.format("Airline: %s", flight.getAirline()));
-            textRoute.setText(String.format("Route: %s to %s", flight.getOrigin(), flight.getDestination()));
-            textTimes.setText(String.format("Time: %s - %s", flight.getDepartTimeString(), flight.getLandTimeString()));
+            // Set times
+            textDepartTime.setText(flight.getDepartTimeString());
+            textArrivalTime.setText(flight.getLandTimeString());
 
+            // Set locations (Using first 3 letters as code placeholder if not already code)
+            String origin = flight.getOrigin();
+            String destination = flight.getDestination();
+            
+            textOriginCode.setText(origin.length() >= 3 ? origin.substring(0, 3).toUpperCase() : origin.toUpperCase());
+            textOriginName.setText(origin);
+            
+            textDestCode.setText(destination.length() >= 3 ? destination.substring(0, 3).toUpperCase() : destination.toUpperCase());
+            textDestName.setText(destination);
+
+            // Set Flight Info
+            textAirline.setText(flight.getAirline());
+            textFlightId.setText(String.format("Flight %d", flight.getFlightId()));
+
+            // Set Duration
             int hours = flightService.getDurationHours(flight);
             int mins = flightService.getDurationRemainingMinutes(flight);
-            textDuration.setText(String.format(Locale.ROOT, "Duration: %dhr %dmin", hours, mins));
+            textDuration.setText(String.format(Locale.ROOT, "%dhr %dmin", hours, mins));
 
-            textCapacity.setText(String.format(Locale.ROOT, "Capacity: %d seats", flight.getCapacity()));
-            textPrice.setText(String.format(Locale.ROOT, "Price: $%.2f", flight.getPrice()));
-
-            // Show the NEXT button once details are displayed
-            btnNext.setVisibility(View.VISIBLE);
+            // Set Price
+            textPrice.setText(String.format(Locale.ROOT, "$%.2f", flight.getPrice()));
 
             btnNext.setOnClickListener(v -> {
-                // Navigate to UserInfoFragment (Booking Information Fragment)
                 getParentFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, UserInfoFragment.newInstance(flightId))
                         .addToBackStack(null)
