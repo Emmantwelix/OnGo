@@ -33,9 +33,9 @@ public class SearchFragment extends Fragment {
         FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
 
         FlightAdapter adapter = new FlightAdapter(flightService.getAllFlights(), flightService, flight -> {
-            // Navigate to UserInfoFragment when a flight is clicked, passing the flightId
+            // Navigate to FlightDetailsFragment when a flight is clicked, passing the flightId
             getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, UserInfoFragment.newInstance(flight.getFlightId()))
+                    .replace(R.id.fragment_container, FlightDetailsFragment.newInstance(flight.getFlightId()))
                     .addToBackStack(null)
                     .commit();
         });
