@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Flight;
 
 import java.util.Locale;
@@ -52,9 +54,11 @@ public class FlightDetailsFragment extends Fragment {
         TextView textDateSubheader = view.findViewById(R.id.text_date_subheader);
         TextView textDepartTime = view.findViewById(R.id.text_depart_time);
         TextView textLandTime = view.findViewById(R.id.text_land_time);
+        ImageView imageAirlineLogo = view.findViewById(R.id.image_airline_logo);
+        TextView textAirline = view.findViewById(R.id.text_airline);
+        TextView textFlightId = view.findViewById(R.id.text_flight_id);
         TextView textOriginCode = view.findViewById(R.id.text_origin_code);
         TextView textDestCode = view.findViewById(R.id.text_dest_code);
-        TextView textAirline = view.findViewById(R.id.text_airline);
         TextView textDuration = view.findViewById(R.id.text_duration);
         TextView textCapacity = view.findViewById(R.id.text_capacity);
         TextView textPrice = view.findViewById(R.id.text_price);
@@ -65,6 +69,12 @@ public class FlightDetailsFragment extends Fragment {
 
         try {
             Flight flight = flightService.getFlightById(flightId);
+
+            // Set the airline logo and name using the Airline enum
+            Airline airline = Airline.fromName(flight.getAirline());
+            imageAirlineLogo.setImageResource(airline.getLogoResId());
+            textAirline.setText(flight.getAirline());
+            textFlightId.setText(String.format("AC %d", flight.getFlightId())); // Mocking prefix
 
             // Set city names separately for the new centered layout
             textOriginCity.setText(flight.getOrigin());
@@ -79,9 +89,7 @@ public class FlightDetailsFragment extends Fragment {
             textOriginCode.setText(flightService.getOriginCode(flight));
             textDestCode.setText(flightService.getDestinationCode(flight));
 
-            // Airline & Flight Details
-            textAirline.setText(flight.getAirline());
-
+            // Flight Details
             int hours = flightService.getDurationHours(flight);
             int mins = flightService.getDurationRemainingMinutes(flight);
             textDuration.setText(String.format(Locale.ROOT, "%dh %dm", hours, mins));

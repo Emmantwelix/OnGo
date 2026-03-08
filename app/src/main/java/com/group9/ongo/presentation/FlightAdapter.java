@@ -8,7 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.group9.ongo.R;
+import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.business.services.FlightService;
 
@@ -25,7 +27,7 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
         void onFlightClick(Flight flight);
     }
 
-    public FlightAdapter(List<Flight> flights,FlightService flightService, OnFlightClickListener listener) {
+    public FlightAdapter(List<Flight> flights, FlightService flightService, OnFlightClickListener listener) {
         this.flights = flights;
         this.flightService = flightService;
         this.listener = listener;
@@ -43,10 +45,10 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
     public void onBindViewHolder(@NonNull FlightViewHolder holder, int position) {
         Flight flight = flights.get(position);
 
-        String price = String.format(Locale.ROOT, "$%.2f",flight.getPrice());
+        String price = String.format(Locale.ROOT, "$%.2f", flight.getPrice());
         int hours = flightService.getDurationHours(flight);
         int min = flightService.getDurationRemainingMinutes(flight);
-        String duration = String.format(Locale.ROOT, "%dhr %dmin",hours,min);
+        String duration = String.format(Locale.ROOT, "%dhr %dmin", hours, min);
         holder.origin.setText(flight.getOrigin());
         holder.destination.setText(flight.getDestination());
         holder.departTime.setText(flight.getDepartTimeString());
@@ -54,6 +56,10 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
         holder.airlines.setText(flight.getAirline());
         holder.price.setText(price);
         holder.duration.setText(duration);
+
+        // Set the airline logo using the Airline enum
+        holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());
+
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onFlightClick(flight);
@@ -68,6 +74,7 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
 
     static class FlightViewHolder extends RecyclerView.ViewHolder {
         TextView origin, destination, departTime, landTime, airlines, price, duration;
+        ShapeableImageView airlineLogo;
 
         public FlightViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,7 +85,7 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
             airlines = itemView.findViewById(R.id.airlines);
             price = itemView.findViewById(R.id.price);
             duration = itemView.findViewById(R.id.duration);
-
+            airlineLogo = itemView.findViewById(R.id.airlineLogo);
         }
     }
 }
