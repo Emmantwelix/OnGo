@@ -43,8 +43,7 @@
                 android:layout_height="40dp"
                 android:src="@drawable/baseline_flight_24"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/black" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/text_airline"

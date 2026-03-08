@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,7 @@ public class FlightDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_flight_details, container, false);
 
         // Bind views
+        ImageView imageAirlineLogo = view.findViewById(R.id.image_airline_logo);
         TextView textAirline = view.findViewById(R.id.text_airline);
         TextView textFlightId = view.findViewById(R.id.text_flight_id);
         TextView textOriginCode = view.findViewById(R.id.text_origin_code);
@@ -64,6 +66,7 @@ public class FlightDetailsFragment extends Fragment {
         try {
             Flight flight = flightService.getFlightById(flightId);
 
+            imageAirlineLogo.setImageResource(getLogoResource(flight.getAirline()));
             textAirline.setText(flight.getAirline());
             textFlightId.setText(String.format("AC %d", flight.getFlightId())); // Mocking prefix
             
@@ -98,5 +101,22 @@ public class FlightDetailsFragment extends Fragment {
         }
 
         return view;
+    }
+
+    private int getLogoResource(String airline) {
+        if (airline == null) return R.drawable.baseline_flight_24;
+
+        switch (airline) {
+            case "Air Canada":
+                return R.drawable.logo_aircanada;
+            case "Westjet":
+                return R.drawable.logo_westjet;
+            case "Porter Airlines":
+                return R.drawable.logo_porter;
+            case "Air Transat":
+                return R.drawable.logo_airtransat;
+            default:
+                return R.drawable.baseline_flight_24;
+        }
     }
 }
