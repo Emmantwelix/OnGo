@@ -49,19 +49,22 @@ public class FlightDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_flight_details, container, false);
 
         // Bind views
+        TextView textOriginCity = view.findViewById(R.id.text_origin_city);
+        TextView textDestCity = view.findViewById(R.id.text_dest_city);
+        TextView textDateSubheader = view.findViewById(R.id.text_date_subheader);
+        TextView textDepartTime = view.findViewById(R.id.text_depart_time);
+        TextView textLandTime = view.findViewById(R.id.text_land_time);
         ImageView imageAirlineLogo = view.findViewById(R.id.image_airline_logo);
         TextView textAirline = view.findViewById(R.id.text_airline);
         TextView textFlightId = view.findViewById(R.id.text_flight_id);
         TextView textOriginCode = view.findViewById(R.id.text_origin_code);
-        TextView textOriginName = view.findViewById(R.id.text_origin_name);
         TextView textDestCode = view.findViewById(R.id.text_dest_code);
-        TextView textDestName = view.findViewById(R.id.text_dest_name);
-        TextView textDepartTime = view.findViewById(R.id.text_depart_time);
         TextView textDuration = view.findViewById(R.id.text_duration);
         TextView textCapacity = view.findViewById(R.id.text_capacity);
         TextView textPrice = view.findViewById(R.id.text_price);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
+        // Fixed the typo: FlightService() -> getFlightService()
         FlightService flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
 
         try {
@@ -71,25 +74,29 @@ public class FlightDetailsFragment extends Fragment {
             Airline airline = Airline.fromName(flight.getAirline());
             imageAirlineLogo.setImageResource(airline.getLogoResId());
             textAirline.setText(flight.getAirline());
-            
             textFlightId.setText(String.format("AC %d", flight.getFlightId())); // Mocking prefix
-            
-            String origin = flight.getOrigin();
-            String destination = flight.getDestination();
-            
-            textOriginCode.setText(flightService.getOriginCode(flight));
-            textOriginName.setText(origin);
-            
-            textDestCode.setText(flightService.getDestinationCode(flight));
-            textDestName.setText(destination);
 
+            // Set city names separately for the new centered layout
+            textOriginCity.setText(flight.getOrigin());
+            textDestCity.setText(flight.getDestination());
+
+            // Sub-header: Only keeping the text as date is not available in the model
+            textDateSubheader.setText("Departing flight");
+
+            // Timeline & Codes
             textDepartTime.setText(flight.getDepartTimeString());
+            textLandTime.setText(flight.getLandTimeString());
+            textOriginCode.setText(flightService.getOriginCode(flight));
+            textDestCode.setText(flightService.getDestinationCode(flight));
 
+            // Flight Details
             int hours = flightService.getDurationHours(flight);
             int mins = flightService.getDurationRemainingMinutes(flight);
             textDuration.setText(String.format(Locale.ROOT, "%dh %dm", hours, mins));
 
-            textCapacity.setText(String.valueOf(flight.getCapacity()));
+            textCapacity.setText(String.format(Locale.ROOT, "%d seats", flight.getCapacity()));
+
+            // Footer
             textPrice.setText(String.format(Locale.ROOT, "$%.2f", flight.getPrice()));
 
             btnNext.setOnClickListener(v -> {
