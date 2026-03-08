@@ -337,6 +337,60 @@ public class FlightServiceTest {
         assertEquals(2, hours);
         assertEquals(0, minutes);
     }
+
+    @Test
+    public void getOriginCode_locationLongerThanThreeCharacters_returnsFirstThreeUppercase() throws ValidationException {
+        // arrange
+        int flightId = service.createFlight(AIR_CANADA, "Winnipeg", "Toronto",
+                LocalTime.of(10, 0),
+                LocalTime.of(12, 0),
+                VALID_CAPACITY,
+                VALID_PRICE);
+
+        Flight flight = service.getFlightById(flightId);
+
+        // act
+        String originCode = service.getOriginCode(flight);
+
+        // assert
+        assertEquals("WIN", originCode);
+    }
+
+    @Test
+    public void getDestinationCode_locationLongerThanThreeCharacters_returnsFirstThreeUppercase() throws ValidationException {
+        // arrange
+        int flightId = service.createFlight(AIR_CANADA, "Winnipeg", "Toronto",
+                LocalTime.of(10, 0),
+                LocalTime.of(12, 0),
+                VALID_CAPACITY,
+                VALID_PRICE);
+
+        Flight flight = service.getFlightById(flightId);
+
+        // act
+        String destinationCode = service.getDestinationCode(flight);
+
+        // assert
+        assertEquals("TOR", destinationCode);
+    }
+
+    @Test
+    public void getOriginCode_locationExactlyThreeCharacters_returnsUppercase() throws ValidationException {
+        // arrange
+        int flightId = service.createFlight(AIR_CANADA, "Tsu", "Toronto",
+                LocalTime.of(10, 0),
+                LocalTime.of(12, 0),
+                VALID_CAPACITY,
+                VALID_PRICE);
+
+        Flight flight = service.getFlightById(flightId);
+
+        // act
+        String originCode = service.getOriginCode(flight);
+
+        // assert
+        assertEquals("TSU", originCode);
+    }
 }
 
 

@@ -75,5 +75,20 @@ public class FlightServiceImpl implements FlightService {
         return totalMinutes % 60;
     }
 
+    private String getLocationCode(String location)
+    {
+        return location.length() >= 3 ? location.substring(0, 3).toUpperCase() : location.toUpperCase();
+    }
+
+    public String getOriginCode(Flight flight)
+    {
+        return getLocationCode(flight.getOrigin());
+    }
+
+    public String getDestinationCode(Flight flight)
+    {
+        return getLocationCode(flight.getDestination());
+    }
+
 
 }

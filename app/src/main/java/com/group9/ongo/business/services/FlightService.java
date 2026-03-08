@@ -19,4 +19,8 @@ public interface FlightService {
     int getDurationHours(Flight flight);
 
     int getDurationRemainingMinutes(Flight flight);
+
+    String getOriginCode(Flight flight);
+
+    String getDestinationCode(Flight flight);
 }

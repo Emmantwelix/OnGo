@@ -21,7 +21,8 @@ public class FlightConstants {
     public final static String VANCOUVER = "Vancouver";
     public final static String QUEBEC_CITY = "Quebec City";
     public final static String CALGARY = "Calgary";
-    public final static String[] arrLocations = {TORONTO, WINNIPEG, BC, VANCOUVER, QUEBEC_CITY, CALGARY, MONTREAL};
+    public final static String TSU = "Tsu";
+    public final static String[] arrLocations = {TORONTO, WINNIPEG, BC, VANCOUVER, QUEBEC_CITY, CALGARY, MONTREAL, TSU};
 
 
     //CAPACITY

@@ -70,10 +70,10 @@ public class FlightDetailsFragment extends Fragment {
             String origin = flight.getOrigin();
             String destination = flight.getDestination();
             
-            textOriginCode.setText(origin.length() >= 3 ? origin.substring(0, 3).toUpperCase() : origin.toUpperCase());
+            textOriginCode.setText(flightService.getOriginCode(flight));
             textOriginName.setText(origin);
             
-            textDestCode.setText(destination.length() >= 3 ? destination.substring(0, 3).toUpperCase() : destination.toUpperCase());
+            textDestCode.setText(flightService.getDestinationCode(flight));
             textDestName.setText(destination);
 
             textDepartTime.setText(flight.getDepartTimeString());
