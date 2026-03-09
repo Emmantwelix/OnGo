@@ -1,11 +1,23 @@
 package com.group9.ongo.business.constants;
 
+import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 
 import java.time.LocalDate;
 
 public class FlightConstants {
     private FlightConstants(){}
+
+    // Define Aircraft Details (Scalable & Professional)
+    public final static Aircraft A320_DETAILS = new Aircraft("Airbus A320", 150, true);
+    public final static Aircraft B737_DETAILS = new Aircraft("Boeing 737", 160, false);
+    public final static Aircraft A380_DETAILS = new Aircraft("Airbus A380", 500, true);
+    public final static Aircraft B787_DETAILS = new Aircraft("Boeing 787 Dreamliner", 250, true);
+
+    // If you still need an array for Spinners/UI
+    public final static Aircraft[] ARR_AIRCRAFT_MODELS = {
+            A320_DETAILS, B737_DETAILS, A380_DETAILS, B787_DETAILS
+    };
 
     //AIRLINES
     public final static String AIR_CANADA = "Air Canada";
@@ -87,7 +99,5 @@ public class FlightConstants {
     public final static String COLUMN_4 = "D";
     public final static String COLUMN_5 = "E";
     public final static String COLUMN_6 = "F";
-
-
 
 }

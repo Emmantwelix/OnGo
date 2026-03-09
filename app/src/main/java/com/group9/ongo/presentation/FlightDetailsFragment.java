@@ -17,6 +17,7 @@ import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Flight;
 
@@ -60,11 +61,12 @@ public class FlightDetailsFragment extends Fragment {
         TextView textOriginCode = view.findViewById(R.id.text_origin_code);
         TextView textDestCode = view.findViewById(R.id.text_dest_code);
         TextView textDuration = view.findViewById(R.id.text_duration);
+        TextView textAircraft = view.findViewById(R.id.text_aircraft);
         TextView textCapacity = view.findViewById(R.id.text_capacity);
+        ImageView iconWifi = view.findViewById(R.id.icon_wifi);
         TextView textPrice = view.findViewById(R.id.text_price);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
-        // Fixed the typo: FlightService() -> getFlightService()
         FlightService flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
 
         try {
@@ -94,7 +96,13 @@ public class FlightDetailsFragment extends Fragment {
             int mins = flightService.getDurationRemainingMinutes(flight);
             textDuration.setText(String.format(Locale.ROOT, "%dh %dm", hours, mins));
 
-            textCapacity.setText(String.format(Locale.ROOT, "%d seats", flight.getCapacity()));
+            // Aircraft Info
+            Aircraft aircraft = flight.getAircraft();
+            if (aircraft != null) {
+                textAircraft.setText(aircraft.getModelName());
+                textCapacity.setText(aircraft.getCapacityString());
+                iconWifi.setVisibility(aircraft.hasWifi() ? View.VISIBLE : View.GONE);
+            }
 
             // Footer
             textPrice.setText(String.format(Locale.ROOT, "$%.2f", flight.getPrice()));

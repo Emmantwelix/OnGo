@@ -1,6 +1,7 @@
 package com.group9.ongo.business.services;
 
 import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Seat;
 
@@ -14,7 +15,7 @@ public interface FlightService {
     Flight getFlightById(int flightId) throws ValidationException;
 
     //returns the id of the flight that was added, will throw if invalid
-    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType) throws ValidationException;
+    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price) throws ValidationException;
 
     boolean deleteFlight(int flightId) throws ValidationException;
 

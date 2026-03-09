@@ -249,8 +249,33 @@
                     android:textColor="#757575"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/text_capacity"
+                    app:layout_constraintEnd_toStartOf="@+id/text_aircraft"
                     app:layout_constraintStart_toEndOf="@+id/text_duration"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_aircraft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#757575"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/text_dot_3"
+                    app:layout_constraintStart_toEndOf="@+id/text_dot_2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Airbus A320" />
+
+                <TextView
+                    android:id="@+id/text_dot_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="·"
+                    android:textColor="#757575"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/text_capacity"
+                    app:layout_constraintStart_toEndOf="@+id/text_aircraft"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -260,10 +285,23 @@
                     android:textColor="#757575"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_dot_2"
+                    app:layout_constraintEnd_toStartOf="@+id/icon_wifi"
+                    app:layout_constraintStart_toEndOf="@+id/text_dot_3"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="200 seats" />
+
+                <ImageView
+                    android:id="@+id/icon_wifi"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/baseline_wifi_24"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/text_capacity"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="#757575" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
