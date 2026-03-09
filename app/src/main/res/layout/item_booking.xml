@@ -4,121 +4,213 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    android:layout_marginTop="16dp"
+    android:layout_marginHorizontal="0dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="6dp"
+    app:cardUseCompatPadding="true"
+    app:cardBackgroundColor="@android:color/white">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="20dp">
 
+        <!-- Passenger name -->
         <TextView
             android:id="@+id/text_passenger_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Tomas Kindeya"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/text_status"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Tomas Kindeya" />
+
+        <!-- Status badge -->
+        <TextView
+            android:id="@+id/text_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Passenger Name"
+            android:background="@drawable/bg_status_badge"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:text="Upcoming"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Upcoming" />
+
+        <LinearLayout
+            android:id="@+id/airline_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_passenger_name">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/airlineLogo"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_marginEnd="6dp"
+                android:src="@drawable/logo_aircanada"
+                android:scaleType="centerCrop"
+                android:contentDescription="Airline Logo"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Rounded"/>
+
+            <TextView
+                android:id="@+id/text_airline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Air Canada"
+                android:textColor="#8A94A6"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="#E5E7EB"
+            app:layout_constraintTop_toBottomOf="@id/airline_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Left time -->
+        <TextView
+            android:id="@+id/text_origin_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:text="10:00 AM"
+            android:textColor="#98A2B3"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider"
+            tools:text="10:00 AM" />
+
+        <!-- Right time -->
+        <TextView
+            android:id="@+id/text_destination_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12:00 PM"
+            android:textColor="#98A2B3"
+            android:textSize="16sp"
+            app:layout_constraintTop_toTopOf="@id/text_origin_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="12:00 PM" />
+
+        <!-- Left city -->
+        <TextView
+            android:id="@+id/text_origin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:text="Toronto"
+            android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="8dp"
-            android:background="#EEEEEE"
-            app:layout_constraintTop_toBottomOf="@id/text_passenger_name" />
-
-        <!-- Logo Column -->
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/airlineLogo"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="16dp"
-            android:contentDescription="Airline Logo"
-            android:scaleType="centerInside"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider"
-            app:shapeAppearanceOverlay="@style/ShapeAppearance.Rounded" />
-
-        <TextView
-            android:id="@+id/text_airline"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Airline"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="11sp"
-            android:gravity="center"
-            android:layout_marginTop="4dp"
-            app:layout_constraintStart_toStartOf="@id/airlineLogo"
-            app:layout_constraintEnd_toEndOf="@id/airlineLogo"
-            app:layout_constraintTop_toBottomOf="@id/airlineLogo" />
-
-        <!-- Flight Info Column -->
-        <TextView
-            android:id="@+id/text_origin_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="13sp"
-            android:gravity="center"
-            app:layout_constraintStart_toEndOf="@id/airlineLogo"
-            app:layout_constraintEnd_toStartOf="@id/image_plane"
-            app:layout_constraintTop_toTopOf="@id/airlineLogo"
-            android:layout_marginStart="8dp"/>
-
-        <TextView
-            android:id="@+id/text_origin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Origin"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintStart_toEndOf="@id/airlineLogo"
-            app:layout_constraintEnd_toStartOf="@id/image_plane"
             app:layout_constraintTop_toBottomOf="@id/text_origin_time"
-            android:layout_marginStart="8dp"/>
+            tools:text="Toronto" />
 
-        <ImageView
-            android:id="@+id/image_plane"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:contentDescription="Flight"
-            android:rotation="90"
-            android:src="@drawable/baseline_flight_24"
-            app:layout_constraintBottom_toBottomOf="@id/text_origin"
-            app:layout_constraintEnd_toStartOf="@id/text_destination"
-            app:layout_constraintStart_toEndOf="@id/text_origin"
-            app:layout_constraintTop_toTopOf="@id/text_origin"
-            app:tint="#424242" />
-
-        <TextView
-            android:id="@+id/text_destination_time"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="00:00"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="13sp"
-            android:gravity="center"
-            app:layout_constraintStart_toEndOf="@id/image_plane"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/airlineLogo" />
-
+        <!-- Right city -->
         <TextView
             android:id="@+id/text_destination"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Winnipeg"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="@id/text_origin"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="Winnipeg" />
+
+        <!-- Left line -->
+        <View
+            android:id="@+id/line_left"
+            android:layout_width="42dp"
+            android:layout_height="2dp"
+            android:background="#D1D5DB"
+            app:layout_constraintStart_toEndOf="@id/text_origin_time"
+            app:layout_constraintEnd_toStartOf="@id/image_plane"
+            app:layout_constraintTop_toTopOf="@id/image_plane"
+            app:layout_constraintBottom_toBottomOf="@id/image_plane" />
+
+        <!-- Plane -->
+        <ImageView
+            android:id="@+id/image_plane"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:contentDescription="@string/app_name"
+            android:rotation="90"
+            android:src="@drawable/baseline_flight_24"
+            app:layout_constraintStart_toEndOf="@id/line_left"
+            app:layout_constraintEnd_toStartOf="@id/line_right"
+            app:layout_constraintTop_toTopOf="@id/text_origin_time"
+            app:layout_constraintBottom_toBottomOf="@id/text_origin_time"
+            app:tint="#4B5563" />
+
+        <!-- Right line -->
+        <View
+            android:id="@+id/line_right"
+            android:layout_width="42dp"
+            android:layout_height="2dp"
+            android:background="#D1D5DB"
+            app:layout_constraintStart_toEndOf="@id/image_plane"
+            app:layout_constraintEnd_toStartOf="@id/text_destination_time"
+            app:layout_constraintTop_toTopOf="@id/image_plane"
+            app:layout_constraintBottom_toBottomOf="@id/image_plane" />
+
+        <!-- Bottom strip -->
+        <LinearLayout
+            android:id="@+id/bottom_strip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Destination"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            app:layout_constraintStart_toEndOf="@id/image_plane"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_destination_time" />
+            android:layout_marginTop="18dp"
+            android:background="#F3F4F6"
+            android:gravity="center_vertical"
+            android:minHeight="52dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp"
+            app:layout_constraintTop_toBottomOf="@id/text_origin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/text_flight_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="WS354"
+                android:textColor="#4B5563"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="WS354" />
+
+            <TextView
+                android:id="@+id/text_route_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="YUL → YWG"
+                android:textColor="#6B7280"
+                android:textSize="15sp"
+                tools:text="YUL → YWG" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
