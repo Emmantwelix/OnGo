@@ -64,7 +64,7 @@ public class FlightServiceTest {
 
     @Test
     public void getAllFlights_initaillyEmpty(){
-        //arrange + act
+
         List<Flight> flights = service.getAllFlights();
         //assert
         assertNotNull(flights);

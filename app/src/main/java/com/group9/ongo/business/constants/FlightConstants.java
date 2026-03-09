@@ -8,13 +8,11 @@ import java.time.format.DateTimeFormatter;
 public class FlightConstants {
     private FlightConstants(){}
 
-    // Define Aircraft Details (Scalable & Professional)
     public final static Aircraft A320_DETAILS = new Aircraft("Airbus A320", 150, true);
     public final static Aircraft B737_DETAILS = new Aircraft("Boeing 737", 160, false);
     public final static Aircraft A380_DETAILS = new Aircraft("Airbus A380", 500, true);
     public final static Aircraft B787_DETAILS = new Aircraft("Boeing 787 Dreamliner", 250, true);
 
-    // If you still need an array for Spinners/UI
     public final static Aircraft[] ARR_AIRCRAFT_MODELS = {
             A320_DETAILS, B737_DETAILS, A380_DETAILS, B787_DETAILS
     };
