@@ -1,5 +1,6 @@
 package com.group9.ongo.business.services;
 
+import static com.group9.ongo.business.constants.FlightConstants.BOOK_1ST_SEAT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -12,9 +13,11 @@ import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
+import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.fake.FakeBookingRepository;
 import com.group9.ongo.persistence.fake.FakeFlightRepository;
 import com.group9.ongo.persistence.fake.FakePassengerRepository;
+import com.group9.ongo.persistence.fake.FakeSeatsRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,14 +35,17 @@ public class BookingServiceTest {
     private Generator generator;
 
     private FlightService flightService;
+    private SeatService seatService;
 
     @Before
     public void setUp() {
         generator = new FlightDetailGen(new Random());
         bookingRepo = new FakeBookingRepository();
         passengerRepo = new FakePassengerRepository();
-        flightService = new FlightServiceImpl(new FakeFlightRepository(true), generator);
-        bookingService = new BookingServiceImpl(bookingRepo, passengerRepo, flightService);
+        seatService = new SeatServiceImplementation(new FakeSeatsRepository(true));
+        flightService = new FlightServiceImpl(new FakeFlightRepository(true), generator, seatService);
+        bookingService = new BookingServiceImpl(bookingRepo, passengerRepo, flightService, seatService);
+
     }
 
     @Test
@@ -51,9 +57,9 @@ public class BookingServiceTest {
 
     @Test
     public void getBookingByUserId_returnsOnlyThatUsersBookings() throws BookingException, ValidationException {
-        bookingService.createBooking(1, 1, samplePassengerInput("A"));
-        bookingService.createBooking(1, 2, samplePassengerInput("B"));
-        bookingService.createBooking(2, 3, samplePassengerInput("C"));
+        bookingService.createBooking(1, 1, samplePassengerInput("A"), BOOK_1ST_SEAT);
+        bookingService.createBooking(1, 2, samplePassengerInput("B"), BOOK_1ST_SEAT);
+        bookingService.createBooking(2, 3, samplePassengerInput("C"), BOOK_1ST_SEAT);
 
         List<Booking> user1Bookings = bookingService.getBookingByUserId(1);
 
@@ -67,7 +73,7 @@ public class BookingServiceTest {
     public void createBooking_createsBookingAndPassengerLinkedToBookingId() throws BookingException, ValidationException {
         PassengerInput input = samplePassengerInput("Z");
 
-        Booking booking = bookingService.createBooking(5, 1, input);
+        Booking booking = bookingService.createBooking(5, 1, input, BOOK_1ST_SEAT);
 
         assertNotNull(booking);
         assertTrue(booking.getBookingId() > 0);
@@ -90,7 +96,7 @@ public class BookingServiceTest {
 
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 9999, passenger)
+                () -> bookingService.createBooking(1, 9999, passenger, BOOK_1ST_SEAT)
         );
 
         assertEquals(
@@ -103,7 +109,7 @@ public class BookingServiceTest {
     public void createBooking_whenPassengerInputIsNull_throwsExpectedMessage() {
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, null)
+                () -> bookingService.createBooking(1, 1, null, BOOK_1ST_SEAT)
         );
         assertEquals("Passenger input cannot be null", ex.getMessage());
     }
@@ -115,7 +121,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
         assertEquals("First name is required", ex.getMessage());
     }
@@ -127,7 +133,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertEquals("First name is required", ex.getMessage());
@@ -139,7 +145,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertEquals("Last name is required", ex.getMessage());
@@ -151,7 +157,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertEquals("Last name is required", ex.getMessage());
@@ -163,7 +169,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertEquals("Date of birth is required", ex.getMessage());
@@ -175,7 +181,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertEquals("Passport number is required", ex.getMessage());
@@ -187,7 +193,7 @@ public class BookingServiceTest {
 
         ValidationException ex = assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertEquals("Passport number is required", ex.getMessage());
@@ -200,16 +206,34 @@ public class BookingServiceTest {
 
         assertThrows(
                 ValidationException.class,
-                () -> bookingService.createBooking(1, 1, input)
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
         );
 
         assertTrue(bookingService.getBookingByUserId(1).isEmpty());
     }
 
+    @Test
+    public void createBooking_whenSeatIsBooked_throwsException() throws ValidationException, BookingException {
+        PassengerInput input = samplePassengerInput("Z");
+        Booking booking = bookingService.createBooking(5, 1, input, BOOK_1ST_SEAT);
+        assertThrows(
+                ValidationException.class,
+                () -> bookingService.createBooking(1, 1, input, BOOK_1ST_SEAT)
+        );
+    }
+
+    @Test
+    public void createBooking_booksSeat() throws BookingException, ValidationException {
+        PassengerInput input = samplePassengerInput("Z");
+        Booking booking = bookingService.createBooking(5, 1, input, BOOK_1ST_SEAT);
+        Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
+        assertTrue(seat.getIsBooked());
+    }
+
 
     @Test
     public void cancelBooking_deletesBookingAndItsPassenger_andReturnsTrue() throws BookingException, ValidationException {
-        Booking booking = bookingService.createBooking(9, 1, samplePassengerInput("X"));
+        Booking booking = bookingService.createBooking(9, 1, samplePassengerInput("X"), BOOK_1ST_SEAT);
         int bookingId = booking.getBookingId();
 
         boolean success = bookingService.cancelBooking(bookingId);
@@ -220,15 +244,15 @@ public class BookingServiceTest {
     }
 
     @Test
-    public void cancelBooking_whenBookingDoesNotExist_returnsFalse_andDoesNotCrash() {
+    public void cancelBooking_whenBookingDoesNotExist_returnsFalse_andDoesNotCrash() throws ValidationException {
         boolean success = bookingService.cancelBooking(9999);
         assertFalse(success);
     }
 
     @Test
     public void cancelBooking_deletesOnlyPassengersForThatBookingId() throws BookingException, ValidationException {
-        Booking b1 = bookingService.createBooking(1, 1, samplePassengerInput("A"));
-        Booking b2 = bookingService.createBooking(1, 2, samplePassengerInput("B"));
+        Booking b1 = bookingService.createBooking(1, 1, samplePassengerInput("A"), BOOK_1ST_SEAT);
+        Booking b2 = bookingService.createBooking(1, 2, samplePassengerInput("B"), BOOK_1ST_SEAT);
 
         boolean success = bookingService.cancelBooking(b1.getBookingId());
 
@@ -243,6 +267,15 @@ public class BookingServiceTest {
     }
 
     @Test
+    public void cancelBooking_unbooksSeat() throws BookingException, ValidationException {
+        Booking booking = bookingService.createBooking(1, 1, samplePassengerInput("A"), BOOK_1ST_SEAT);
+        Seat bookedSeat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
+        bookingService.cancelBooking(booking.getBookingId());
+
+        assertFalse(bookedSeat.getIsBooked());
+    }
+
+    @Test
     public void getBookingDetailsByUserId_whenUserHasNoBookings_returnsEmptyList() {
         List<BookingDetails> details = bookingService.getBookingDetailsByUserId(999);
         assertNotNull(details);
@@ -254,9 +287,9 @@ public class BookingServiceTest {
     public void getBookingDetailsByUserId_returnsBookingPassengerAndFlight() throws BookingException, ValidationException {
         PassengerInput samplePassenger = samplePassengerInput("A");
 
-        Booking b1 = bookingService.createBooking(1, 1, samplePassenger);
-        Booking b2 = bookingService.createBooking(1, 2, samplePassenger);
-        bookingService.createBooking(2, 3, samplePassengerInput("C"));
+        Booking b1 = bookingService.createBooking(1, 1, samplePassenger, BOOK_1ST_SEAT);
+        Booking b2 = bookingService.createBooking(1, 2, samplePassenger, BOOK_1ST_SEAT);
+        bookingService.createBooking(2, 3, samplePassengerInput("C"), BOOK_1ST_SEAT);
 
         List<BookingDetails> details = bookingService.getBookingDetailsByUserId(1);
 
@@ -303,6 +336,7 @@ public class BookingServiceTest {
     }
 
 
+
     private PassengerInput samplePassengerInput(String tag) {
         return new PassengerInput(
             "First" + tag,
@@ -311,4 +345,6 @@ public class BookingServiceTest {
             "P" + tag + "12345"
         );
     }
+
+
 }

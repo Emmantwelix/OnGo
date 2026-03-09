@@ -12,7 +12,7 @@ public interface FlightRepository {
     Flight getFlightById(int flightId);
 
     //return the id of the flight that was added, -1 if invalid
-    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String flightNum, String planeType, int occupation, int[] seats, LocalDate date);
+    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String flightNum, String planeType, LocalDate date);
 
     boolean deleteFlight(int flightId);
 

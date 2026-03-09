@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface BookingService {
     public List<Booking> getBookingByUserId(int userId);
-    public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo) throws BookingException, ValidationException;
+    public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo, int seatId) throws BookingException, ValidationException;
 
-    public boolean cancelBooking(int bookingId);
+    public boolean cancelBooking(int bookingId) throws ValidationException;
 
     public List<BookingDetails> getBookingDetailsByUserId(int userId);
 }

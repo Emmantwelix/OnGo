@@ -22,10 +22,9 @@ public class Flight {
     private int[] seats;
     private String planeType;
     private String flightNumber;
-    private int occupation;
     private LocalDate date;
 
-    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType, String flightNumber, int occupation, int[] seats, LocalDate date) {
+    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType, String flightNumber, LocalDate date) {
         this.airline = airline;
         this.origin = origin;
         this.destination = destination;
@@ -36,8 +35,6 @@ public class Flight {
         this.price = price;
         this.planeType = planeType;
         this.flightNumber = flightNumber;
-        this.occupation= occupation;
-        this.seats = seats;
         this.date = date;
     }
 
@@ -84,12 +81,6 @@ public class Flight {
         return date.format(formatter);
     }
 
-    public int getOccupation() { return occupation; }
     public String getPlaneType() { return planeType; }
     public String getFlightNumber() { return flightNumber; }
-    public int[] getSeats() { return seats; }
-    public void occupySeat(int index) { seats[index] = 1; }
-    public void unoccupySeat(int index) { seats[index] = 0; }
-    public boolean isSeatOccupied(int index) { return seats[index] == 1; }
-    public void setOccupation(int occupation) { this.occupation = occupation; }
 }

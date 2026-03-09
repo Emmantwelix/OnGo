@@ -58,8 +58,8 @@ public class FakeFlightRepository implements FlightRepository {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType, String flightNumber, int occupation, int[] seats, LocalDate date) {
-        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity, price, planeType, flightNumber, occupation, seats, date);
+    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType, String flightNumber, LocalDate date) {
+        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, capacity, price, planeType, flightNumber, date);
         flights.add(flight);
         nextId++;
         return nextId - 1;
@@ -75,9 +75,10 @@ public class FakeFlightRepository implements FlightRepository {
         return false;
     }
     private void populate_with_sample_data() {
-        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, LocalTime.of(10, 0), LocalTime.of(12, 0), LARGE_CAPACITY, 603.49, AIRBUS_A320, DEFUALT_FLIGHT_NUM, 0, new int[LARGE_CAPACITY], DEFUALT_DATE);
-        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), MEDIUM_CAPACITY, 979.52, BOEING_737, DEFUALT_FLIGHT_NUM, 0, new int[MEDIUM_CAPACITY], DEFUALT_DATE);
-        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), SMALL_CAPACITY, 200.01, CONVAIR_880, DEFUALT_FLIGHT_NUM, 0, new int[SMALL_CAPACITY], DEFUALT_DATE);
-        this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), LARGE_CAPACITY, 417.38, COMAC_C919, DEFUALT_FLIGHT_NUM, 0, new int[LARGE_CAPACITY], DEFUALT_DATE);
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, LocalTime.of(10, 0), LocalTime.of(12, 0), LARGE_CAPACITY, 603.49, AIRBUS_A320, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), MEDIUM_CAPACITY, 979.52, BOEING_737, DEFUALT_FLIGHT_NUM,DEFUALT_DATE);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), SMALL_CAPACITY, 200.01, CONVAIR_880, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), LARGE_CAPACITY, 417.38, COMAC_C919, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
     }
+
 }

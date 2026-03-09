@@ -40,6 +40,7 @@ public class FlightConstants {
     public final static int LARGE_CAPACITY = 200;
     public final static int MEDIUM_CAPACITY = 150;
     public final static int SMALL_CAPACITY = 100;
+    public final static int DEFUALT_CAPACITY = 20;
     public final static int MAX_CAPACITY = 500;
     public final static int MIN_CAPACITY = 1;
 
@@ -64,12 +65,9 @@ public class FlightConstants {
     public final static int MAX_DATE_LENGTH = 8;
     public final static LocalDate DEFUALT_DATE = LocalDate.of(2026, 12, 25);
 
-
-
     //FLIGHT NUMBER
     public final static int FLIGHT_NUM_LENGTH = 6;
     public final static String DEFUALT_FLIGHT_NUM = "AA0000";
-
 
     //MISCELLANEOUS
     public final static String[] ALPHABET = {"A", "B", "C", "D", "E", "F", "G",
@@ -77,4 +75,19 @@ public class FlightConstants {
     public final static String[] NUMBERS = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     public final static String DATE_FORMAT = "yyyy-MM-dd";
     public final static int DATE_RANGE = 21;
+
+    //SEATS
+    public final static int MAX_ROWS = 3;
+    public final static int MAX_COLUMNS = 6;
+    public final static int MAX_SEATS = 18;
+    public final static int BOOK_1ST_SEAT = 1;
+    public final static String COLUMN_1 = "A";
+    public final static String COLUMN_2 = "B";
+    public final static String COLUMN_3 = "C";
+    public final static String COLUMN_4 = "D";
+    public final static String COLUMN_5 = "E";
+    public final static String COLUMN_6 = "F";
+
+
+
 }

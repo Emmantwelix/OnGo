@@ -17,6 +17,7 @@ import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.fake.FakeFlightRepository;
+import com.group9.ongo.persistence.fake.FakeSeatsRepository;
 
 
 import org.junit.Before;
@@ -47,12 +48,14 @@ public class FlightServiceTest {
     private FlightRepository repo;
     private FlightService service;
     private Generator generator;
+    private SeatService seatService;
 
     @Before
     public void setup(){
         repo = new FakeFlightRepository();
         generator = new FlightDetailGen(new Random());
-        service = new FlightServiceImpl(repo, generator);
+        seatService = new SeatServiceImplementation(new FakeSeatsRepository());
+        service = new FlightServiceImpl(repo, generator, seatService);
     }
 
     @Test

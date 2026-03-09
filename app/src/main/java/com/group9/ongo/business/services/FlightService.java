@@ -2,12 +2,14 @@ package com.group9.ongo.business.services;
 
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
+import com.group9.ongo.models.Seat;
 
 import java.time.LocalTime;
 import java.util.List;
 
 public interface FlightService {
     List<Flight> getAllFlights();
+    List <Seat> getSeats(int flightId);
 
     Flight getFlightById(int flightId) throws ValidationException;
 

@@ -9,6 +9,7 @@ import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
+import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.PassengerRepository;
 
@@ -21,33 +22,45 @@ public class BookingServiceImpl implements BookingService {
     private PassengerRepository passengerRepo;
 
     private FlightService flightService;
+    private SeatService seatService;
+
 
     public BookingServiceImpl(BookingRepository bookingsRepo, PassengerRepository passengerRepo,
-                              FlightService flightService) {
+                              FlightService flightService, SeatService seatService) {
         this.bookingsRepo = bookingsRepo;
         this.passengerRepo = passengerRepo;
         this.flightService = flightService;
+        this.seatService = seatService;
     }
 
     public List<Booking> getBookingByUserId(int userId) {
         return bookingsRepo.getBookingByUserId(userId);
     }
 
-    public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo) throws BookingException, ValidationException {
+    public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo, int seatId) throws BookingException, ValidationException {
         BookingValidator.validate(flightService.getFlightById(flightId), passengerInfo);
-        Booking booking = bookingsRepo.addBooking(new Booking(0, userId, flightId));
+        Booking booking = bookingsRepo.addBooking(new Booking(0, userId, flightId, seatId));
         Passenger passenger = passengerRepo.addPassenger(passengerInfo, booking.getBookingId());
+        seatService.bookSeat(flightId, seatId);
+
 
         if (passenger == null) {
             bookingsRepo.deleteBooking(booking.getBookingId());
+            seatService.unbookSeat(flightId, seatId);
             throw new RuntimeException(BOOKING_PASSENGER_ERROR);
         }
 
         return booking;
     }
 
-    public boolean cancelBooking(int bookingId) {
+    public boolean cancelBooking(int bookingId) throws ValidationException {
         passengerRepo.deletePassengersByBookingId(bookingId);
+
+        Booking booking = bookingsRepo.getBookingById(bookingId);
+        Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
+
+        seatService.unbookSeat(seat.getFlightId(), seat.getSeatId());
+
         return bookingsRepo.deleteBooking(bookingId);
     }
 

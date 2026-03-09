@@ -52,4 +52,11 @@ public class ErrorMessageConstants {
     public static final String PASSENGER_INVALID_BIRTHDATE = "Date of birth must be in format YYYY-MM-DD";
     public static final String PASSENGER_NO_PNUMBER = "Passport number is required";
 
+    //SEAT ERROR MESSAGES
+    public static final String SEAT_NOT_FOUND = "Seat not found";
+    public static final String SEAT_ALREADY_EXISTS = "Seat already exists for this flight";
+    public static final String SEAT_ALREADY_BOOKED = "Seat is already booked";
+    public static final String SEAT_ALREADY_UNBOOKED = "Seat is not booked";
+
+
 }
