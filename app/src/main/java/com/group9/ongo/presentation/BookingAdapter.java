@@ -8,7 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.imageview.ShapeableImageView;
 import com.group9.ongo.R;
+import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.BookingDetails;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Passenger;
@@ -43,6 +45,9 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         holder.originTime.setText(flight.getDepartTimeString());
         holder.destinationTime.setText(flight.getLandTimeString());
         holder.airline.setText(flight.getAirline());
+
+        // Set the airline logo using the Airline enum
+        holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());
     }
 
     @Override
@@ -57,6 +62,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     static class BookingViewHolder extends RecyclerView.ViewHolder {
         TextView passengerName, origin, destination, originTime, destinationTime, airline;
+        ShapeableImageView airlineLogo;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +72,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             originTime = itemView.findViewById(R.id.text_origin_time);
             destinationTime = itemView.findViewById(R.id.text_destination_time);
             airline = itemView.findViewById(R.id.text_airline);
+            airlineLogo = itemView.findViewById(R.id.airlineLogo);
         }
     }
 }
