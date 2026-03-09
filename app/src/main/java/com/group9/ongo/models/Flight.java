@@ -19,7 +19,6 @@ public class Flight {
     private int capacity;
     private int flightId;
     private double price;
-    private int[] seats;
     private String planeType;
     private String flightNumber;
     private LocalDate date;

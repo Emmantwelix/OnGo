@@ -26,14 +26,9 @@ public class UserServiceImpl implements UserService {
         return repo.addUser(name, email, phone);
     }
     @Override
-    public boolean deleteUser(int userId) throws ValidationException {
+    public void deleteUser(int userId) throws ValidationException {
         boolean success = repo.deleteUser(userId);
-        if ( success )
-        {
-            return true;
-        }
-        else
-        {
+        if ( !success ) {
            throw new ValidationException(USER_DELETE_ERROR);
         }
     }
