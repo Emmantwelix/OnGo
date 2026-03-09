@@ -33,6 +33,9 @@ public class ErrorMessageConstants {
     public static final String FLIGHT_MAX_PRICE = "Price must be less than 5001";
     public static final String FLIGHT_INVALID_AIRLINE = "Invalid airline";
     public static final String FLIGHT_NOT_FOUND = "Flight not found";
+    public static final String FLIGHT_INVALID_PLANE = "Invalid plane type";
+
+
 
     //BOOKING ERROR MESSAGES
     public static final String BOOKING_PASSENGER_ERROR = "Failed to create passenger. Booking has been rolled back.";
@@ -48,5 +51,12 @@ public class ErrorMessageConstants {
     public static final String PASSENGER_NO_BIRTHDATE = "Date of birth is required";
     public static final String PASSENGER_INVALID_BIRTHDATE = "Date of birth must be in format YYYY-MM-DD";
     public static final String PASSENGER_NO_PNUMBER = "Passport number is required";
+
+    //SEAT ERROR MESSAGES
+    public static final String SEAT_NOT_FOUND = "Seat not found";
+    public static final String SEAT_ALREADY_EXISTS = "Seat already exists for this flight";
+    public static final String SEAT_ALREADY_BOOKED = "Seat is already booked";
+    public static final String SEAT_ALREADY_UNBOOKED = "Seat is not booked";
+
 
 }

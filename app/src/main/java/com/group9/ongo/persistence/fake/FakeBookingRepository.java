@@ -1,5 +1,6 @@
 package com.group9.ongo.persistence.fake;
 
+
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.persistence.BookingRepository;
 
@@ -46,7 +47,7 @@ public class FakeBookingRepository implements BookingRepository {
             return null;
         }
 
-        Booking newBooking = new Booking(id, booking.getUserId(), booking.getFlightId());
+        Booking newBooking = new Booking(id, booking.getUserId(), booking.getFlightId(), booking.getSeatId());
         bookings.add(newBooking);
         return newBooking;
 
