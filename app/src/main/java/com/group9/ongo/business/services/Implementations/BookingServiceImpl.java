@@ -1,7 +1,11 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_PASSENGER_ERROR;
 
+import com.group9.ongo.business.services.BookingException;
+import com.group9.ongo.business.services.Interfaces.BookingService;
+import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.BookingValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Booking;

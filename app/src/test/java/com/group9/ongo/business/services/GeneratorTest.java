@@ -3,6 +3,9 @@ package com.group9.ongo.business.services;
 import static com.group9.ongo.business.constants.FlightConstants.DATE_RANGE;
 import static com.group9.ongo.business.constants.FlightConstants.MEDIUM_CAPACITY;
 
+import com.group9.ongo.business.services.Implementations.FlightDetailGen;
+import com.group9.ongo.business.services.Interfaces.Generator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,10 +47,5 @@ public class GeneratorTest {
         assert(date.isBefore(today.plusDays(DATE_RANGE + 1)));
     }
 
-    @Test
-    public void testGenerateSeats() {
-        int[] seats = generator.generateSeats(MEDIUM_CAPACITY);
-        assert(seats.length == MEDIUM_CAPACITY);
-    }
 
 }

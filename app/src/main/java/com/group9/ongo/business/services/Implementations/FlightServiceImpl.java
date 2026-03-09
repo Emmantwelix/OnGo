@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
@@ -10,6 +10,9 @@ import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
 
+import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Interfaces.Generator;
+import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.FlightValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
@@ -22,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 
 public class FlightServiceImpl implements FlightService {
 

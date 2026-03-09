@@ -1,17 +1,18 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_BOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_EXISTS;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_UNBOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_NOT_FOUND;
 
+import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.SeatRepository;
 
 import java.util.List;
 
-public class SeatServiceImplementation  implements SeatService{
+public class SeatServiceImplementation  implements SeatService {
     private final SeatRepository seatRepository;
 
     public SeatServiceImplementation(SeatRepository seatRepository) {

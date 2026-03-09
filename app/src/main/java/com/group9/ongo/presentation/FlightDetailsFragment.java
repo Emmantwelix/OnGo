@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
-import com.group9.ongo.business.services.FlightService;
+import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Flight;

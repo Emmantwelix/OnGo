@@ -12,7 +12,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import com.group9.ongo.R;
 import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Flight;
-import com.group9.ongo.business.services.FlightService;
+import com.group9.ongo.business.services.Interfaces.FlightService;
 
 import java.util.List;
 import java.util.Locale;

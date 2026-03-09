@@ -7,6 +7,14 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
+import com.group9.ongo.business.services.Implementations.FlightDetailGen;
+import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
+import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Interfaces.BookingService;
+import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Interfaces.Generator;
+import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;

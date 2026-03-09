@@ -13,6 +13,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
+import com.group9.ongo.business.services.Implementations.FlightDetailGen;
+import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
+import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Interfaces.Generator;
+import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.persistence.FlightRepository;

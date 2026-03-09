@@ -1,7 +1,8 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
 
+import com.group9.ongo.business.services.Interfaces.UserService;
 import com.group9.ongo.business.validation.UserValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.User;

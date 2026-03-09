@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
+import com.group9.ongo.business.services.Implementations.UserServiceImpl;
+import com.group9.ongo.business.services.Interfaces.UserService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.User;
 import com.group9.ongo.persistence.UserRepository;
