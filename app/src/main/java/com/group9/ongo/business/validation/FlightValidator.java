@@ -6,18 +6,20 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_IN
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_ORIGIN;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_TIME_SEQUENCE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_LTIME_NULL;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_PLANE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_CAPACITY;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_PRICE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_CAPACITY;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_PRICE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_SAME_ORIGIN_DESTINATION;
+import static com.group9.ongo.business.constants.FlightConstants.ARR_AIRLINES;
+import static com.group9.ongo.business.constants.FlightConstants.ARR_LOCATIONS;
+import static com.group9.ongo.business.constants.FlightConstants.ARR_PLANES;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_CAPACITY;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_PRICE;
 import static com.group9.ongo.business.constants.FlightConstants.MIN_CAPACITY;
 import static com.group9.ongo.business.constants.FlightConstants.MIN_PRICE;
-import static com.group9.ongo.business.constants.FlightConstants.arrAirlines;
-import static com.group9.ongo.business.constants.FlightConstants.arrLocations;
 
 import com.group9.ongo.models.Flight;
 
@@ -32,12 +34,14 @@ public class FlightValidator {
     }
 
 
-    public static void validateNewFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price) throws ValidationException {
+    public static void validateNewFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType) throws ValidationException {
         boolean validDestination = false;
         boolean validOrigin = false;
         boolean validAirline = false;
+        boolean validPlaneType = false;
 
-        for (String location : arrLocations)
+
+        for (String location : ARR_LOCATIONS)
         {
             if (location.equals(destination)) {
                 validDestination = true;
@@ -47,14 +51,26 @@ public class FlightValidator {
             }
         }
 
-        for (String airlineName : arrAirlines)
+        for (String airlineName : ARR_AIRLINES)
         {
             if (airlineName.equals(airline)) {
                 validAirline = true;
             }
         }
 
-        if (!validAirline) {
+        for (String plane : ARR_PLANES)
+        {
+            if (plane.equals(planeType)) {
+                validPlaneType = true;
+            }
+        }
+
+        if(!validPlaneType)
+        {
+            throw new ValidationException(FLIGHT_INVALID_PLANE);
+        }
+        else if (!validAirline)
+        {
             throw new ValidationException(FLIGHT_INVALID_AIRLINE);
         }
         else if (!validOrigin)

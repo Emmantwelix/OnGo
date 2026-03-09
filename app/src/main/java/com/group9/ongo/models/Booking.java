@@ -6,11 +6,13 @@ public class Booking {
     private int bookingId;
 
     private int flightId;
+    private int seatId;
 
-    public Booking(int id, int userId, int flightId) {
+    public Booking(int id, int userId, int flightId, int seatId) {
         this.bookingId = id;
         this.userId = userId;
         this.flightId = flightId;
+        this.seatId = seatId;
     }
 
     public Booking(Booking other) {
@@ -30,4 +32,5 @@ public class Booking {
     public int getUserId() {
         return userId;
     }
+    public int getSeatId() { return seatId; }
 }
