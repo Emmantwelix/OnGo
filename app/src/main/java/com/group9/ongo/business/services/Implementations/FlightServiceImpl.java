@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
@@ -10,6 +10,9 @@ import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
 
+import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Interfaces.Generator;
+import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.FlightValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
@@ -19,6 +22,8 @@ import com.group9.ongo.persistence.FlightRepository;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,9 +40,15 @@ public class FlightServiceImpl implements FlightService {
         this.seatService = seatService;
     }
 
+    private List<Flight> sortByPrice(List<Flight> flight) {
+        List<Flight> sortedFlight = new ArrayList<>(flight);
+        sortedFlight.sort(Comparator.comparingDouble(Flight::getPrice));
+        return sortedFlight;
+    }
+
     @Override
     public List<Flight> getAllFlights() {
-        return repo.getAll();
+        return sortByPrice(repo.getAll());
     }
 
     @Override

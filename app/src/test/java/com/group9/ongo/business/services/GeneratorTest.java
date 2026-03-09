@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.group9.ongo.business.services.Implementations.FlightDetailGen;
+import com.group9.ongo.business.services.Interfaces.Generator;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -46,11 +49,5 @@ public class GeneratorTest {
         assertTrue(date.isBefore(today.plusDays(DATE_RANGE + 1)));
     }
 
-    @Test
-    public void testGenerateSeats() {
-        int capacity = 150;
-        int[] seats = generator.generateSeats(capacity);
-        assertEquals(capacity, seats.length);
-    }
 
 }

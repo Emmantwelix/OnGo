@@ -3,11 +3,11 @@ package com.group9.ongo.business.services;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
 
+import com.group9.ongo.business.services.Implementations.UserServiceImpl;
+import com.group9.ongo.business.services.Interfaces.UserService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.User;
-import com.group9.ongo.persistence.PassengerRepository;
 import com.group9.ongo.persistence.UserRepository;
 import com.group9.ongo.persistence.fake.FakeUserRepository;
 
@@ -136,13 +136,11 @@ public class UserServiceTest {
     }
 
     @Test
-    public void testDeleteUser_withValidID_returnsTrue() throws ValidationException {
+    public void testDeleteUser_withValidID_doesNotThrowException() throws ValidationException {
         //arrange
         int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
         //act
-        boolean success = userService.deleteUser(userId);
-        //assert
-        assertTrue(success);
+        userService.deleteUser(userId);
     }
 
     @Test

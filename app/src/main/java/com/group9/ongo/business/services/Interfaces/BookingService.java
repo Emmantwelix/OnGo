@@ -1,5 +1,6 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Interfaces;
 
+import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;

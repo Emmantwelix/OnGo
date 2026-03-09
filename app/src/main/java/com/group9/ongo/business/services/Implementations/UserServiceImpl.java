@@ -1,7 +1,8 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
 
+import com.group9.ongo.business.services.Interfaces.UserService;
 import com.group9.ongo.business.validation.UserValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.User;
@@ -26,14 +27,9 @@ public class UserServiceImpl implements UserService {
         return repo.addUser(name, email, phone);
     }
     @Override
-    public boolean deleteUser(int userId) throws ValidationException {
+    public void deleteUser(int userId) throws ValidationException {
         boolean success = repo.deleteUser(userId);
-        if ( success )
-        {
-            return true;
-        }
-        else
-        {
+        if ( !success ) {
            throw new ValidationException(USER_DELETE_ERROR);
         }
     }

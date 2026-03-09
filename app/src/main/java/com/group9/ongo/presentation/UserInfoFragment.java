@@ -19,7 +19,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.BookingException;
-import com.group9.ongo.business.services.BookingService;
+import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.PassengerInput;
 

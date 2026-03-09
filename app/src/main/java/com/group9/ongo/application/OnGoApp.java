@@ -2,14 +2,14 @@ package com.group9.ongo.application;
 
 import android.app.Application;
 
-import com.group9.ongo.business.services.BookingService;
-import com.group9.ongo.business.services.BookingServiceImpl;
-import com.group9.ongo.business.services.FlightDetailGen;
-import com.group9.ongo.business.services.FlightService;
-import com.group9.ongo.business.services.FlightServiceImpl;
-import com.group9.ongo.business.services.Generator;
-import com.group9.ongo.business.services.SeatService;
-import com.group9.ongo.business.services.SeatServiceImplementation;
+import com.group9.ongo.business.services.Interfaces.BookingService;
+import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
+import com.group9.ongo.business.services.Implementations.FlightDetailGen;
+import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
+import com.group9.ongo.business.services.Interfaces.Generator;
+import com.group9.ongo.business.services.Interfaces.SeatService;
+import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.PassengerRepository;
