@@ -144,5 +144,10 @@ public class FlightServiceImpl implements FlightService {
         return getLocationCode(flight.getDestination());
     }
 
+    @Override
+    public String getFormattedFlightId(Flight flight) {
+        return String.format("AC %d", flight.getFlightId());
+    }
+
 
 }

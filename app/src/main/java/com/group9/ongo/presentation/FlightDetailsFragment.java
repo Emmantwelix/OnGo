@@ -76,7 +76,7 @@ public class FlightDetailsFragment extends Fragment {
             Airline airline = Airline.fromName(flight.getAirline());
             imageAirlineLogo.setImageResource(airline.getLogoResId());
             textAirline.setText(flight.getAirline());
-            textFlightId.setText(String.format("AC %d", flight.getFlightId())); // Mocking prefix
+            textFlightId.setText(flightService.getFormattedFlightId(flight));
 
             // Set city names separately for the new centered layout
             textOriginCity.setText(flight.getOrigin());

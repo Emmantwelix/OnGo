@@ -1,12 +1,9 @@
 package com.group9.ongo.models;
 
-import static com.group9.ongo.business.constants.FlightConstants.TIME_FORMAT_PATTERN;
+import static com.group9.ongo.business.constants.FlightConstants.DATE_FORMATTER;
+import static com.group9.ongo.business.constants.FlightConstants.TIME_FORMATTER;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-import static com.group9.ongo.business.constants.FlightConstants.DATE_FORMAT;
-
 import java.time.LocalDate;
 
 public class Flight {
@@ -53,17 +50,11 @@ public class Flight {
 
     public LocalTime getLandTime() { return landTime; }
 
-    private static final DateTimeFormatter TIME_FORMATTER =
-            DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN);
     public String getDepartTimeString() {
         return departTime.format(TIME_FORMATTER);
     }
 
     public String getLandTimeString() { return landTime.format(TIME_FORMATTER); }
-
-    public int getCapacity() {
-        return aircraft.getCapacity();
-    }
 
     public int getFlightId() {
         return flightId;
@@ -72,11 +63,13 @@ public class Flight {
     public double getPrice() { return price; }
     public LocalDate getDate() { return date; }
     public String getDateString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-        return date.format(formatter);
+        return date.format(DATE_FORMATTER);
     }
 
-    public String getPlaneType() { return aircraft.getModelName(); }
     public String getFlightNumber() { return flightNumber; }
     public Aircraft getAircraft() { return aircraft; }
+
+    public int getCapacity() {
+        return aircraft.getCapacity();
+    }
 }

@@ -26,4 +26,6 @@ public interface FlightService {
     String getOriginCode(Flight flight);
 
     String getDestinationCode(Flight flight);
+
+    String getFormattedFlightId(Flight flight);
 }
