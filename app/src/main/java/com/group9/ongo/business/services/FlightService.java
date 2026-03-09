@@ -22,6 +22,7 @@ public interface FlightService {
     int getDurationHours(Flight flight);
 
     int getDurationRemainingMinutes(Flight flight);
+    int getAvailableSeats(int flightId);
 
     String getOriginCode(Flight flight);
 

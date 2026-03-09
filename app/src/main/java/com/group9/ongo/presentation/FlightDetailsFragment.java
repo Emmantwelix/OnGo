@@ -65,6 +65,7 @@ public class FlightDetailsFragment extends Fragment {
         TextView textCapacity = view.findViewById(R.id.text_capacity);
         ImageView iconWifi = view.findViewById(R.id.icon_wifi);
         TextView textPrice = view.findViewById(R.id.text_price);
+        TextView textAvailableSeats = view.findViewById(R.id.text_available_seats);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
 
         FlightService flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
@@ -76,14 +77,14 @@ public class FlightDetailsFragment extends Fragment {
             Airline airline = Airline.fromName(flight.getAirline());
             imageAirlineLogo.setImageResource(airline.getLogoResId());
             textAirline.setText(flight.getAirline());
-            textFlightId.setText(flightService.getFormattedFlightId(flight));
+            textFlightId.setText(flight.getFlightNumber());
 
             // Set city names separately for the new centered layout
             textOriginCity.setText(flight.getOrigin());
             textDestCity.setText(flight.getDestination());
 
             // Sub-header: Only keeping the text as date is not available in the model
-            textDateSubheader.setText("Departing flight");
+            textDateSubheader.setText(String.format(Locale.ROOT, "%s", flight.getDateString()));
 
             // Timeline & Codes
             textDepartTime.setText(flight.getDepartTimeString());
@@ -95,6 +96,7 @@ public class FlightDetailsFragment extends Fragment {
             int hours = flightService.getDurationHours(flight);
             int mins = flightService.getDurationRemainingMinutes(flight);
             textDuration.setText(String.format(Locale.ROOT, "%dh %dm", hours, mins));
+            textAvailableSeats.setText(String.format(Locale.ROOT, "%d Seats Available", flightService.getAvailableSeats(flightId)));
 
             // Aircraft Info
             Aircraft aircraft = flight.getAircraft();

@@ -79,6 +79,17 @@ public class FlightServiceImpl implements FlightService {
         }
     }
 
+    @Override
+    public int getAvailableSeats(int flightId) {
+        int availableSeats = 0;
+        List <Seat> Seats = seatService.getAllSeatsByFlightId(flightId);
+        for (Seat seat : Seats) {
+            if (!seat.getIsBooked()) {
+                availableSeats++;
+            }
+        }
+        return availableSeats;
+    }
 
     //calculates the total minutes
     private int calculateDuration(Flight flight) {
