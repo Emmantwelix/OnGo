@@ -1,8 +1,10 @@
 package com.group9.ongo.business.services;
 
 import static com.group9.ongo.business.constants.FlightConstants.A320_DETAILS;
+import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
+import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
@@ -11,6 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
@@ -177,7 +180,7 @@ public class FlightServiceTest {
         //arrange
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT, VALID_PRICE);
         //act
-        boolean success = success = service.deleteFlight(flightId);
+        boolean success = service.deleteFlight(flightId);
         //assert
         assertTrue(success);
         assertEquals(0, service.getAllFlights().size());
@@ -397,5 +400,29 @@ public class FlightServiceTest {
 
         // assert
         assertEquals("TSU", originCode);
+    }
+
+    @Test
+    public void aircraft_wifiLogicTest() throws ValidationException {
+        // A380 has wifi, B737 does not
+        int flightIdA380 = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, A380_DETAILS, VALID_PRICE);
+        int flightIdB737 = service.createFlight(WESTJET, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, B737_DETAILS, VALID_PRICE);
+
+        assertTrue(service.getFlightById(flightIdA380).getAircraft().hasWifi());
+        assertFalse(service.getFlightById(flightIdB737).getAircraft().hasWifi());
+    }
+
+    @Test
+    public void aircraft_capacityStringTest() {
+        assertEquals("150 seats", A320_DETAILS.getCapacityString());
+        assertEquals("500 seats", A380_DETAILS.getCapacityString());
+    }
+
+    @Test
+    public void flightService_getFormattedFlightIdTest() throws ValidationException {
+        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT, VALID_PRICE);
+        Flight flight = service.getFlightById(flightId);
+
+        assertEquals("AC " + flightId, service.getFormattedFlightId(flight));
     }
 }
