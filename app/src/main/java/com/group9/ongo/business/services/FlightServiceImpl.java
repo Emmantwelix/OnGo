@@ -18,6 +18,8 @@ import com.group9.ongo.persistence.FlightRepository;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
@@ -35,9 +37,15 @@ public class FlightServiceImpl implements FlightService {
         this.seatService = seatService;
     }
 
+    private List<Flight> sortByPrice(List<Flight> flight) {
+        List<Flight> sortedFlight = new ArrayList<>(flight);
+        sortedFlight.sort(Comparator.comparingDouble(Flight::getPrice));
+        return sortedFlight;
+    }
+
     @Override
     public List<Flight> getAllFlights() {
-        return repo.getAll();
+        return sortByPrice(repo.getAll());
     }
 
     @Override
