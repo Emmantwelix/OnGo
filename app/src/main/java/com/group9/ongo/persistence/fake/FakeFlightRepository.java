@@ -56,8 +56,8 @@ public class FakeFlightRepository implements FlightRepository {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price, String flightNumber, LocalDate date) {
-        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, aircraft, price, flightNumber, date);
+    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price, String flightNumber, LocalDate date) {
+        Flight flight = new Flight(nextId, airline, origin, destination, departTime, landTime, aircraftId, price, flightNumber, date);
         flights.add(flight);
         nextId++;
         return nextId - 1;
@@ -73,10 +73,10 @@ public class FakeFlightRepository implements FlightRepository {
         return false;
     }
     private void populate_with_sample_data() {
-        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, LocalTime.of(10, 0), LocalTime.of(12, 0), A320_DETAILS, 603.49, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
-        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), B737_DETAILS, 979.52, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
-        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), B787_DETAILS, 200.01, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
-        this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), A380_DETAILS, 417.38, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(AIR_CANADA, TORONTO, WINNIPEG, LocalTime.of(10, 0), LocalTime.of(12, 0), 1, 603.49, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), 2, 979.52, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), 3, 200.01, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), 4, 417.38, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
     }
 
 }

@@ -99,7 +99,7 @@ public class FlightDetailsFragment extends Fragment {
             textAvailableSeats.setText(String.format(Locale.ROOT, "%d Seats Available", flightService.getAvailableSeats(flightId)));
 
             // Aircraft Info
-            Aircraft aircraft = flight.getAircraft();
+            Aircraft aircraft = flightService.getAircraft(flight);
             if (aircraft != null) {
                 textAircraft.setText(aircraft.getModelName());
                 textCapacity.setText(aircraft.getCapacityString());
