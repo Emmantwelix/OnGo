@@ -220,12 +220,18 @@
                 app:layout_constraintTop_toBottomOf="@id/card_timeline_block" />
 
             <!-- Flight Details Footer -->
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_airline_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:layout_constraintTop_toBottomOf="@id/divider">
+                app:layout_constraintBottom_toTopOf="@+id/layout_available_seat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider"
+                app:layout_constraintVertical_bias="0.5">
 
                 <TextView
                     android:id="@+id/text_duration"
@@ -249,8 +255,33 @@
                     android:textColor="#757575"
                     android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/text_capacity"
+                    app:layout_constraintEnd_toStartOf="@+id/text_aircraft"
                     app:layout_constraintStart_toEndOf="@+id/text_duration"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_aircraft"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#757575"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/text_dot_3"
+                    app:layout_constraintStart_toEndOf="@+id/text_dot_2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Airbus A320" />
+
+                <TextView
+                    android:id="@+id/text_dot_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="8dp"
+                    android:text="·"
+                    android:textColor="#757575"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/text_capacity"
+                    app:layout_constraintStart_toEndOf="@+id/text_aircraft"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -260,14 +291,52 @@
                     android:textColor="#757575"
                     android:textSize="14sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/text_dot_2"
+                    app:layout_constraintEnd_toStartOf="@+id/icon_wifi"
+                    app:layout_constraintStart_toEndOf="@+id/text_dot_3"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="200 seats" />
 
+                <ImageView
+                    android:id="@+id/icon_wifi"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/baseline_wifi_24"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/text_capacity"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="#757575" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_available_seat"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/layout_airline_details"
+                app:layout_constraintVertical_bias="0.5">
+
+                <TextView
+                    android:id="@+id/text_available_seats"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.5"
+                    tools:text="Available Seats" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
     <!-- Bottom Price Bar -->

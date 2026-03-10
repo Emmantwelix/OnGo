@@ -15,6 +15,7 @@ import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.FlightValidator;
 import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.FlightRepository;
@@ -64,13 +65,13 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType) throws ValidationException {
-        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, capacity, price, planeType);
+    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price) throws ValidationException {
+        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, aircraft, price);
 
         String flightNumber = fnGenerator.generateFlightNum();
         LocalDate date = fnGenerator.generateDate();
 
-        int newFlightId = repo.createFlight(airline, origin, destination, departTime, landTime, capacity, price, flightNumber, planeType, date);
+        int newFlightId = repo.createFlight(airline, origin, destination, departTime, landTime, aircraft, price, flightNumber, date);
         createSeats(newFlightId);
 
         return newFlightId;
@@ -89,6 +90,17 @@ public class FlightServiceImpl implements FlightService {
         }
     }
 
+    @Override
+    public int getAvailableSeats(int flightId) {
+        int availableSeats = 0;
+        List <Seat> Seats = seatService.getAllSeatsByFlightId(flightId);
+        for (Seat seat : Seats) {
+            if (!seat.getIsBooked()) {
+                availableSeats++;
+            }
+        }
+        return availableSeats;
+    }
 
     //calculates the total minutes
     private int calculateDuration(Flight flight) {
@@ -102,12 +114,14 @@ public class FlightServiceImpl implements FlightService {
         return (int) duration.toMinutes();
     }
 
+    @Override
     public int getDurationHours(Flight flight) {
         int totalMinutes = calculateDuration(flight);
         return totalMinutes / 60;
     }
 
 
+    @Override
     public int getDurationRemainingMinutes(Flight flight) {
         int totalMinutes = calculateDuration(flight);
         return totalMinutes % 60;
@@ -140,14 +154,21 @@ public class FlightServiceImpl implements FlightService {
         return location.length() >= 3 ? location.substring(0, 3).toUpperCase() : location.toUpperCase();
     }
 
+    @Override
     public String getOriginCode(Flight flight)
     {
         return getLocationCode(flight.getOrigin());
     }
 
+    @Override
     public String getDestinationCode(Flight flight)
     {
         return getLocationCode(flight.getDestination());
+    }
+
+    @Override
+    public String getFormattedFlightId(Flight flight) {
+        return String.format("AC %d", flight.getFlightId());
     }
 
 

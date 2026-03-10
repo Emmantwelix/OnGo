@@ -1,38 +1,33 @@
 package com.group9.ongo.models;
 
-import static com.group9.ongo.business.constants.FlightConstants.TIME_FORMAT_PATTERN;
+import static com.group9.ongo.business.constants.FlightConstants.DATE_FORMATTER;
+import static com.group9.ongo.business.constants.FlightConstants.TIME_FORMATTER;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-import static com.group9.ongo.business.constants.FlightConstants.DATE_FORMAT;
-
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 public class Flight {
-    private String airline;
-    private String origin;
-    private LocalTime departTime;
-    private LocalTime landTime;
-    private String destination;
-    private int capacity;
-    private int flightId;
-    private double price;
-    private String planeType;
-    private String flightNumber;
-    private LocalDate date;
+    private final String airline;
+    private final String origin;
+    private final LocalTime departTime;
+    private final LocalTime landTime;
+    private final String destination;
+    private final Aircraft aircraft;
+    private final int flightId;
+    private final double price;
+    private final String flightNumber;
+    private final LocalDate date;
+    private int[] seats;
 
-    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int capacity, double price, String planeType, String flightNumber, LocalDate date) {
+    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price, String flightNumber, LocalDate date) {
         this.airline = airline;
         this.origin = origin;
         this.destination = destination;
         this.departTime = departTime;
         this.landTime = landTime;
-        this.capacity = capacity;
+        this.aircraft = aircraft;
         this.flightId = flightId;
         this.price = price;
-        this.planeType = planeType;
         this.flightNumber = flightNumber;
         this.date = date;
     }
@@ -45,11 +40,9 @@ public class Flight {
         return origin;
     }
 
-
     public String getAirline() {
         return airline;
     }
-
 
     public LocalTime getDepartTime() {
         return departTime;
@@ -57,17 +50,11 @@ public class Flight {
 
     public LocalTime getLandTime() { return landTime; }
 
-    private static final DateTimeFormatter TIME_FORMATTER =
-            DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN);
     public String getDepartTimeString() {
         return departTime.format(TIME_FORMATTER);
     }
 
     public String getLandTimeString() { return landTime.format(TIME_FORMATTER); }
-
-    public int getCapacity() {
-        return capacity;
-    }
 
     public int getFlightId() {
         return flightId;
@@ -76,10 +63,13 @@ public class Flight {
     public double getPrice() { return price; }
     public LocalDate getDate() { return date; }
     public String getDateString() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
-        return date.format(formatter);
+        return date.format(DATE_FORMATTER);
     }
 
-    public String getPlaneType() { return planeType; }
     public String getFlightNumber() { return flightNumber; }
+    public Aircraft getAircraft() { return aircraft; }
+
+    public int getCapacity() {
+        return aircraft.getCapacity();
+    }
 }

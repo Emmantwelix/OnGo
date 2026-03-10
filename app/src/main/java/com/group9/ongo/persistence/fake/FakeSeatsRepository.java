@@ -1,36 +1,17 @@
 package com.group9.ongo.persistence.fake;
 
-import static com.group9.ongo.business.constants.FlightConstants.AIRBUS_A320;
-import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
-import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
-import static com.group9.ongo.business.constants.FlightConstants.BOEING_737;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_4;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
-import static com.group9.ongo.business.constants.FlightConstants.COMAC_C919;
-import static com.group9.ongo.business.constants.FlightConstants.CONVAIR_880;
-import static com.group9.ongo.business.constants.FlightConstants.DEFUALT_DATE;
-import static com.group9.ongo.business.constants.FlightConstants.DEFUALT_FLIGHT_NUM;
-import static com.group9.ongo.business.constants.FlightConstants.LARGE_CAPACITY;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
-import static com.group9.ongo.business.constants.FlightConstants.MEDIUM_CAPACITY;
-import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
-import static com.group9.ongo.business.constants.FlightConstants.PORTER_AIRLINES;
-import static com.group9.ongo.business.constants.FlightConstants.SMALL_CAPACITY;
-import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
-import static com.group9.ongo.business.constants.FlightConstants.VANCOUVER;
-import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
-import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 
-import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.SeatRepository;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
