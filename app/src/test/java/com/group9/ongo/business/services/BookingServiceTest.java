@@ -7,7 +7,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
-import com.group9.ongo.business.services.Implementations.AircraftServiceImpl;
 import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Implementations.FlightDetailGen;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
@@ -53,7 +52,7 @@ public class BookingServiceTest {
         bookingRepo = new FakeBookingRepository();
         passengerRepo = new FakePassengerRepository();
         seatService = new SeatServiceImplementation(new FakeSeatsRepository(true));
-        flightService = new FlightServiceImpl(new FakeFlightRepository(true), generator, seatService, new AircraftServiceImpl(new FakeAircraftRepository()));
+        flightService = new FlightServiceImpl(new FakeFlightRepository(true), generator, seatService, new FakeAircraftRepository());
         bookingService = new BookingServiceImpl(1,bookingRepo, passengerRepo, flightService, seatService);
         bookingService2 = new BookingServiceImpl(2,bookingRepo, passengerRepo, flightService, seatService);
     }

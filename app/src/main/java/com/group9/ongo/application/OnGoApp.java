@@ -5,9 +5,7 @@ import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
 
 import android.app.Application;
 
-import com.group9.ongo.business.services.Implementations.AircraftServiceImpl;
 import com.group9.ongo.business.services.Implementations.LoginServiceImpl;
-import com.group9.ongo.business.services.Interfaces.AircraftService;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Implementations.FlightDetailGen;
@@ -43,8 +41,7 @@ public class OnGoApp extends Application {
         Generator fnGenerator = new FlightDetailGen(new Random());
         seatService = new SeatServiceImplementation(new FakeSeatsRepository(true));
 
-        AircraftService aircraftService = new AircraftServiceImpl(new FakeAircraftRepository());
-        flightService = new FlightServiceImpl(flightRepo, fnGenerator, seatService, aircraftService);
+        flightService = new FlightServiceImpl(flightRepo, fnGenerator, seatService, new FakeAircraftRepository());
 
         //simulate a fake login
         LoginService loginService = new LoginServiceImpl(new FakeUserRepository());

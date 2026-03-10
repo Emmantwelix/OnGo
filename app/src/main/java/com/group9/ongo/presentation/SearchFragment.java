@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
-import com.group9.ongo.business.services.Interfaces.AircraftService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 
 public class SearchFragment extends Fragment {

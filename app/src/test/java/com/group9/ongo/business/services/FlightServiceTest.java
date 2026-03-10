@@ -4,7 +4,6 @@ import static com.group9.ongo.business.constants.FlightConstants.A320_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
-import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_SEATS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
@@ -16,7 +15,6 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
-import com.group9.ongo.business.services.Implementations.AircraftServiceImpl;
 import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Implementations.FlightDetailGen;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
@@ -80,7 +78,7 @@ public class FlightServiceTest {
         repo = new FakeFlightRepository();
         generator = new FlightDetailGen(new Random());
         seatService = new SeatServiceImplementation(new FakeSeatsRepository());
-        service = new FlightServiceImpl(repo, generator, seatService, new AircraftServiceImpl(new FakeAircraftRepository()));
+        service = new FlightServiceImpl(repo, generator, seatService, new FakeAircraftRepository());
         bookingRepository = new FakeBookingRepository();
         passengerRepository = new FakePassengerRepository();
         bookingService = new BookingServiceImpl(1,bookingRepository, passengerRepository, service, seatService);
@@ -428,17 +426,17 @@ public class FlightServiceTest {
         assertEquals("TSU", originCode);
     }
 
+    @Test
+    public void aircraft_wifiLogicTest() throws ValidationException {
+        // A380 has wifi, B737 does not
+        int flightIdA380 = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 1,VALID_PRICE);
+        int flightIdB737 = service.createFlight(WESTJET, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 2, VALID_PRICE);
+        Flight flight1 = service.getFlightById(flightIdA380);
+        Flight flight2 = service.getFlightById(flightIdB737);
 
-    //goes to the aircraft service test
-//    @Test
-//    public void aircraft_wifiLogicTest() throws ValidationException {
-//        // A380 has wifi, B737 does not
-//        int flightIdA380 = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 1,VALID_PRICE);
-//        int flightIdB737 = service.createFlight(WESTJET, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 2, VALID_PRICE);
-//
-//        assertTrue(service.getFlightById(flightIdA380).getAircraft().hasWifi());
-//        assertFalse(service.getFlightById(flightIdB737).getAircraft().hasWifi());
-//    }
+        assertTrue(service.getAircraft(flight1).hasWifi());
+        assertFalse(service.getAircraft(flight2).hasWifi());
+    }
 
     @Test
     public void aircraft_capacityStringTest() {

@@ -36,6 +36,8 @@ public class ErrorMessageConstants {
     public static final String FLIGHT_INVALID_PLANE = "Invalid plane type";
 
 
+    public static final String AIRCRAFT_NOT_FOUND = "Aircraft not found";
+
 
     //BOOKING ERROR MESSAGES
     public static final String BOOKING_PASSENGER_ERROR = "Failed to create passenger. Booking has been rolled back.";
