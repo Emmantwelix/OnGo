@@ -102,7 +102,7 @@
             android:background="#E5E7EB"
             app:layout_constraintTop_toBottomOf="@id/airline_container"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_of_parent="true" />
 
         <!-- Left time -->
         <TextView
