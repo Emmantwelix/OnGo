@@ -74,21 +74,27 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
 
     @Override
     public void onModify(BookingDetails b) {
-        Toast.makeText(getContext(), "Modify booking: " + b.getBooking().getBookingId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Under Construction", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancel(BookingDetails b) {
-        Toast.makeText(getContext(), "Cancel booking: " + b.getBooking().getBookingId(), Toast.LENGTH_SHORT).show();
+        try {
+            bookingService.cancelBooking(b.getBooking().getBookingId());
+            loadBookings();
+            Toast.makeText(getContext(), "Booking Cancelled", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Error cancelling booking", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onEditInfo(BookingDetails b) {
-        Toast.makeText(getContext(), "Edit info for: " + b.getPassenger().getFirstName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Under Construction", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onViewDetails(BookingDetails b) {
-        Toast.makeText(getContext(), "View details: " + b.getBooking().getBookingId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Under Construction", Toast.LENGTH_SHORT).show();
     }
 }
