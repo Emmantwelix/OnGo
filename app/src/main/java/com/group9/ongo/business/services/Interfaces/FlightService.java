@@ -15,7 +15,7 @@ public interface FlightService {
     Flight getFlightById(int flightId) throws ValidationException;
 
     //returns the id of the flight that was added, will throw if invalid
-    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price) throws ValidationException;
+    int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price) throws ValidationException;
 
     boolean deleteFlight(int flightId) throws ValidationException;
 
@@ -29,4 +29,6 @@ public interface FlightService {
     String getDestinationCode(Flight flight);
 
     String getFormattedFlightId(Flight flight);
+    String getAirportCode(String city);
+    Aircraft getAircraft(Flight flight);
 }

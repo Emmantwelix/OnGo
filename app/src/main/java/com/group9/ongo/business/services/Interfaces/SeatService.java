@@ -9,8 +9,7 @@ public interface SeatService {
     List<Seat> getAllSeatsByFlightId(int flight_id);
     int createSeat(int flight_id, int row, String column) throws ValidationException; //return seat id.
     Seat getSeatById(int flight_id, int seat_id) throws ValidationException;
-    void bookSeat(int flight_id, int seat_id) throws ValidationException;
+    int bookSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException;
     void unbookSeat(int flight_id, int seat_id) throws ValidationException;
-    boolean isSeatBooked(int flight_id, int seat_id) throws ValidationException;
     Seat findSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException;
 }

@@ -96,8 +96,7 @@ public class UserInfoFragment extends Fragment {
 
         try {
             // This calls the business layer which does the validation
-            // For now, using a hardcoded userId 1 as we don't have auth yet
-            bookingService.createBooking(1, flightId, input, 1, "A");
+            bookingService.createBooking(flightId, input, 1, "A");
 
             Toast.makeText(getContext(), "Booking confirmed for flight " + flightId + " for " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
 

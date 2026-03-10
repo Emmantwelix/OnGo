@@ -28,36 +28,36 @@ public class BookingServiceImpl implements BookingService {
     private FlightService flightService;
     private SeatService seatService;
 
+    private int currentUserId;
 
-    public BookingServiceImpl(BookingRepository bookingsRepo, PassengerRepository passengerRepo,
+    public BookingServiceImpl( int currentUserId,BookingRepository bookingsRepo, PassengerRepository passengerRepo,
                               FlightService flightService, SeatService seatService) {
         this.bookingsRepo = bookingsRepo;
         this.passengerRepo = passengerRepo;
         this.flightService = flightService;
         this.seatService = seatService;
+        this.currentUserId = currentUserId;
     }
 
-    public List<Booking> getBookingByUserId(int userId) {
-        return bookingsRepo.getBookingByUserId(userId);
-    }
-
-    public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn) throws BookingException, ValidationException {
+    @Override
+    public Booking createBooking(int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn) throws BookingException, ValidationException {
         BookingValidator.validate(flightService.getFlightById(flightId), passengerInfo);
 
-        Seat seat = seatService.findSeat(flightId, seatRow, seatColumn);
-        Booking booking = bookingsRepo.addBooking(new Booking(0, userId, flightId, seat.getSeatId()));
+        //throws exception if seat is already booked or not found
+        int seatId = seatService.bookSeat(flightId, seatRow, seatColumn);
+
+        Booking booking = bookingsRepo.addBooking(new Booking(0, currentUserId, flightId, seatId));
         Passenger passenger = passengerRepo.addPassenger(passengerInfo, booking.getBookingId());
-        seatService.bookSeat(flightId, seat.getSeatId());
 
         if (passenger == null) {
             bookingsRepo.deleteBooking(booking.getBookingId());
-            seatService.unbookSeat(flightId, seat.getSeatId());
-            throw new RuntimeException(BOOKING_PASSENGER_ERROR);
+            seatService.unbookSeat(flightId, seatId);
+            throw new BookingException(BOOKING_PASSENGER_ERROR);
         }
 
         return booking;
     }
-
+    @Override
     public boolean cancelBooking(int bookingId) throws ValidationException {
         Booking booking = bookingsRepo.getBookingById(bookingId);
 
@@ -72,8 +72,9 @@ public class BookingServiceImpl implements BookingService {
         return bookingsRepo.deleteBooking(bookingId);
     }
 
-    public List<BookingDetails> getBookingDetailsByUserId(int userId) {
-        List<Booking> bookings = bookingsRepo.getBookingByUserId(userId);
+    @Override
+    public List<BookingDetails> getBookingDetailsForCurrentUser() {
+        List<Booking> bookings = bookingsRepo.getBookingByUserId(currentUserId);
         List<BookingDetails> detailsList = new ArrayList<>();
 
         for (Booking booking : bookings) {

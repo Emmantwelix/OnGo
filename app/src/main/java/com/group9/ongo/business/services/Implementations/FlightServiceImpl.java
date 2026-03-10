@@ -1,15 +1,30 @@
 package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
+import static com.group9.ongo.business.constants.FlightConstants.BC;
+import static com.group9.ongo.business.constants.FlightConstants.CALGARY;
+import static com.group9.ongo.business.constants.FlightConstants.CALGARY_CODE;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_4;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
+import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_CODE;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
+import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
+import static com.group9.ongo.business.constants.FlightConstants.MONTREAL_CODE;
+import static com.group9.ongo.business.constants.FlightConstants.QUEBEC_CITY;
+import static com.group9.ongo.business.constants.FlightConstants.QUEBEC_CITY_CODE;
+import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
+import static com.group9.ongo.business.constants.FlightConstants.TORONTO_CODE;
+import static com.group9.ongo.business.constants.FlightConstants.VANCOUVER;
+import static com.group9.ongo.business.constants.FlightConstants.VANCOUVER_CODE;
+import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
+import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG_CODE;
 
+import com.group9.ongo.business.services.Interfaces.AircraftService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.SeatService;
@@ -18,6 +33,7 @@ import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Seat;
+import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.FlightRepository;
 
 import java.time.Duration;
@@ -32,12 +48,14 @@ public class FlightServiceImpl implements FlightService {
     private final FlightRepository repo;
     private final Generator fnGenerator;
     private final SeatService seatService;
+    private final AircraftService aircraftService;
 
 
-    public FlightServiceImpl(FlightRepository repo, Generator fnGenerator, SeatService seatService) {
+    public FlightServiceImpl(FlightRepository repo, Generator fnGenerator, SeatService seatService, AircraftService aircraftService) {
         this.repo = repo;
         this.fnGenerator = fnGenerator;
         this.seatService = seatService;
+        this.aircraftService = aircraftService;
     }
 
     private List<Flight> sortByPrice(List<Flight> flight) {
@@ -65,13 +83,16 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price) throws ValidationException {
-        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, aircraft, price);
+    public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price) throws ValidationException {
+
+        Aircraft aircraft = aircraftService.getAircraftById(aircraftId);
+
+        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, aircraft , price);
 
         String flightNumber = fnGenerator.generateFlightNum();
         LocalDate date = fnGenerator.generateDate();
 
-        int newFlightId = repo.createFlight(airline, origin, destination, departTime, landTime, aircraft, price, flightNumber, date);
+        int newFlightId = repo.createFlight(airline, origin, destination, departTime, landTime, aircraftId, price, flightNumber, date);
         createSeats(newFlightId);
 
         return newFlightId;
@@ -171,5 +192,23 @@ public class FlightServiceImpl implements FlightService {
         return String.format("AC %d", flight.getFlightId());
     }
 
+    @Override
+    public String getAirportCode(String city) {
+        return switch (city) {
+            case TORONTO -> TORONTO_CODE;
+            case WINNIPEG -> WINNIPEG_CODE;
+            case MONTREAL -> MONTREAL_CODE;
+            case VANCOUVER, BC -> VANCOUVER_CODE;
+            case CALGARY -> CALGARY_CODE;
+            case QUEBEC_CITY -> QUEBEC_CITY_CODE;
+            default -> DEFAULT_CODE;
+        };
+    }
+
+    @Override
+    public Aircraft getAircraft(Flight flight)
+    {
+        return aircraftService.getAircraftById(flight.getAircraftId());
+    }
 
 }
