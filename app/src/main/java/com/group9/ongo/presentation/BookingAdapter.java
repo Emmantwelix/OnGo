@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -80,18 +79,15 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         popup.setOnMenuItemClickListener(item -> {
             int id = item.getItemId();
             if (id == R.id.action_modify) {
-                Toast.makeText(view.getContext(), "Feature Under Construction", Toast.LENGTH_SHORT).show();
                 listener.onModify(details);
                 return true;
             } else if (id == R.id.action_cancel) {
                 listener.onCancel(details);
                 return true;
             } else if (id == R.id.action_edit_info) {
-                Toast.makeText(view.getContext(), "Feature Under Construction", Toast.LENGTH_SHORT).show();
                 listener.onEditInfo(details);
                 return true;
             } else if (id == R.id.action_view_details) {
-                Toast.makeText(view.getContext(), "Feature Under Construction", Toast.LENGTH_SHORT).show();
                 listener.onViewDetails(details);
                 return true;
             }
