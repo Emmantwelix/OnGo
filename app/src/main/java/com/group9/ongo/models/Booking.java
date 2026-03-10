@@ -7,12 +7,14 @@ public class Booking {
 
     private int flightId;
     private int seatId;
+    private BookingStatus status;
 
     public Booking(int id, int userId, int flightId, int seatId) {
         this.bookingId = id;
         this.userId = userId;
         this.flightId = flightId;
         this.seatId = seatId;
+        status = BookingStatus.UPCOMING;
     }
 
     public Booking(Booking other) {
@@ -33,4 +35,6 @@ public class Booking {
         return userId;
     }
     public int getSeatId() { return seatId; }
+    public void setStatus(BookingStatus status) { this.status = status; }
+    public String getBookingStatus() { return status.name(); }
 }

@@ -9,10 +9,9 @@ import com.group9.ongo.models.PassengerInput;
 import java.util.List;
 
 public interface BookingService {
-    public List<Booking> getBookingByUserId(int userId);
-    public Booking createBooking(int userId, int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn) throws BookingException, ValidationException;
+    Booking createBooking(int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn) throws BookingException, ValidationException;
 
-    public boolean cancelBooking(int bookingId) throws ValidationException;
+    boolean cancelBooking(int bookingId) throws ValidationException;
 
-    public List<BookingDetails> getBookingDetailsByUserId(int userId);
+    List<BookingDetails> getBookingDetailsForCurrentUser();
 }

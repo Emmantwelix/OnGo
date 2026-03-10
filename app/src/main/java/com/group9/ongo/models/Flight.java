@@ -12,20 +12,19 @@ public class Flight {
     private final LocalTime departTime;
     private final LocalTime landTime;
     private final String destination;
-    private final Aircraft aircraft;
+    private final int aircraftId;
     private final int flightId;
     private final double price;
     private final String flightNumber;
     private final LocalDate date;
-    private int[] seats;
 
-    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price, String flightNumber, LocalDate date) {
+    public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price, String flightNumber, LocalDate date) {
         this.airline = airline;
         this.origin = origin;
         this.destination = destination;
         this.departTime = departTime;
         this.landTime = landTime;
-        this.aircraft = aircraft;
+        this.aircraftId = aircraftId;
         this.flightId = flightId;
         this.price = price;
         this.flightNumber = flightNumber;
@@ -65,11 +64,6 @@ public class Flight {
     public String getDateString() {
         return date.format(DATE_FORMATTER);
     }
-
     public String getFlightNumber() { return flightNumber; }
-    public Aircraft getAircraft() { return aircraft; }
-
-    public int getCapacity() {
-        return aircraft.getCapacity();
-    }
+    public int getAircraftId() { return aircraftId; }
 }

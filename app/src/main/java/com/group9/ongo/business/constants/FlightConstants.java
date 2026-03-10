@@ -9,10 +9,10 @@ import java.time.format.DateTimeFormatter;
 public class FlightConstants {
     private FlightConstants(){}
 
-    public final static Aircraft A320_DETAILS = new Aircraft("Airbus A320", 150, true);
-    public final static Aircraft B737_DETAILS = new Aircraft("Boeing 737", 160, false);
-    public final static Aircraft A380_DETAILS = new Aircraft("Airbus A380", 500, true);
-    public final static Aircraft B787_DETAILS = new Aircraft("Boeing 787 Dreamliner", 250, true);
+    public final static Aircraft A320_DETAILS = new Aircraft(0,"Airbus A320", 150, true);
+    public final static Aircraft B737_DETAILS = new Aircraft(0,"Boeing 737", 160, false);
+    public final static Aircraft A380_DETAILS = new Aircraft(0,"Airbus A380", 500, true);
+    public final static Aircraft B787_DETAILS = new Aircraft(0,"Boeing 787 Dreamliner", 250, true);
 
     public final static Aircraft[] ARR_AIRCRAFT_MODELS = {
             A320_DETAILS, B737_DETAILS, A380_DETAILS, B787_DETAILS
@@ -36,6 +36,16 @@ public class FlightConstants {
     public final static String CALGARY = "Calgary";
     public final static String TSU = "Tsu";
     public final static String[] ARR_LOCATIONS = {TSU,TORONTO, WINNIPEG, BC, VANCOUVER, QUEBEC_CITY, CALGARY, MONTREAL};
+
+    //Airport Codes
+    public static final String TORONTO_CODE = "YYZ";
+    public static final String WINNIPEG_CODE = "YWG";
+    public static final String MONTREAL_CODE = "YUL";
+    public static final String VANCOUVER_CODE = "YVR";
+    public static final String CALGARY_CODE = "YYC";
+    public static final String QUEBEC_CITY_CODE = "YQB";
+    public static final String DEFAULT_CODE = "YYY";
+
 
     //CAPACITY
     public final static int DEFUALT_CAPACITY = 20;

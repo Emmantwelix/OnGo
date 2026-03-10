@@ -34,7 +34,7 @@ public class FlightValidator {
     }
 
 
-    public static void validateNewFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, Aircraft aircraft, double price) throws ValidationException {
+    public static void validateNewFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, double price) throws ValidationException {
         boolean validDestination = false;
         boolean validOrigin = false;
         boolean validAirline = false;
@@ -57,11 +57,7 @@ public class FlightValidator {
             }
         }
 
-        if (aircraft == null || aircraft.getModelName() == null || aircraft.getModelName().isEmpty())
-        {
-            throw new ValidationException(FLIGHT_INVALID_PLANE);
-        }
-        else if (!validAirline)
+        if (!validAirline)
         {
             throw new ValidationException(FLIGHT_INVALID_AIRLINE);
         }
@@ -72,12 +68,6 @@ public class FlightValidator {
         else if (!validDestination)
         {
             throw new ValidationException(FLIGHT_INVALID_DESTINATION);
-        }
-        else if ( aircraft.getCapacity() > MAX_CAPACITY) {
-            throw new ValidationException(FLIGHT_MAX_CAPACITY);
-        }
-        else if ( aircraft.getCapacity() < MIN_CAPACITY ){
-            throw new ValidationException(FLIGHT_MIN_CAPACITY);
         }
         else if(departTime == null)
         {

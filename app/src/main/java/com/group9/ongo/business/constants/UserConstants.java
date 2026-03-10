@@ -6,4 +6,7 @@ public class UserConstants {
     public static final int MIN_LENGTH_NAME = 3;
     public static final int LENGTH_PHONE = 10;
     public static final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@(.+)$";
+    public static final String SAMPLE_USER_NAME = "john doe";
+    public static final String SAMPLE_USER_EMAIL = "johnd@example.com";
+    public static final String SAMPLE_USER_PHONE_NUM = "2042345433";
 }

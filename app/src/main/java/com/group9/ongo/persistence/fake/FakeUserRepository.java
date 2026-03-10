@@ -1,5 +1,9 @@
 package com.group9.ongo.persistence.fake;
 
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PHONE_NUM;
+
 import com.group9.ongo.models.User;
 import com.group9.ongo.persistence.UserRepository;
 
@@ -12,7 +16,8 @@ public class FakeUserRepository implements UserRepository {
 
 
     public FakeUserRepository() {
-        this.addUser("john doe", "johnd@example.com", "2042345433");
+        this.addUser(SAMPLE_USER_NAME, SAMPLE_USER_EMAIL, SAMPLE_USER_PHONE_NUM);
+        this.addUser(SAMPLE_USER_NAME+"2", SAMPLE_USER_EMAIL+"2", SAMPLE_USER_PHONE_NUM);
     }
 
     @Override
@@ -42,4 +47,15 @@ public class FakeUserRepository implements UserRepository {
         }
         return false;
     }
+
+    @Override
+    public int findUserIDByEmailAndName(String name, String email) {
+        for (User user : users) {
+            if (user.getUsername().equals(name) && user.getEmail().equals(email)) {
+                return user.getUserId();
+            }
+        }
+        return -1;
+    }
+
 }
