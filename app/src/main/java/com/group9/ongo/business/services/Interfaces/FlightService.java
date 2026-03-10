@@ -23,10 +23,13 @@ public interface FlightService {
 
     int getDurationRemainingMinutes(Flight flight);
     int getAvailableSeats(int flightId);
+    Seat getAnAvailableSeat(int flight_id) throws ValidationException;
 
     String getOriginCode(Flight flight);
 
     String getDestinationCode(Flight flight);
 
     String getFormattedFlightId(Flight flight);
+
+    void isFlightFull(int flightId);
 }

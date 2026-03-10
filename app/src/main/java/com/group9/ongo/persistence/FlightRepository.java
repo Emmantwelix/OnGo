@@ -17,4 +17,8 @@ public interface FlightRepository {
 
     boolean deleteFlight(int flightId);
 
+    void schedualeFlight(int flightId);
+
+    void deScheduleFlight(int flightId);
+
 }

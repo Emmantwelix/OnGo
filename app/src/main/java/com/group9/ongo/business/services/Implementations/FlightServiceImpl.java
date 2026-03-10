@@ -1,6 +1,8 @@
 package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.NO_AVAILABLE_SEAT;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_NOT_FOUND;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
@@ -9,6 +11,8 @@ import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
 import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
+
+import static java.lang.Math.ceil;
 
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
@@ -72,7 +76,7 @@ public class FlightServiceImpl implements FlightService {
         LocalDate date = fnGenerator.generateDate();
 
         int newFlightId = repo.createFlight(airline, origin, destination, departTime, landTime, aircraft, price, flightNumber, date);
-        createSeats(newFlightId);
+        seatService.createSeats(newFlightId, aircraft.getCapacity());
 
         return newFlightId;
     }
@@ -102,6 +106,29 @@ public class FlightServiceImpl implements FlightService {
         return availableSeats;
     }
 
+    @Override
+    public Seat getAnAvailableSeat(int flight_id) throws ValidationException {
+        boolean availSeat = false;
+        Seat seat1 = null;
+
+        while (!availSeat) {
+            List<Seat> seats = seatService.getAllSeatsByFlightId(flight_id);
+            for (Seat seat : seats) {
+                if (!seat.getIsBooked()) {
+                    availSeat = true;
+                    seat1 = seat;
+                }
+            }
+        }
+
+        if (!availSeat)
+        {
+            throw new ValidationException(NO_AVAILABLE_SEAT);
+        }
+        return seat1;
+    }
+
+
     //calculates the total minutes
     private int calculateDuration(Flight flight) {
         Duration duration = Duration.between(flight.getDepartTime(), flight.getLandTime());
@@ -127,28 +154,6 @@ public class FlightServiceImpl implements FlightService {
         return totalMinutes % 60;
     }
 
-    private void createSeats(int flightId) throws ValidationException {
-        String letter = " ";
-        for (int i = 0; i < MAX_ROWS; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                if ( j  == 0) {
-                    letter = COLUMN_1;
-                } else if ( j == 1) {
-                    letter = COLUMN_2;
-                } else if ( j == 2) {
-                    letter = COLUMN_3;
-                } else if ( j == 3) {
-                    letter = COLUMN_4;
-                } else if ( j == 4) {
-                    letter = COLUMN_5;
-                } else {
-                    letter = COLUMN_6;
-                }
-                seatService.createSeat(flightId, i+1, letter);
-            }
-        }
-    }
-
     private String getLocationCode(String location)
     {
         return location.length() >= 3 ? location.substring(0, 3).toUpperCase() : location.toUpperCase();
@@ -171,5 +176,17 @@ public class FlightServiceImpl implements FlightService {
         return String.format("AC %d", flight.getFlightId());
     }
 
+    public void isFlightFull(int flightId)
+    {
+        int availSeats = getAvailableSeats(flightId);
+        if (availSeats <= 0)
+        {
+            repo.deScheduleFlight(flightId);
+        }
+        else
+        {
+            repo.schedualeFlight(flightId);
+        }
+    }
 
 }

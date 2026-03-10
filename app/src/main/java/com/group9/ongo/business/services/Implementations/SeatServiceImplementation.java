@@ -4,6 +4,13 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALRE
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_EXISTS;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_UNBOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_NOT_FOUND;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_4;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
+import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
@@ -31,6 +38,49 @@ public class SeatServiceImplementation  implements SeatService {
             throw new ValidationException(SEAT_ALREADY_EXISTS);
         }
         return seatId;
+    }
+
+    @Override
+    public void createSeats(int flightId, int capacity) throws ValidationException {
+        String letter = " ";
+        int amountRows = capacity / MAX_COLUMNS;
+        int extraRow = capacity % MAX_COLUMNS;
+
+        for (int i = 0; i < amountRows; i++) {
+            for (int j = 0; j < MAX_COLUMNS; j++) {
+                if (j == 0) {
+                    letter = COLUMN_1;
+                } else if (j == 1) {
+                    letter = COLUMN_2;
+                } else if (j == 2) {
+                    letter = COLUMN_3;
+                } else if (j == 3) {
+                    letter = COLUMN_4;
+                } else if (j == 4) {
+                    letter = COLUMN_5;
+                } else {
+                    letter = COLUMN_6;
+                }
+                this.createSeat(flightId, i + 1, letter);
+            }
+        }
+
+        //extra row
+        for (int j = 0; j < extraRow; j++) {
+            if (j == 0) {
+                letter = COLUMN_1;
+            } else if (j == 1) {
+                letter = COLUMN_2;
+            } else if (j == 2) {
+                letter = COLUMN_3;
+            } else if (j == 3) {
+                letter = COLUMN_4;
+            } else {
+                letter = COLUMN_5;
+
+            }
+            this.createSeat(flightId, amountRows+1, letter);
+        }
     }
 
     @Override
@@ -76,6 +126,7 @@ public class SeatServiceImplementation  implements SeatService {
         seat.unbookSeat();
     }
 
+
     @Override
     public boolean isSeatBooked(int flight_id, int seat_id) throws ValidationException {
         Seat seat = seatRepository.getSeatById(flight_id, seat_id);
@@ -84,4 +135,5 @@ public class SeatServiceImplementation  implements SeatService {
         }
         return seat.getIsBooked();
     }
+
 }

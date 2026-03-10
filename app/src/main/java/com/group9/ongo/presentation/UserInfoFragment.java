@@ -20,6 +20,7 @@ import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.services.Interfaces.BookingService;
+import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.PassengerInput;
 
@@ -93,13 +94,16 @@ public class UserInfoFragment extends Fragment {
         PassengerInput input = new PassengerInput(firstName, lastName, birthDateStr, passportNumber);
 
         BookingService bookingService = ((OnGoApp) getActivity().getApplication()).getBookingService();
+        FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
 
         try {
             // This calls the business layer which does the validation
             // For now, using a hardcoded userId 1 as we don't have auth yet
-            bookingService.createBooking(1, flightId, input, 1, "A");
+            int availSeatRow = flightService.getAnAvailableSeat(flightId).getSeatRow();
+            String availSeatCol = flightService.getAnAvailableSeat(flightId).getSeatColumn();
+            bookingService.createBooking(1, flightId, input, availSeatRow, availSeatCol);
 
-            Toast.makeText(getContext(), "Booking confirmed for flight " + flightId + " for " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Booking confirmed for flight " + flightService.getFlightById(flightId).getFlightNumber() + " for " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
 
             // Notify the activity that booking was successful
             if (listener != null) {

@@ -76,25 +76,29 @@ public class FakeSeatsRepository implements SeatRepository {
     }
 
     private void populate_with_sample_data() {
-        createSeats(1);
-        createSeats(2);
-        createSeats(3);
-        createSeats(4);
+        createSeats(1, 150);
+        createSeats(2, 160);
+        createSeats(3, 250);
+        createSeats(4,500);
+        createSeats(5, 1);
     }
 
-    private void createSeats(int flightId){
+    private void createSeats(int flightId, int capacity){
         String letter = " ";
-        for (int i = 0; i < MAX_ROWS; i++) {
+        int amountRows = capacity / MAX_COLUMNS;
+        int extraRow = capacity % MAX_COLUMNS;
+
+        for (int i = 0; i < amountRows; i++) {
             for (int j = 0; j < MAX_COLUMNS; j++) {
-                if ( j  == 0) {
+                if (j == 0) {
                     letter = COLUMN_1;
-                } else if ( j == 1) {
+                } else if (j == 1) {
                     letter = COLUMN_2;
-                } else if ( j == 2) {
+                } else if (j == 2) {
                     letter = COLUMN_3;
-                } else if ( j == 3) {
+                } else if (j == 3) {
                     letter = COLUMN_4;
-                } else if ( j == 4) {
+                } else if (j == 4) {
                     letter = COLUMN_5;
                 } else {
                     letter = COLUMN_6;
@@ -104,6 +108,25 @@ public class FakeSeatsRepository implements SeatRepository {
                 nextId++;
             }
         }
+
+        //extra row
+            for (int j = 0; j < extraRow; j++) {
+                if (j == 0) {
+                    letter = COLUMN_1;
+                } else if (j == 1) {
+                    letter = COLUMN_2;
+                } else if (j == 2) {
+                    letter = COLUMN_3;
+                } else if (j == 3) {
+                    letter = COLUMN_4;
+                } else {
+                    letter = COLUMN_5;
+                }
+
+                Seat seat = new Seat(nextId, flightId, amountRows+1, letter, false);
+                seats.add(seat);
+                nextId++;
+            }
     }
 
 }
