@@ -4,7 +4,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,6 +69,35 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
         // Set the airline logo using the Airline enum
         holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());
+
+        holder.btnMoreOptions.setOnClickListener(v -> showPopupMenu(v, details));
+    }
+
+    private void showPopupMenu(View view, BookingDetails details) {
+        PopupMenu popup = new PopupMenu(view.getContext(), view);
+        popup.getMenuInflater().inflate(R.menu.menu_booking_options, popup.getMenu());
+
+        popup.setOnMenuItemClickListener(item -> {
+            int id = item.getItemId();
+            if (id == R.id.action_modify) {
+                Toast.makeText(view.getContext(), "Feature Under Construction", Toast.LENGTH_SHORT).show();
+                listener.onModify(details);
+                return true;
+            } else if (id == R.id.action_cancel) {
+                listener.onCancel(details);
+                return true;
+            } else if (id == R.id.action_edit_info) {
+                Toast.makeText(view.getContext(), "Feature Under Construction", Toast.LENGTH_SHORT).show();
+                listener.onEditInfo(details);
+                return true;
+            } else if (id == R.id.action_view_details) {
+                Toast.makeText(view.getContext(), "Feature Under Construction", Toast.LENGTH_SHORT).show();
+                listener.onViewDetails(details);
+                return true;
+            }
+            return false;
+        });
+        popup.show();
     }
 
     @Override
