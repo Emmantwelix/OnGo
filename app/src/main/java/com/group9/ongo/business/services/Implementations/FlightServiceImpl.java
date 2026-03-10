@@ -24,10 +24,10 @@ import static com.group9.ongo.business.constants.FlightConstants.VANCOUVER_CODE;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG_CODE;
 
-import com.group9.ongo.business.services.Interfaces.AircraftService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.SeatService;
+import com.group9.ongo.business.validation.AircraftValidator;
 import com.group9.ongo.business.validation.FlightValidator;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
@@ -48,14 +48,14 @@ public class FlightServiceImpl implements FlightService {
     private final FlightRepository repo;
     private final Generator fnGenerator;
     private final SeatService seatService;
-    private final AircraftService aircraftService;
+    private final AircraftRepository aircraftRepo;
 
 
-    public FlightServiceImpl(FlightRepository repo, Generator fnGenerator, SeatService seatService, AircraftService aircraftService) {
+    public FlightServiceImpl(FlightRepository repo, Generator fnGenerator, SeatService seatService, AircraftRepository aircraftRepo) {
         this.repo = repo;
         this.fnGenerator = fnGenerator;
         this.seatService = seatService;
-        this.aircraftService = aircraftService;
+        this.aircraftRepo = aircraftRepo;
     }
 
     private List<Flight> sortByPrice(List<Flight> flight) {
@@ -85,9 +85,11 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price) throws ValidationException {
 
-        Aircraft aircraft = aircraftService.getAircraftById(aircraftId);
+        Aircraft aircraft = aircraftRepo.getAircraftById(aircraftId);
 
-        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, aircraft , price);
+        AircraftValidator.validate(aircraft);
+
+        FlightValidator.validateNewFlight(airline, origin, destination, departTime, landTime, price);
 
         String flightNumber = fnGenerator.generateFlightNum();
         LocalDate date = fnGenerator.generateDate();
@@ -208,7 +210,7 @@ public class FlightServiceImpl implements FlightService {
     @Override
     public Aircraft getAircraft(Flight flight)
     {
-        return aircraftService.getAircraftById(flight.getAircraftId());
+        return aircraftRepo.getAircraftById(flight.getAircraftId());
     }
 
 }
