@@ -125,6 +125,8 @@ public class SeatServiceImplementation  implements SeatService {
         if (!seat.getIsBooked()) {
             throw new ValidationException(SEAT_ALREADY_UNBOOKED);
         }
+
+        seatRepository.unBookSeat(seat_id);
     }
 
 
