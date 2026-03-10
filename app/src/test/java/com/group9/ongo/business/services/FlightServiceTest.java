@@ -5,6 +5,7 @@ import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
+import static com.group9.ongo.business.constants.FlightConstants.MAX_SEATS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
@@ -16,20 +17,26 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
 import com.group9.ongo.business.services.Implementations.AircraftServiceImpl;
+import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Implementations.FlightDetailGen;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
 import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
+import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.Flight;
+import com.group9.ongo.models.PassengerInput;
+import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.fake.FakeAircraftRepository;
 import com.group9.ongo.persistence.PassengerRepository;
 import com.group9.ongo.persistence.fake.FakeBookingRepository;
 import com.group9.ongo.persistence.fake.FakeFlightRepository;
+import com.group9.ongo.persistence.fake.FakePassengerRepository;
 import com.group9.ongo.persistence.fake.FakeSeatsRepository;
 
 
@@ -74,10 +81,9 @@ public class FlightServiceTest {
         generator = new FlightDetailGen(new Random());
         seatService = new SeatServiceImplementation(new FakeSeatsRepository());
         service = new FlightServiceImpl(repo, generator, seatService, new AircraftServiceImpl(new FakeAircraftRepository()));
-        service = new FlightServiceImpl(repo, generator, seatService);
         bookingRepository = new FakeBookingRepository();
         passengerRepository = new FakePassengerRepository();
-        bookingService = new BookingServiceImpl(bookingRepository, passengerRepository, service, seatService);
+        bookingService = new BookingServiceImpl(1,bookingRepository, passengerRepository, service, seatService);
 
     }
 
@@ -450,23 +456,23 @@ public class FlightServiceTest {
 
     @Test
     public void testGetAvailableSeats_withUnbookedFlight() throws ValidationException {
-        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT, VALID_PRICE);
+        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
         int count = service.getAvailableSeats(flightId);
         assertEquals(MAX_SEATS, count);
     }
 
     @Test
     public void testGetAvailableSeats_withBookedFlight() throws ValidationException, BookingException {
-        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT, VALID_PRICE);
-        bookingService.createBooking(1, flightId, samplePassengerInput("A"), 1, "A");
+        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+        bookingService.createBooking(flightId, samplePassengerInput("A"), 1, "A");
         int count = service.getAvailableSeats(flightId);
         assertEquals(MAX_SEATS - 1, count);
     }
 
     @Test
     public void testGetAvailableSeats_AfterUnbooking() throws ValidationException, BookingException {
-        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT, VALID_PRICE);
-        Booking booking = bookingService.createBooking(1, flightId, samplePassengerInput("A"), 1, "A");
+        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+        Booking booking = bookingService.createBooking( flightId, samplePassengerInput("A"), 1, "A");
         bookingService.cancelBooking(booking.getBookingId());
         assertEquals(MAX_SEATS, service.getAvailableSeats(flightId));
     }
