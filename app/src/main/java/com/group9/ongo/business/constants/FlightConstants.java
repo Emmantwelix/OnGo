@@ -3,6 +3,7 @@ package com.group9.ongo.business.constants;
 import com.group9.ongo.models.Aircraft;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class FlightConstants {
@@ -62,6 +63,8 @@ public class FlightConstants {
     //DATE
     public final static int MAX_DATE_LENGTH = 8;
     public final static LocalDate DEFUALT_DATE = LocalDate.of(2026, 12, 25);
+    public final static LocalTime DEFAULT_TIME = LocalTime.of(12, 30);
+    public final static LocalTime DEFAULT_TIME2 = LocalTime.of(2, 30);
 
     //FLIGHT NUMBER
     public final static int FLIGHT_NUM_LENGTH = 6;
@@ -79,6 +82,7 @@ public class FlightConstants {
     public final static int MAX_ROWS = 3;
     public final static int MAX_COLUMNS = 6;
     public final static int MAX_SEATS = 18;
+    public final static int ROW_ONE = 1;
     public final static String COLUMN_1 = "A";
     public final static String COLUMN_2 = "B";
     public final static String COLUMN_3 = "C";
