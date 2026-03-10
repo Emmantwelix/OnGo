@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,12 +18,11 @@ import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.models.BookingDetails;
-import com.group9.ongo.models.Flight;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements BookingAdapter.BookingActionListener {
 
     private RecyclerView recyclerView;
     private BookingAdapter adapter;
@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         textNoBookings = view.findViewById(R.id.text_no_bookings);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new BookingAdapter(new ArrayList<>(), flightService);
+        adapter = new BookingAdapter(new ArrayList<>(), flightService, this);
         recyclerView.setAdapter(adapter);
 
         loadBookings();
@@ -70,5 +70,25 @@ public class HomeFragment extends Fragment {
             recyclerView.setVisibility(View.VISIBLE);
             adapter.setBookings(bookings);
         }
+    }
+
+    @Override
+    public void onModify(BookingDetails b) {
+        Toast.makeText(getContext(), "Modify booking: " + b.getBooking().getBookingId(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancel(BookingDetails b) {
+        Toast.makeText(getContext(), "Cancel booking: " + b.getBooking().getBookingId(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEditInfo(BookingDetails b) {
+        Toast.makeText(getContext(), "Edit info for: " + b.getPassenger().getFirstName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onViewDetails(BookingDetails b) {
+        Toast.makeText(getContext(), "View details: " + b.getBooking().getBookingId(), Toast.LENGTH_SHORT).show();
     }
 }

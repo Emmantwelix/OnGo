@@ -3,6 +3,7 @@ package com.group9.ongo.presentation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,12 +22,21 @@ import java.util.List;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
 
+    public interface BookingActionListener {
+        void onModify(BookingDetails b);
+        void onCancel(BookingDetails b);
+        void onEditInfo(BookingDetails b);
+        void onViewDetails(BookingDetails b);
+    }
+
     private List<BookingDetails> bookings;
     private FlightService flightService;
+    private BookingActionListener listener;
 
-    public BookingAdapter(List<BookingDetails> bookings, FlightService flightService) {
+    public BookingAdapter(List<BookingDetails> bookings, FlightService flightService, BookingActionListener listener) {
         this.bookings = bookings;
         this.flightService = flightService;
+        this.listener = listener;
     }
 
     @NonNull
@@ -73,6 +83,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         TextView passengerName, origin, destination, originTime, destinationTime, airline,
                 flightNumber, bookingStatus, destinationCode, originCode;
         ShapeableImageView airlineLogo;
+        ImageButton btnMoreOptions;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +98,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             bookingStatus = itemView.findViewById(R.id.text_status);
             destinationCode = itemView.findViewById(R.id.text_destination_rcode);
             originCode = itemView.findViewById(R.id.text_origin_rcode);
+            btnMoreOptions = itemView.findViewById(R.id.btn_more_options);
         }
     }
 }
