@@ -75,6 +75,27 @@ public class FakeSeatsRepository implements SeatRepository {
         return seat.getSeatId();
     }
 
+    @Override
+    public void bookSeat(int seatId)
+    {
+        for (Seat seat : seats) {
+            if (seat.getSeatId() == seatId) {
+                seat.bookSeat();
+                return;
+            }
+        }
+    }
+
+    @Override
+    public void unBookSeat(int seatId) {
+        for (Seat seat : seats) {
+            if (seat.getSeatId() == seatId) {
+                seat.unbookSeat();
+                return;
+            }
+        }
+    }
+
     private void populate_with_sample_data() {
         createSeats(1, 150);
         createSeats(2, 160);

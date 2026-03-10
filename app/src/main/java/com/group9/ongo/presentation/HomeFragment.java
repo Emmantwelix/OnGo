@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.Interfaces.BookingService;
+import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.models.BookingDetails;
+import com.group9.ongo.models.Flight;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,8 @@ public class HomeFragment extends Fragment {
     private TextView textNoBookings;
     private BookingService bookingService;
 
+    private FlightService flightService;
+
     public static HomeFragment newInstance() {
         return new HomeFragment();
     }
@@ -35,6 +39,7 @@ public class HomeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bookingService = ((OnGoApp) requireActivity().getApplication()).getBookingService();
+        flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
     }
 
     @Nullable
@@ -46,7 +51,7 @@ public class HomeFragment extends Fragment {
         textNoBookings = view.findViewById(R.id.text_no_bookings);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new BookingAdapter(new ArrayList<>());
+        adapter = new BookingAdapter(new ArrayList<>(), flightService);
         recyclerView.setAdapter(adapter);
 
         loadBookings();
@@ -55,8 +60,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadBookings() {
-        // Hardcoded userId 1 for now
-        List<BookingDetails> bookings = bookingService.getBookingDetailsByUserId(1);
+        List<BookingDetails> bookings = bookingService.getBookingDetailsForCurrentUser();
 
         if (bookings.isEmpty()) {
             textNoBookings.setVisibility(View.VISIBLE);

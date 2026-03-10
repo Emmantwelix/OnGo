@@ -202,14 +202,38 @@
                 android:textStyle="bold"
                 tools:text="WS354" />
 
-            <TextView
-                android:id="@+id/text_route_code"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="YUL → YWG"
-                android:textColor="#6B7280"
-                android:textSize="15sp"
-                tools:text="YUL → YWG" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_origin_rcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YUL"
+                    android:textColor="#6B7280"
+                    android:textSize="15sp"
+                    tools:text="YUL" />
+
+                <TextView
+                    android:id="@+id/text_rc_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" → "
+                    android:textColor="#6B7280"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/text_destination_rcode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="YWG"
+                    android:textColor="#6B7280"
+                    android:textSize="15sp"
+                    tools:text="YWG" />
+
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

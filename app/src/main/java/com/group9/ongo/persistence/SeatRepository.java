@@ -9,4 +9,6 @@ public interface SeatRepository {
     Seat getSeatById(int flight_id, int seat_id);
     int createSeat(int flight_id, int row, String column); //return seat id.
     Seat findSeat(int flightId, int seatRow, String seatColumn);
+    void bookSeat(int seatId);
+    void unBookSeat(int seatId);
 }
