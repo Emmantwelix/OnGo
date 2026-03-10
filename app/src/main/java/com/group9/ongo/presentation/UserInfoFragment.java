@@ -101,7 +101,7 @@ public class UserInfoFragment extends Fragment {
             // For now, using a hardcoded userId 1 as we don't have auth yet
             int availSeatRow = flightService.getAnAvailableSeat(flightId).getSeatRow();
             String availSeatCol = flightService.getAnAvailableSeat(flightId).getSeatColumn();
-            bookingService.createBooking(1, flightId, input, availSeatRow, availSeatCol);
+            bookingService.createBooking(flightId, input, availSeatRow, availSeatCol);
 
             Toast.makeText(getContext(), "Booking confirmed for flight " + flightService.getFlightById(flightId).getFlightNumber() + " for " + firstName + " " + lastName, Toast.LENGTH_LONG).show();
 

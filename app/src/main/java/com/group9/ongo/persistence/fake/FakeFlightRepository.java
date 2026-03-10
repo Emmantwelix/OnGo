@@ -6,6 +6,7 @@ import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.B787_DETAILS;
+import static com.group9.ongo.business.constants.FlightConstants.CALGARY;
 import static com.group9.ongo.business.constants.FlightConstants.DEFUALT_DATE;
 import static com.group9.ongo.business.constants.FlightConstants.DEFUALT_FLIGHT_NUM;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
@@ -115,6 +116,8 @@ public class FakeFlightRepository implements FlightRepository {
         this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), 2, 979.52, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
         this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), 3, 200.01, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
         this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), 4, 417.38, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(AIR_TRANSAT, CALGARY, VANCOUVER, LocalTime.of(4, 0), LocalTime.of(6, 0), 3, 300.01, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+
     }
 
 }

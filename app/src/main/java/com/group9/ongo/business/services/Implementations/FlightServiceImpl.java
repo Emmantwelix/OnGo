@@ -96,7 +96,7 @@ public class FlightServiceImpl implements FlightService {
         LocalDate date = fnGenerator.generateDate();
 
         int newFlightId = repo.createFlight(airline, origin, destination, departTime, landTime, aircraftId, price, flightNumber, date);
-        seatService.createSeats(newFlightId);
+        seatService.createSeats(newFlightId, aircraft.getCapacity());
 
         return newFlightId;
     }

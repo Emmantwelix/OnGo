@@ -103,17 +103,6 @@ public class SeatServiceImplementation  implements SeatService {
     }
 
     @Override
-    public Seat findSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException
-    {
-        Seat seat = seatRepository.findSeat(flight_id, seatRow, seatColumn);
-
-        if (seat == null) {
-            throw new ValidationException(SEAT_NOT_FOUND);
-        }
-        return seat;
-    }
-
-    @Override
     public int bookSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException {
         Seat seat = findSeat(flight_id, seatRow, seatColumn);
         int seatId = seat.getSeatId();
@@ -136,14 +125,7 @@ public class SeatServiceImplementation  implements SeatService {
         if (!seat.getIsBooked()) {
             throw new ValidationException(SEAT_ALREADY_UNBOOKED);
         }
-
-    @Override
-    public boolean isSeatBooked(int flight_id, int seat_id) throws ValidationException {
-        Seat seat = seatRepository.getSeatById(flight_id, seat_id);
-        if (seat == null) {
-            throw new ValidationException(SEAT_NOT_FOUND);
-        }
-        return seat.getIsBooked();
     }
+
 
 }
