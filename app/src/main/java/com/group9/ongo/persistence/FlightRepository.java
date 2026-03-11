@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface FlightRepository {
     List<Flight> getAll();
+    List<Flight> getAllAvailableFlights();
 
     Flight getFlightById(int flightId);
 
@@ -16,5 +17,9 @@ public interface FlightRepository {
     int createFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price, String flightNum, LocalDate date);
 
     boolean deleteFlight(int flightId);
+
+    void schedualeFlight(int flightId);
+
+    void deScheduleFlight(int flightId);
 
 }

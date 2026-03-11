@@ -6,6 +6,7 @@ import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.B787_DETAILS;
+import static com.group9.ongo.business.constants.FlightConstants.CALGARY;
 import static com.group9.ongo.business.constants.FlightConstants.DEFUALT_DATE;
 import static com.group9.ongo.business.constants.FlightConstants.DEFUALT_FLIGHT_NUM;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
@@ -29,6 +30,7 @@ public class FakeFlightRepository implements FlightRepository {
     private int nextId = 1;
 
     private final List<Flight> flights = new ArrayList<>();
+    private final List<Flight> fullFlights = new ArrayList<>();
 
     public FakeFlightRepository() {
 
@@ -44,6 +46,11 @@ public class FakeFlightRepository implements FlightRepository {
     public List<Flight> getAll() {
         return Collections.unmodifiableList(flights);
     }
+    @Override
+    public List<Flight> getAllAvailableFlights() {
+        return Collections.unmodifiableList(flights);
+    }
+
 
     @Override
     public Flight getFlightById(int flightId) {
@@ -52,7 +59,45 @@ public class FakeFlightRepository implements FlightRepository {
                 return flight;
             }
         }
+        for (Flight flight : fullFlights) {
+            if (flight.getFlightId() == flightId) {
+                return flight;
+            }
+        }
         return null;
+    }
+
+    private Flight getDownFlightById(int flightId) {
+        for (Flight flight : fullFlights) {
+            if (flight.getFlightId() == flightId) {
+                return flight;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void schedualeFlight(int flightId)
+    {
+        Flight flight = this.getDownFlightById(flightId);
+        if (flight != null )
+        {
+            flights.add(flight);
+            flight.setAvailability(true);
+            fullFlights.remove(flight);
+        }
+    }
+
+    @Override
+    public void deScheduleFlight(int flightId)
+    {
+        Flight flight = this.getFlightById(flightId);
+        if (flight != null )
+        {
+            fullFlights.add(flight);
+            flight.setAvailability(false);
+            flights.remove(flight);
+        }
     }
 
     @Override
@@ -77,6 +122,8 @@ public class FakeFlightRepository implements FlightRepository {
         this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), 2, 979.52, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
         this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), 3, 200.01, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
         this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), 4, 417.38, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+        this.createFlight(AIR_TRANSAT, CALGARY, VANCOUVER, LocalTime.of(4, 0), LocalTime.of(6, 0), 3, 300.01, DEFUALT_FLIGHT_NUM, DEFUALT_DATE);
+
     }
 
 }

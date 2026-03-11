@@ -59,6 +59,7 @@ public class ErrorMessageConstants {
     public static final String SEAT_ALREADY_EXISTS = "Seat already exists for this flight";
     public static final String SEAT_ALREADY_BOOKED = "Seat is already booked";
     public static final String SEAT_ALREADY_UNBOOKED = "Seat is not booked";
+    public static final String NO_AVAILABLE_SEAT = "No available seats";
 
 
 }

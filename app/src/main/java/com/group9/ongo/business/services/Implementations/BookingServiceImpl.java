@@ -55,6 +55,8 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingException(BOOKING_PASSENGER_ERROR);
         }
 
+        flightService.isFlightFull(flightId);
+
         return booking;
     }
     @Override
@@ -68,6 +70,8 @@ public class BookingServiceImpl implements BookingService {
         Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
 
         seatService.unbookSeat(seat.getFlightId(), seat.getSeatId());
+
+        flightService.isFlightFull(seat.getFlightId());
 
         return bookingsRepo.deleteBooking(bookingId);
     }

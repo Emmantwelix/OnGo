@@ -17,6 +17,7 @@ public class Flight {
     private final double price;
     private final String flightNumber;
     private final LocalDate date;
+    private boolean availability;
 
     public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price, String flightNumber, LocalDate date) {
         this.airline = airline;
@@ -29,6 +30,7 @@ public class Flight {
         this.price = price;
         this.flightNumber = flightNumber;
         this.date = date;
+        this.availability = true;
     }
 
     public String getDestination() {
@@ -66,4 +68,6 @@ public class Flight {
     }
     public String getFlightNumber() { return flightNumber; }
     public int getAircraftId() { return aircraftId; }
+    public boolean getAvailability() { return availability; }
+    public void setAvailability(boolean availability) { this.availability = availability; }
 }
