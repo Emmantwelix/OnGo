@@ -46,6 +46,11 @@ public class FakeFlightRepository implements FlightRepository {
     public List<Flight> getAll() {
         return Collections.unmodifiableList(flights);
     }
+    @Override
+    public List<Flight> getAllAvailableFlights() {
+        return Collections.unmodifiableList(flights);
+    }
+
 
     @Override
     public Flight getFlightById(int flightId) {
@@ -59,7 +64,6 @@ public class FakeFlightRepository implements FlightRepository {
                 return flight;
             }
         }
-        // If the flight is not found in either list, return null (or throw an exception)
         return null;
     }
 
@@ -79,6 +83,7 @@ public class FakeFlightRepository implements FlightRepository {
         if (flight != null )
         {
             flights.add(flight);
+            flight.setAvailability(true);
             fullFlights.remove(flight);
         }
     }
@@ -90,6 +95,7 @@ public class FakeFlightRepository implements FlightRepository {
         if (flight != null )
         {
             fullFlights.add(flight);
+            flight.setAvailability(false);
             flights.remove(flight);
         }
     }

@@ -10,7 +10,8 @@ import java.util.List;
 
 public interface FlightService {
     List<Flight> getAllFlights();
-    List <Seat> getSeats(int flightId);
+
+    List<Flight> getAllAvailableFlights();
 
     Flight getFlightById(int flightId) throws ValidationException;
 

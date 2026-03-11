@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface FlightRepository {
     List<Flight> getAll();
+    List<Flight> getAllAvailableFlights();
 
     Flight getFlightById(int flightId);
 
