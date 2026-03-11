@@ -1,5 +1,6 @@
 package com.group9.ongo.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
@@ -8,9 +9,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.group9.ongo.R;
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.application.OnGoApp;
+import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.SeatService;
-import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Aircraft;
+import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.models.SeatMapConfig;
 
@@ -18,14 +21,13 @@ import java.util.List;
 
 public class SeatSelectionActivity extends AppCompatActivity {
 
+    public static final String EXTRA_SELECTED_SEAT = "SELECTED_SEAT";
+
     private SeatMapView seatMapView;
     private TextView seatInfoText;
     private Button confirmButton;
     private Seat selectedSeat;
     private int flightId;
-
-    // In a real app, you'd use Dependency Injection or a Service Locator
-    private SeatService seatService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,32 +35,49 @@ public class SeatSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seat_selection);
 
         flightId = getIntent().getIntExtra("FLIGHT_ID", -1);
-        int aircraftId = getIntent().getIntExtra("AIRCRAFT_ID", 1);
-
+        
         seatMapView = findViewById(R.id.seat_map_view);
         seatInfoText = findViewById(R.id.text_seat_info);
         confirmButton = findViewById(R.id.btn_confirm_seat);
 
-        // Initialize SeatMapConfig based on aircraftId
-        SeatMapConfig config;
-        switch (aircraftId % 5) {
-            case 0: config = SeatMapConfig.createBoeing737(); break;
-            case 1: config = SeatMapConfig.createAirbusA320(); break;
-            case 2: config = SeatMapConfig.createBoeing777(); break;
-            case 3: config = SeatMapConfig.createBombardierCRJ900(); break;
-            default: config = SeatMapConfig.createEmbraer190(); break;
+        OnGoApp app = (OnGoApp) getApplication();
+        FlightService flightService = app.getFlightService();
+        SeatService seatService = app.getSeatService();
+        
+        try {
+            Flight flight = flightService.getFlightById(flightId);
+            Aircraft aircraft = flightService.getAircraft(flight);
+            
+            if (aircraft != null) {
+                // 1. Generate the standard map grid for this aircraft
+                SeatMapConfig config = SeatMapConfig.createFromCapacity(aircraft.getModelName(), aircraft.getCapacity());
+                List<Seat> gridSeats = config.generateSeats();
+                
+                // 2. Fetch actual booked status from the database
+                List<Seat> realSeats = seatService.getAllSeatsByFlightId(flightId);
+                
+                // 3. Mark matching seats as OCCUPIED in our grid
+                for (Seat gridSeat : gridSeats) {
+                    if (gridSeat.getType() == Seat.Type.SEAT) {
+                        for (Seat realSeat : realSeats) {
+                            if (realSeat.getRow() == gridSeat.getRow() && 
+                                realSeat.getLabel().equalsIgnoreCase(gridSeat.getLabel())) {
+                                
+                                if (realSeat.getIsBooked()) {
+                                    gridSeat.setStatus(Seat.Status.OCCUPIED);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                seatMapView.setSeatData(gridSeats, config.getLayout().length());
+                Toast.makeText(this, "Loading map for " + aircraft.getModelName(), Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(this, "Error loading seat data", Toast.LENGTH_SHORT).show();
         }
-
-        List<Seat> seats = config.generateSeats();
-        // Here you would typically fetch current occupancy from seatService and update status
-        seatMapView.setSeatData(seats, config.generateSeats().size() / 30 > 6 ? 11 : 7); // Simplified column logic
-        // The column count should match the layout string in config. ABC_DEF is 7 chars.
-
-        // Fix column count logic based on layout string
-        String layout = "ABC_DEF"; // Default for 737/A320
-        if (aircraftId % 5 == 2) layout = "ABC_DEFG_HJK";
-        else if (aircraftId % 5 >= 3) layout = "AC_DF";
-        seatMapView.setSeatData(seats, layout.length());
 
         seatMapView.setSeatSelectionListener(seat -> {
             selectedSeat = seat;
@@ -73,9 +92,9 @@ public class SeatSelectionActivity extends AppCompatActivity {
 
         confirmButton.setOnClickListener(v -> {
             if (selectedSeat != null) {
-                // In a real implementation, you'd call seatService.bookSeat
-                // For this step, we'll just show a success message and finish
-                Toast.makeText(this, "Seat " + selectedSeat.getRow() + selectedSeat.getLabel() + " confirmed!", Toast.LENGTH_SHORT).show();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(EXTRA_SELECTED_SEAT, selectedSeat.getRow() + selectedSeat.getLabel());
+                setResult(RESULT_OK, resultIntent);
                 finish();
             }
         });

@@ -1,5 +1,6 @@
 package com.group9.ongo.presentation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +112,7 @@ public class FlightDetailsFragment extends Fragment {
 
             btnNext.setOnClickListener(v -> {
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, UserInfoFragment.newInstance(flightId))
+                        .replace(R.id.fragment_container, UserInfoFragment.newInstance(flightId, null))
                         .addToBackStack(null)
                         .commit();
             });
