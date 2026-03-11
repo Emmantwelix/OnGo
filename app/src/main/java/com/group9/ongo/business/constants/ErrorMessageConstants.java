@@ -53,6 +53,13 @@ public class ErrorMessageConstants {
     public static final String PASSENGER_NO_BIRTHDATE = "Date of birth is required";
     public static final String PASSENGER_INVALID_BIRTHDATE = "Date of birth must be in format YYYY-MM-DD";
     public static final String PASSENGER_NO_PNUMBER = "Passport number is required";
+    public static final String PASSENGER_DOB_INVALID_MONTH = "Month must be between 01 and 12";
+    public static final String PASSENGER_DOB_INVALID_DATE_RANGE = "Day must be between 01 and 31";
+    public static final String PASSENGER_DOB_INVALID_YEAR = "Birth year must be 1850 or later";
+    public static final String PASSENGER_FUTURE_DOB = "Date of birth cannot be in the future";
+    public static final String PASSENGER_DOB_INVALID_NUM = "Date of birth must contain valid numbers";
+    public static final String PASSENGER_DOB_INVALID_DATE = "Invalid date: ";
+
 
     //SEAT ERROR MESSAGES
     public static final String SEAT_NOT_FOUND = "Seat not found";
