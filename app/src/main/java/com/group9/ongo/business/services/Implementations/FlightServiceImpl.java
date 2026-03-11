@@ -53,10 +53,14 @@ public class FlightServiceImpl implements FlightService {
         this.aircraftRepo = aircraftRepo;
     }
 
-    private List<Flight> sortByPrice(List<Flight> flight) {
+    public List<Flight> sortByPrice(List<Flight> flight) {
         List<Flight> sortedFlight = new ArrayList<>(flight);
         sortedFlight.sort(Comparator.comparingDouble(Flight::getPrice));
         return sortedFlight;
+    }
+
+    public  List<Flight> specificFlights(List<Flight> flight,String origin, String destination){
+        return repo.getAll(); //TEMP for now
     }
 
     @Override
@@ -73,7 +77,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> getAllFlights() {
-        return sortByPrice(repo.getAll());
+        return repo.getAll();
     }
 
     @Override
