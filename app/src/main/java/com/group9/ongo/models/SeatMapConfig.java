@@ -3,58 +3,53 @@ package com.group9.ongo.models;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * SeatMapConfig handles different plane layouts and generates a list of Seat objects.
- * Following SOLID principles, it uses a layout string to define seat and aisle positions.
- */
 public class SeatMapConfig {
     private final String modelName;
+    private final String layout;
+    private final int capacity;
     private final int rows;
-    private final String layout; // e.g., "ABC_DEF" where '_' is the aisle
 
-    public SeatMapConfig(String modelName, int rows, String layout) {
+    public SeatMapConfig(String modelName, String layout, int capacity) {
         this.modelName = modelName;
-        this.rows = rows;
         this.layout = layout;
+        this.capacity = capacity;
+        
+        // Calculate rows based on how many physical seats (non-aisle) are in the layout
+        int physicalSeatsPerRow = layout.replace("_", "").length();
+        this.rows = (int) Math.ceil((double) capacity / physicalSeatsPerRow);
     }
 
-    /**
-     * Dynamically creates a configuration based on aircraft capacity.
-     */
     public static SeatMapConfig createFromCapacity(String modelName, int capacity) {
         String layout;
-        int seatsPerRow;
-
         if (capacity >= 250) {
-            layout = "ABC_DEFG_HJK"; // Wide-body (10 seats/row)
-            seatsPerRow = 10;
+            layout = "ABC_DEFG_HJK"; // Wide-body
         } else if (capacity >= 100) {
-            layout = "ABC_DEF";      // Narrow-body (6 seats/row)
-            seatsPerRow = 6;
+            layout = "ABC_DEF";      // Narrow-body
         } else {
-            layout = "AC_DF";        // Regional (4 seats/row)
-            seatsPerRow = 4;
+            layout = "AC_DF";        // Regional
         }
-
-        int rows = (int) Math.ceil((double) capacity / seatsPerRow);
-        return new SeatMapConfig(modelName, rows, layout);
+        return new SeatMapConfig(modelName, layout, capacity);
     }
 
-    /**
-     * Generates a list of Seat objects based on the configuration.
-     * @return List of generated seats.
-     */
     public List<Seat> generateSeats() {
         List<Seat> seats = new ArrayList<>();
+        int physicalSeatCount = 0;
+
         for (int r = 1; r <= rows; r++) {
             for (int i = 0; i < layout.length(); i++) {
                 char c = layout.charAt(i);
                 if (c == '_') {
-                    // Aisle is represented as a Seat with Type.AISLE
+                    // Physical aisle
                     seats.add(new Seat(r, "", Seat.Type.AISLE, Seat.Status.OCCUPIED));
                 } else {
-                    // Normal seat
-                    seats.add(new Seat(r, String.valueOf(c), Seat.Type.SEAT, Seat.Status.AVAILABLE));
+                    // Check if we still have physical seats left to place
+                    if (physicalSeatCount < capacity) {
+                        seats.add(new Seat(r, String.valueOf(c), Seat.Type.SEAT, Seat.Status.AVAILABLE));
+                        physicalSeatCount++;
+                    } else {
+                        // Empty space in the tail or last row where no seat exists
+                        seats.add(new Seat(r, "", Seat.Type.AISLE, Seat.Status.OCCUPIED));
+                    }
                 }
             }
         }
@@ -73,20 +68,24 @@ public class SeatMapConfig {
         return rows;
     }
 
-    // Factory methods for project-specific plane models
+    public int getCapacity() {
+        return capacity;
+    }
+
+    // Specific factory methods matching project constants
     public static SeatMapConfig createAirbusA320() {
-        return new SeatMapConfig("Airbus A320", 25, "ABC_DEF");
+        return new SeatMapConfig("Airbus A320", "ABC_DEF", 150);
     }
 
     public static SeatMapConfig createBoeing737() {
-        return new SeatMapConfig("Boeing 737", 27, "ABC_DEF");
+        return new SeatMapConfig("Boeing 737", "ABC_DEF", 160);
     }
 
     public static SeatMapConfig createBoeing787() {
-        return new SeatMapConfig("Boeing 787 Dreamliner", 25, "ABC_DEFG_HJK");
+        return new SeatMapConfig("Boeing 787 Dreamliner", "ABC_DEFG_HJK", 250);
     }
 
     public static SeatMapConfig createAirbusA380() {
-        return new SeatMapConfig("Airbus A380", 50, "ABC_DEFG_HJK");
+        return new SeatMapConfig("Airbus A380", "ABC_DEFG_HJK", 500);
     }
 }

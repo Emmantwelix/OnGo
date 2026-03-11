@@ -6,15 +6,8 @@ import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.B787_DETAILS;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_4;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.PORTER_AIRLINES;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
@@ -31,14 +24,18 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.group9.ongo.models.Aircraft;
+import com.group9.ongo.models.Seat;
+import com.group9.ongo.models.SeatMapConfig;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 
 public class AppDbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "ongo.db";
-    public static final int DB_VERSION = 1;
+    // Version 3 forces a reset to ensure seat data matches the new SeatMapConfig layouts
+    public static final int DB_VERSION = 3;
 
     //bookings
     public static final String TABLE_BOOKINGS = "bookings";
@@ -204,9 +201,11 @@ public class AppDbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
     {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FLIGHTS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKINGS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PASSENGERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BOOKINGS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEATS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_FLIGHTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_AIRCRAFT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
@@ -332,46 +331,14 @@ public class AppDbHelper extends SQLiteOpenHelper {
     }
 
     private void seedSeats(SQLiteDatabase db, int flightId, int capacity) {
-        String letter;
-        int amountRows = capacity / MAX_COLUMNS;
-        int extraRow = capacity % MAX_COLUMNS;
+        // Use the centralized SeatMapConfig to ensure database seats match UI seats perfectly.
+        SeatMapConfig config = SeatMapConfig.createFromCapacity("Seed", capacity);
+        List<Seat> generatedSeats = config.generateSeats();
 
-        for (int i = 0; i < amountRows; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                if (j == 0) {
-                    letter = COLUMN_1;
-                } else if (j == 1) {
-                    letter = COLUMN_2;
-                } else if (j == 2) {
-                    letter = COLUMN_3;
-                } else if (j == 3) {
-                    letter = COLUMN_4;
-                } else if (j == 4) {
-                    letter = COLUMN_5;
-                } else {
-                    letter = COLUMN_6;
-                }
-
-                insertSeat(db, flightId, i + 1, letter);
+        for (Seat seat : generatedSeats) {
+            if (seat.getType() == Seat.Type.SEAT) {
+                insertSeat(db, flightId, seat.getRow(), seat.getLabel());
             }
-        }
-
-        for (int j = 0; j < extraRow; j++) {
-            if (j == 0) {
-                letter = COLUMN_1;
-            } else if (j == 1) {
-                letter = COLUMN_2;
-            } else if (j == 2) {
-                letter = COLUMN_3;
-            } else if (j == 3) {
-                letter = COLUMN_4;
-            } else if (j == 4) {
-                letter = COLUMN_5;
-            } else {
-                letter = COLUMN_6;
-            }
-
-            insertSeat(db, flightId, amountRows + 1, letter);
         }
     }
 
