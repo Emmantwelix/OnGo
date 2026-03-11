@@ -75,11 +75,6 @@ public class FlightServiceImpl implements FlightService {
         return sortByPrice(repo.getAllAvailableFlights());
     }
 
-    @Override
-    public List<Seat> getSeats(int flightId) {
-        return seatService.getAllSeatsByFlightId(flightId);
-    }
-
 
     @Override
     public Flight getFlightById(int flightId) throws ValidationException {
