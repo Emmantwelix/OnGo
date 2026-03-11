@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
+import com.group9.ongo.business.services.Implementations.SeatMapService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.models.Aircraft;
@@ -50,28 +51,15 @@ public class SeatSelectionActivity extends AppCompatActivity {
             
             if (aircraft != null) {
                 // 1. Generate the standard map grid for this aircraft
-                SeatMapConfig config = SeatMapConfig.createFromCapacity(aircraft.getModelName(), aircraft.getCapacity());
-                List<Seat> gridSeats = config.generateSeats();
+                SeatMapConfig config = SeatMapService.createFromCapacity(aircraft.getCapacity());
+                List<Seat> gridSeats = SeatMapService.generateSeats(config);
                 
-                // 2. Fetch actual booked status from the database
+                // 2. Fetch actual booked status from the seatService
                 List<Seat> realSeats = seatService.getAllSeatsByFlightId(flightId);
                 
                 // 3. Mark matching seats as OCCUPIED in our grid
-                for (Seat gridSeat : gridSeats) {
-                    if (gridSeat.getType() == Seat.Type.SEAT) {
-                        for (Seat realSeat : realSeats) {
-                            if (realSeat.getRow() == gridSeat.getRow() && 
-                                realSeat.getLabel().equalsIgnoreCase(gridSeat.getLabel())) {
-                                
-                                if (realSeat.getIsBooked()) {
-                                    gridSeat.setStatus(Seat.Status.OCCUPIED);
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-                
+                SeatMapService.applyBookedSeats(gridSeats,realSeats);
+
                 seatMapView.setSeatData(gridSeats, config.getLayout().length());
                 Toast.makeText(this, "Loading map for " + aircraft.getModelName(), Toast.LENGTH_SHORT).show();
             }

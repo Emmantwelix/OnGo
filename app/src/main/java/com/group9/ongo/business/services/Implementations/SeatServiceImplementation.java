@@ -36,8 +36,8 @@ public class SeatServiceImplementation  implements SeatService {
 
     @Override
     public void createSeats(int flightId, int capacity) throws ValidationException {
-        SeatMapConfig config = SeatMapConfig.createFromCapacity("Flight " + flightId, capacity);
-        List<Seat> generatedSeats = config.generateSeats();
+        SeatMapConfig config = SeatMapService.createFromCapacity(capacity);
+        List<Seat> generatedSeats = SeatMapService.generateSeats(config);
 
         for (Seat seat : generatedSeats) {
             if (seat.getType() == Seat.Type.SEAT) {

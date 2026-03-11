@@ -82,7 +82,7 @@ public class SeatServiceTest {
         Seat seat = seatService.getSeatById(1, 1);
         assertEquals(1, seat.getFlightId());
         assertEquals(ROW_ONE, seat.getSeatRow());
-        assertEquals(COLUMN_1, seat.getSeatColumn());
+        assertEquals(COLUMN_1, seat.getLabel());
     }
 
 
@@ -164,7 +164,7 @@ public class SeatServiceTest {
         Seat seat = seatService.findSeat(flightId, ROW_ONE, COLUMN_1);
         assertEquals(1, seat.getFlightId());
         assertEquals(ROW_ONE, seat.getSeatRow());
-        assertEquals(COLUMN_1, seat.getSeatColumn());
+        assertEquals(COLUMN_1, seat.getLabel());
     }
 
 }

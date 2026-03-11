@@ -49,10 +49,6 @@ public class Seat {
         return label;
     }
 
-    public String getSeatColumn() { // Compatibility
-        return label;
-    }
-
     public Type getType() {
         return type;
     }

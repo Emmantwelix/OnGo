@@ -14,6 +14,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.group9.ongo.R;
 import com.group9.ongo.models.Seat;
 
 import java.util.ArrayList;
@@ -64,13 +65,13 @@ public class SeatMapView extends View {
         availablePaint.setColor(Color.LTGRAY);
 
         occupiedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        occupiedPaint.setColor(Color.parseColor("#F44336")); // Professional Red
+        occupiedPaint.setColor(getContext().getColor(R.color.seat_occupied));
 
         selectedPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        selectedPaint.setColor(Color.parseColor("#4CAF50")); // Professional Green
+        selectedPaint.setColor(getContext().getColor(R.color.seat_selected));
 
         nosePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        nosePaint.setColor(Color.parseColor("#EEEEEE"));
+        nosePaint.setColor(getContext().getColor(R.color.aircraft_nose));
         nosePaint.setStyle(Paint.Style.FILL);
 
         textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

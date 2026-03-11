@@ -23,6 +23,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.group9.ongo.business.services.Implementations.SeatMapService;
 import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.models.SeatMapConfig;
@@ -331,8 +332,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
 
     private void seedSeats(SQLiteDatabase db, int flightId, int capacity) {
         // Use the centralized SeatMapConfig to ensure database seats match UI seats perfectly.
-        SeatMapConfig config = SeatMapConfig.createFromCapacity("Seed", capacity);
-        List<Seat> generatedSeats = config.generateSeats();
+        SeatMapConfig config = SeatMapService.createFromCapacity(capacity);
+        List<Seat> generatedSeats = SeatMapService.generateSeats(config);
 
         for (Seat seat : generatedSeats) {
             if (seat.getType() == Seat.Type.SEAT) {
