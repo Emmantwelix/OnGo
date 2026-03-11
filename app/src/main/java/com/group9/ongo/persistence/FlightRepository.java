@@ -1,6 +1,5 @@
 package com.group9.ongo.persistence;
 
-import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 
 import java.time.LocalTime;
@@ -18,7 +17,7 @@ public interface FlightRepository {
 
     boolean deleteFlight(int flightId);
 
-    void schedualeFlight(int flightId);
+    void scheduleFlight(int flightId);
 
     void deScheduleFlight(int flightId);
 

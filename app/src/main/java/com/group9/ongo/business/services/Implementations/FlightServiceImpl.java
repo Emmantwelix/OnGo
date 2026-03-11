@@ -2,19 +2,10 @@ package com.group9.ongo.business.services.Implementations;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.NO_AVAILABLE_SEAT;
-import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_NOT_FOUND;
 import static com.group9.ongo.business.constants.FlightConstants.BC;
 import static com.group9.ongo.business.constants.FlightConstants.CALGARY;
 import static com.group9.ongo.business.constants.FlightConstants.CALGARY_CODE;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_4;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_CODE;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL_CODE;
 import static com.group9.ongo.business.constants.FlightConstants.QUEBEC_CITY;
@@ -205,7 +196,7 @@ public class FlightServiceImpl implements FlightService {
         }
         else
         {
-            repo.schedualeFlight(flightId);
+            repo.scheduleFlight(flightId);
         }
     }
     

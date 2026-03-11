@@ -46,15 +46,9 @@ public class FlightConstants {
     public static final String QUEBEC_CITY_CODE = "YQB";
     public static final String DEFAULT_CODE = "YYY";
 
-
-    //CAPACITY
-    public final static int DEFUALT_CAPACITY = 20;
     public final static int MAX_CAPACITY = 500;
     public final static int MIN_CAPACITY = 1;
 
-    //OCCUPATION
-    public final static int EMPTY = 0;
-    
     //PRICE
     public final static double LARGER_PRICE = 903.94;
     public final static double LARGE_PRICE = 799.49;
@@ -72,13 +66,13 @@ public class FlightConstants {
 
     //DATE
     public final static int MAX_DATE_LENGTH = 8;
-    public final static LocalDate DEFUALT_DATE = LocalDate.of(2026, 12, 25);
+    public final static LocalDate DEFAULT_DATE = LocalDate.of(2026, 12, 25);
     public final static LocalTime DEFAULT_TIME = LocalTime.of(12, 30);
     public final static LocalTime DEFAULT_TIME2 = LocalTime.of(2, 30);
 
     //FLIGHT NUMBER
     public final static int FLIGHT_NUM_LENGTH = 6;
-    public final static String DEFUALT_FLIGHT_NUM = "AA0000";
+    public final static String DEFAULT_FLIGHT_NUM = "AA0000";
 
     //MISCELLANEOUS
     public final static String[] ALPHABET = {"A", "B", "C", "D", "E", "F", "G",
