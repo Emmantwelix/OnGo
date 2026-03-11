@@ -14,4 +14,6 @@ public interface BookingService {
     boolean cancelBooking(int bookingId) throws ValidationException;
 
     List<BookingDetails> getBookingDetailsForCurrentUser();
+
+    BookingDetails getBookingDetailsById(int bookingId);
 }

@@ -92,5 +92,19 @@ public class SeatServiceImplementation  implements SeatService {
         seatRepository.unBookSeat(seat_id);
     }
 
+    @Override
+    public String getFormattedSeatById(int flight_id, int seatId)
+    {
+        try{
+            Seat seat = getSeatById(flight_id, seatId);
+            return seat.getSeatRow() + seat.getSeatColumn();
+        } catch (ValidationException e)
+        {
+            //
+        }
+
+        return null;
+    }
+
 
 }

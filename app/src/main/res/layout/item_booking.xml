@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/booking_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="16dp"
@@ -69,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:gravity="top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/text_passenger_name">
 
@@ -77,20 +78,36 @@
                 android:id="@+id/airlineLogo"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
+                android:layout_marginTop="2dp"
                 android:layout_marginEnd="6dp"
                 android:src="@drawable/logo_aircanada"
                 android:scaleType="centerCrop"
                 android:contentDescription="Airline Logo"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.Rounded"/>
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Rounded" />
 
-            <TextView
-                android:id="@+id/text_airline"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Air Canada"
-                android:textColor="#8A94A6"
-                android:textSize="16sp"/>
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/text_airline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Air Canada"
+                    android:textColor="#8A94A6"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_flight_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="Tue, Apr 30"
+                    android:textColor="#98A2B3"
+                    android:textSize="14sp"
+                    tools:text="Tue, Apr 30" />
+            </LinearLayout>
         </LinearLayout>
 
         <!-- Divider -->

@@ -42,6 +42,12 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
         flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadBookings();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
