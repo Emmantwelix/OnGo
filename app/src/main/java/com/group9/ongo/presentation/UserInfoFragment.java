@@ -98,7 +98,6 @@ public class UserInfoFragment extends Fragment {
 
         try {
             // This calls the business layer which does the validation
-            // For now, using a hardcoded userId 1 as we don't have auth yet
             int availSeatRow = flightService.getAnAvailableSeat(flightId).getSeatRow();
             String availSeatCol = flightService.getAnAvailableSeat(flightId).getSeatColumn();
             bookingService.createBooking(flightId, input, availSeatRow, availSeatCol);
