@@ -53,20 +53,6 @@ public class FakeBookingRepository implements BookingRepository {
 
     }
 
-    @Override
-    public boolean updateBooking(Booking booking) {
-        if (booking == null) return false;
-
-        for (int i = 0; i < bookings.size(); i++) {
-            if (bookings.get(i).getBookingId() == booking.getBookingId()) {
-                Booking updatedBooking = new Booking(booking);
-                bookings.set(i, updatedBooking);
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     @Override
     public boolean deleteBooking(int bookingId) {

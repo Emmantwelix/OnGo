@@ -15,15 +15,25 @@ import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.LoginService;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.PassengerRepository;
+import com.group9.ongo.persistence.SeatRepository;
+import com.group9.ongo.persistence.UserRepository;
 import com.group9.ongo.persistence.fake.FakeAircraftRepository;
 import com.group9.ongo.persistence.fake.FakeBookingRepository;
 import com.group9.ongo.persistence.fake.FakeFlightRepository;
 import com.group9.ongo.persistence.fake.FakePassengerRepository;
 import com.group9.ongo.persistence.fake.FakeSeatsRepository;
 import com.group9.ongo.persistence.fake.FakeUserRepository;
+import com.group9.ongo.persistence.real.AppDbHelper;
+import com.group9.ongo.persistence.real.SqlAircraftRepository;
+import com.group9.ongo.persistence.real.SqlBookingRepository;
+import com.group9.ongo.persistence.real.SqlFlightRepository;
+import com.group9.ongo.persistence.real.SqlPassengerRepository;
+import com.group9.ongo.persistence.real.SqlSeatRepository;
+import com.group9.ongo.persistence.real.SqlUserRepository;
 
 import java.util.Random;
 
@@ -37,18 +47,27 @@ public class OnGoApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        FlightRepository flightRepo = new FakeFlightRepository(true);
-        Generator fnGenerator = new FlightDetailGen(new Random());
-        seatService = new SeatServiceImplementation(new FakeSeatsRepository(true));
+        AppDbHelper dbHelper = new AppDbHelper(getApplicationContext());
+        boolean USE_SQL = true;
 
-        flightService = new FlightServiceImpl(flightRepo, fnGenerator, seatService, new FakeAircraftRepository());
+        Generator fnGenerator = new FlightDetailGen(new Random());
+
+        SeatRepository seatRepository = USE_SQL ? new SqlSeatRepository(dbHelper) : new FakeSeatsRepository(true);
+        seatService = new SeatServiceImplementation(seatRepository);
+
+        AircraftRepository aircraftRepository = USE_SQL ? new SqlAircraftRepository(dbHelper) : new FakeAircraftRepository();
+        FlightRepository flightRepository = USE_SQL ? new SqlFlightRepository(dbHelper) : new FakeFlightRepository(true);
+
+        flightService = new FlightServiceImpl(flightRepository, fnGenerator, seatService, aircraftRepository);
+
+        UserRepository userRepository = USE_SQL ? new SqlUserRepository(dbHelper) : new FakeUserRepository();
 
         //simulate a fake login
-        LoginService loginService = new LoginServiceImpl(new FakeUserRepository());
+        LoginService loginService = new LoginServiceImpl(userRepository);
         int userId  = loginService.login(SAMPLE_USER_NAME, SAMPLE_USER_EMAIL);
 
-        BookingRepository bookingRepo = new FakeBookingRepository();
-        PassengerRepository passengerRepo = new FakePassengerRepository();
+        BookingRepository bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
+        PassengerRepository passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
         bookingService = new BookingServiceImpl(userId, bookingRepo, passengerRepo, flightService, seatService);
     }
 
