@@ -34,7 +34,6 @@ import java.util.List;
 
 public class AppDbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "ongo.db";
-    // Version 3 forces a reset to ensure seat data matches the new SeatMapConfig layouts
     public static final int DB_VERSION = 3;
 
     //bookings

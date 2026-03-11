@@ -161,7 +161,6 @@ public class UserInfoFragment extends Fragment {
             
             bookingService.createBooking(flightId, input, seatRow, seatCol);
 
-            Toast.makeText(getContext(), "Booking confirmed for seat " + selectedSeat, Toast.LENGTH_LONG).show();
 
             if (listener != null) {
                 listener.onBookingSuccess();

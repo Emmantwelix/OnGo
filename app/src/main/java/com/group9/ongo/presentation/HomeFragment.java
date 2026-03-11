@@ -74,7 +74,7 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
 
     @Override
     public void onModify(BookingDetails b) {
-        Toast.makeText(getContext(), "Under Construction", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Modify Flight: This feature is under construction", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -82,7 +82,6 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
         try {
             bookingService.cancelBooking(b.getBooking().getBookingId());
             loadBookings();
-            Toast.makeText(getContext(), "Booking Cancelled", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             Toast.makeText(getContext(), "Error cancelling booking", Toast.LENGTH_SHORT).show();
         }
@@ -90,11 +89,11 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
 
     @Override
     public void onEditInfo(BookingDetails b) {
-        Toast.makeText(getContext(), "Under Construction", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Edit Info: This feature is under construction", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onViewDetails(BookingDetails b) {
-        Toast.makeText(getContext(), "Under Construction", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "View Details: This feature is under construction", Toast.LENGTH_SHORT).show();
     }
 }
