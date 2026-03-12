@@ -1,6 +1,9 @@
 package com.group9.ongo.business.services.Implementations;
 
 import com.group9.ongo.business.services.Interfaces.PassengerService;
+import com.group9.ongo.business.validation.PassengerInputValidator;
+import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.persistence.PassengerRepository;
 
 public class PassengerServiceImpl implements PassengerService {
@@ -11,13 +14,10 @@ public class PassengerServiceImpl implements PassengerService {
     }
 
     @Override
-    public boolean updatePassengerInfo(String id, String fName, String lName, String dob, String passport) {
-        // Validation logic
-        if (fName == null || fName.trim().isEmpty() || lName == null || lName.trim().isEmpty()) {
-            return false;
-        }
+    public boolean updatePassengerInfo(String id, String fName, String lName, String dob, String passport) throws ValidationException {
+        PassengerInput input = new PassengerInput(fName, lName, dob, passport);
+        PassengerInputValidator.validate(input);
 
-        // Call repository to update database
         return passengerRepository.update(id, fName, lName, dob, passport);
     }
 }

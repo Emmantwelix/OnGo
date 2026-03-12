@@ -12,9 +12,11 @@ import androidx.annotation.Nullable;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.Interfaces.PassengerService;
+import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Passenger;
 
 public class ModifyBookingBottomSheet extends BottomSheetDialogFragment {
@@ -37,6 +39,11 @@ public class ModifyBookingBottomSheet extends BottomSheetDialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextInputLayout layoutFirstName = view.findViewById(R.id.layout_first_name);
+        TextInputLayout layoutLastName = view.findViewById(R.id.layout_last_name);
+        TextInputLayout layoutDob = view.findViewById(R.id.layout_dob);
+        TextInputLayout layoutPassport = view.findViewById(R.id.layout_passport);
+
         TextInputEditText editFirstName = view.findViewById(R.id.edit_first_name);
         TextInputEditText editLastName = view.findViewById(R.id.edit_last_name);
         TextInputEditText editDob = view.findViewById(R.id.edit_dob);
@@ -57,22 +64,46 @@ public class ModifyBookingBottomSheet extends BottomSheetDialogFragment {
             String dob = editDob.getText().toString();
             String passport = editPassport.getText().toString();
 
-            boolean success = passengerService.updatePassengerInfo(
-                    String.valueOf(passenger.getPassengerId()),
-                    fName,
-                    lName,
-                    dob,
-                    passport
-            );
+            if (layoutFirstName != null) layoutFirstName.setError(null);
+            if (layoutLastName != null) layoutLastName.setError(null);
+            if (layoutDob != null) layoutDob.setError(null);
+            if (layoutPassport != null) layoutPassport.setError(null);
 
-            if (success) {
-                Toast.makeText(getContext(), "Passenger updated successfully", Toast.LENGTH_SHORT).show();
-                if (onUpdateSuccess != null) {
-                    onUpdateSuccess.run();
+            try {
+                boolean success = passengerService.updatePassengerInfo(
+                        String.valueOf(passenger.getPassengerId()),
+                        fName,
+                        lName,
+                        dob,
+                        passport
+                );
+
+                if (success) {
+                    Toast.makeText(getContext(), "Passenger updated successfully", Toast.LENGTH_SHORT).show();
+                    if (onUpdateSuccess != null) {
+                        onUpdateSuccess.run();
+                    }
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Failed to update passenger.", Toast.LENGTH_SHORT).show();
                 }
-                dismiss();
-            } else {
-                Toast.makeText(getContext(), "Failed to update passenger. Check your inputs.", Toast.LENGTH_SHORT).show();
+            } catch (ValidationException e) {
+                String errorField = e.getField();
+                if (errorField != null) {
+                    if (errorField.contains("First") && layoutFirstName != null) {
+                        layoutFirstName.setError(e.getMessage());
+                    } else if (errorField.contains("Last") && layoutLastName != null) {
+                        layoutLastName.setError(e.getMessage());
+                    } else if (errorField.contains("Birth") && layoutDob != null) {
+                        layoutDob.setError(e.getMessage());
+                    } else if (errorField.contains("Passport") && layoutPassport != null) {
+                        layoutPassport.setError(e.getMessage());
+                    } else {
+                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
