@@ -17,6 +17,11 @@
             android:exported="false" />
 
         <activity
+            android:name=".presentation.CancelledBookingsActivity"
+            android:exported="false"
+            android:label="Cancelled Flights" />
+
+        <activity
             android:name=".presentation.MainActivity"
             android:exported="true">
             <intent-filter>

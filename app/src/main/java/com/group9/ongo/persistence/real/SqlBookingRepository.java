@@ -3,6 +3,7 @@ package com.group9.ongo.persistence.real;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_BOOKING_FLIGHT_ID;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_BOOKING_ID;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_BOOKING_SEAT_ID;
+import static com.group9.ongo.persistence.real.AppDbHelper.COL_BOOKING_STATUS;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_BOOKING_USER_ID;
 import static com.group9.ongo.persistence.real.AppDbHelper.TABLE_BOOKINGS;
 
@@ -11,6 +12,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.group9.ongo.models.Booking;
+import com.group9.ongo.models.BookingStatus;
 import com.group9.ongo.persistence.BookingRepository;
 
 import java.util.ArrayList;
@@ -46,8 +48,10 @@ public class SqlBookingRepository implements BookingRepository {
             int flightId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_BOOKING_FLIGHT_ID));
             int uId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_BOOKING_USER_ID));
             int seatId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_BOOKING_SEAT_ID));
+            String statusStr = cursor.getString(cursor.getColumnIndexOrThrow(COL_BOOKING_STATUS));
+            BookingStatus status = BookingStatus.valueOf(statusStr);
 
-            Booking booking = new Booking(id, uId, flightId, seatId);
+            Booking booking = new Booking(id, uId, flightId, seatId, status);
 
             userBookings.add(booking);
         }
@@ -66,6 +70,7 @@ public class SqlBookingRepository implements BookingRepository {
         values.put(COL_BOOKING_USER_ID, booking.getUserId());
         values.put(COL_BOOKING_FLIGHT_ID, booking.getFlightId());
         values.put(COL_BOOKING_SEAT_ID, booking.getSeatId());
+        values.put(COL_BOOKING_STATUS, booking.getBookingStatus());
 
         long id = db.insert(TABLE_BOOKINGS, null, values);
 
@@ -73,7 +78,7 @@ public class SqlBookingRepository implements BookingRepository {
             return null; // insert failed
         }
 
-        return new Booking((int) id, booking.getUserId(), booking.getFlightId(), booking.getSeatId());
+        return new Booking((int) id, booking.getUserId(), booking.getFlightId(), booking.getSeatId(), booking.getStatus());
     }
 
     @Override
@@ -99,8 +104,10 @@ public class SqlBookingRepository implements BookingRepository {
             int userId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_BOOKING_USER_ID));
             int flightId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_BOOKING_FLIGHT_ID));
             int seatId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_BOOKING_SEAT_ID));
+            String statusStr = cursor.getString(cursor.getColumnIndexOrThrow(COL_BOOKING_STATUS));
+            BookingStatus status = BookingStatus.valueOf(statusStr);
 
-            booking = new Booking(id, userId, flightId, seatId);
+            booking = new Booking(id, userId, flightId, seatId, status);
         }
 
         cursor.close();
@@ -121,5 +128,22 @@ public class SqlBookingRepository implements BookingRepository {
         );
 
         return rowsDeleted > 0;
+    }
+
+    @Override
+    public boolean updateBookingStatus(int bookingId, BookingStatus status) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_BOOKING_STATUS, status.name());
+
+        int rowsUpdated = db.update(
+                TABLE_BOOKINGS,
+                values,
+                COL_BOOKING_ID + "=?",
+                new String[]{String.valueOf(bookingId)}
+        );
+
+        return rowsUpdated > 0;
     }
 }
