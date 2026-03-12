@@ -1,6 +1,6 @@
-git# Architecture Overview
+# Architecture Overview
 
-![OnGo Architecture](./Architecuture_diagram_Iteration_1.png)
+![OnGo Architecture](Architecture_Diagram_v2.png)
 
 
 ## General Description
