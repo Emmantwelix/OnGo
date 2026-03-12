@@ -4,6 +4,7 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALRE
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_EXISTS;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_UNBOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_NOT_FOUND;
+import static com.group9.ongo.business.constants.SeatConstants.UNAVAILABLE_SEAT;
 
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
@@ -90,6 +91,18 @@ public class SeatServiceImplementation  implements SeatService {
         }
 
         seatRepository.unBookSeat(seat_id);
+    }
+
+    @Override
+    public String getFormattedSeatById(int flight_id, int seatId)
+    {
+        try{
+            Seat seat = getSeatById(flight_id, seatId);
+            return seat.getSeatRow() + seat.getLabel();
+        } catch (ValidationException e)
+        {
+            return UNAVAILABLE_SEAT;
+        }
     }
 
 

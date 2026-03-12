@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,7 +21,7 @@ import com.group9.ongo.models.BookingDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements BookingAdapter.BookingActionListener {
+public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private BookingAdapter adapter;
@@ -42,6 +41,12 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
         flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadBookings();
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
         textNoBookings = view.findViewById(R.id.text_no_bookings);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new BookingAdapter(new ArrayList<>(), flightService, this);
+        adapter = new BookingAdapter(new ArrayList<>(), flightService);
         recyclerView.setAdapter(adapter);
 
         loadBookings();
@@ -70,30 +75,5 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
             recyclerView.setVisibility(View.VISIBLE);
             adapter.setBookings(bookings);
         }
-    }
-
-    @Override
-    public void onModify(BookingDetails b) {
-        Toast.makeText(getContext(), "Modify Flight: This feature is under construction", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCancel(BookingDetails b) {
-        try {
-            bookingService.cancelBooking(b.getBooking().getBookingId());
-            loadBookings();
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Error cancelling booking", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onEditInfo(BookingDetails b) {
-        Toast.makeText(getContext(), "Edit Info: This feature is under construction", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onViewDetails(BookingDetails b) {
-        Toast.makeText(getContext(), "View Details: This feature is under construction", Toast.LENGTH_SHORT).show();
     }
 }

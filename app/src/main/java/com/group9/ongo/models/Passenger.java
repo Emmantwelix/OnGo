@@ -1,5 +1,7 @@
 package com.group9.ongo.models;
 
+import static com.group9.ongo.business.constants.PassengerConstants.BIRTH_DATE_FORMAT;
+
 import java.time.LocalDate;
 
 public class Passenger {
@@ -42,6 +44,11 @@ public class Passenger {
 
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
+    }
+
+    public String getDateOfBirthFormatted()
+    {
+        return dateOfBirth.format(BIRTH_DATE_FORMAT);
     }
 
     public String getPassportNumber() {
