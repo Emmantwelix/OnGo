@@ -1,10 +1,9 @@
 package com.group9.ongo.presentation;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,21 +22,12 @@ import java.util.List;
 
 public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
 
-    public interface BookingActionListener {
-        void onModify(BookingDetails b);
-        void onCancel(BookingDetails b);
-        void onEditInfo(BookingDetails b);
-        void onViewDetails(BookingDetails b);
-    }
-
     private List<BookingDetails> bookings;
     private FlightService flightService;
-    private BookingActionListener listener;
 
-    public BookingAdapter(List<BookingDetails> bookings, FlightService flightService, BookingActionListener listener) {
+    public BookingAdapter(List<BookingDetails> bookings, FlightService flightService) {
         this.bookings = bookings;
         this.flightService = flightService;
-        this.listener = listener;
     }
 
     @NonNull
@@ -65,35 +55,17 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         holder.bookingStatus.setText(booking.getBookingStatus());
         holder.originCode.setText(flightService.getAirportCode(flight.getOrigin()));
         holder.destinationCode.setText(flightService.getAirportCode(flight.getDestination()));
+        holder.flightDate.setText(flight.getDateString());
 
         // Set the airline logo using the Airline enum
         holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());
 
-        holder.btnMoreOptions.setOnClickListener(v -> showPopupMenu(v, details));
-    }
-
-    private void showPopupMenu(View view, BookingDetails details) {
-        PopupMenu popup = new PopupMenu(view.getContext(), view);
-        popup.getMenuInflater().inflate(R.menu.menu_booking_options, popup.getMenu());
-
-        popup.setOnMenuItemClickListener(item -> {
-            int id = item.getItemId();
-            if (id == R.id.action_modify) {
-                listener.onModify(details);
-                return true;
-            } else if (id == R.id.action_cancel) {
-                listener.onCancel(details);
-                return true;
-            } else if (id == R.id.action_edit_info) {
-                listener.onEditInfo(details);
-                return true;
-            } else if (id == R.id.action_view_details) {
-                listener.onViewDetails(details);
-                return true;
-            }
-            return false;
+        // Open BookingDetailsActivity when card is clicked
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), BookingDetailsActivity.class);
+            intent.putExtra("booking_id", booking.getBookingId());
+            v.getContext().startActivity(intent);
         });
-        popup.show();
     }
 
     @Override
@@ -108,9 +80,8 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
 
     static class BookingViewHolder extends RecyclerView.ViewHolder {
         TextView passengerName, origin, destination, originTime, destinationTime, airline,
-                flightNumber, bookingStatus, destinationCode, originCode;
+                flightNumber, bookingStatus, destinationCode, originCode, flightDate;
         ShapeableImageView airlineLogo;
-        ImageButton btnMoreOptions;
 
         public BookingViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,7 +96,7 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
             bookingStatus = itemView.findViewById(R.id.text_status);
             destinationCode = itemView.findViewById(R.id.text_destination_rcode);
             originCode = itemView.findViewById(R.id.text_origin_rcode);
-            btnMoreOptions = itemView.findViewById(R.id.btn_more_options);
+            flightDate = itemView.findViewById(R.id.text_flight_date);
         }
     }
 }

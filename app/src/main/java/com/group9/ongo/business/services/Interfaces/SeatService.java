@@ -13,4 +13,5 @@ public interface SeatService {
     int bookSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException;
     void unbookSeat(int flight_id, int seat_id) throws ValidationException;
     Seat findSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException;
+    String getFormattedSeatById(int flight_id, int seatId);
 }
