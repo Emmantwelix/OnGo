@@ -64,7 +64,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
         bindData();
 
         btnModifyBooking.setOnClickListener(v -> {
-            Toast.makeText(this, "Modify booking coming soon", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Modify booking under construction", Toast.LENGTH_SHORT).show();
         });
 
         btnCancelBooking.setOnClickListener(v -> {
