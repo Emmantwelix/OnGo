@@ -1,5 +1,10 @@
 package com.group9.ongo.presentation;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.DATE_OF_BIRTH;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FIRST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.LAST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSPORT;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,16 +95,22 @@ public class ModifyBookingBottomSheet extends BottomSheetDialogFragment {
             } catch (ValidationException e) {
                 String errorField = e.getField();
                 if (errorField != null) {
-                    if (errorField.contains("First") && layoutFirstName != null) {
-                        layoutFirstName.setError(e.getMessage());
-                    } else if (errorField.contains("Last") && layoutLastName != null) {
-                        layoutLastName.setError(e.getMessage());
-                    } else if (errorField.contains("Birth") && layoutDob != null) {
-                        layoutDob.setError(e.getMessage());
-                    } else if (errorField.contains("Passport") && layoutPassport != null) {
-                        layoutPassport.setError(e.getMessage());
-                    } else {
-                        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                    switch (errorField) {
+                        case FIRST_NAME:
+                            if (layoutFirstName != null) layoutFirstName.setError(e.getMessage());
+                            break;
+                        case LAST_NAME:
+                            if (layoutLastName != null) layoutLastName.setError(e.getMessage());
+                            break;
+                        case DATE_OF_BIRTH:
+                            if (layoutDob != null) layoutDob.setError(e.getMessage());
+                            break;
+                        case PASSPORT:
+                            if (layoutPassport != null) layoutPassport.setError(e.getMessage());
+                            break;
+                        default:
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            break;
                     }
                 } else {
                     Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
