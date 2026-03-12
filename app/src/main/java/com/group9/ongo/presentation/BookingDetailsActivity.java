@@ -64,7 +64,16 @@ public class BookingDetailsActivity extends AppCompatActivity {
         bindData();
 
         btnModifyBooking.setOnClickListener(v -> {
-            Toast.makeText(this, "Modify booking under construction", Toast.LENGTH_SHORT).show();
+            BookingDetails details = bookingService.getBookingDetailsById(bookingId);
+            if (details != null && details.getPassenger() != null) {
+                ModifyBookingBottomSheet bottomSheet = new ModifyBookingBottomSheet(
+                        details.getPassenger(),
+                        this::bindData
+                );
+                bottomSheet.show(getSupportFragmentManager(), "ModifyBookingBottomSheet");
+            } else {
+                Toast.makeText(this, "Passenger details not found", Toast.LENGTH_SHORT).show();
+            }
         });
 
         btnCancelBooking.setOnClickListener(v -> {
