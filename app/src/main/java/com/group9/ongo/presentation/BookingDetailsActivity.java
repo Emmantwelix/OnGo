@@ -1,6 +1,9 @@
 package com.group9.ongo.presentation;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +20,7 @@ import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;
+import com.group9.ongo.models.BookingStatus;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Passenger;
 
@@ -142,5 +146,14 @@ public class BookingDetailsActivity extends AppCompatActivity {
         airlineLogo.setImageResource(
                 Airline.fromName(flight.getAirline()).getLogoResId()
         );
+
+        GradientDrawable background = (GradientDrawable) textStatus.getBackground();
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            background.setColor(Color.parseColor("#DC2626")); // Red
+            btnCancelBooking.setVisibility(View.GONE);
+            btnModifyBooking.setVisibility(View.GONE);
+        } else {
+            background.setColor(Color.parseColor("#2F6FED")); // Blue
+        }
     }
 }

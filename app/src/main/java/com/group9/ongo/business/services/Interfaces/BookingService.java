@@ -15,5 +15,7 @@ public interface BookingService {
 
     List<BookingDetails> getBookingDetailsForCurrentUser();
 
+    List<BookingDetails> getCancelledBookingDetailsForCurrentUser();
+
     BookingDetails getBookingDetailsById(int bookingId);
 }

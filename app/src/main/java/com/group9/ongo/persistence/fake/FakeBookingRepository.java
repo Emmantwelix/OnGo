@@ -2,6 +2,7 @@ package com.group9.ongo.persistence.fake;
 
 
 import com.group9.ongo.models.Booking;
+import com.group9.ongo.models.BookingStatus;
 import com.group9.ongo.persistence.BookingRepository;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class FakeBookingRepository implements BookingRepository {
             return null;
         }
 
-        Booking newBooking = new Booking(id, booking.getUserId(), booking.getFlightId(), booking.getSeatId());
+        Booking newBooking = new Booking(id, booking.getUserId(), booking.getFlightId(), booking.getSeatId(), booking.getStatus());
         bookings.add(newBooking);
         return newBooking;
 
@@ -59,6 +60,17 @@ public class FakeBookingRepository implements BookingRepository {
         for (int i = 0; i < bookings.size(); i++) {
             if (bookings.get(i).getBookingId() == bookingId) {
                 bookings.remove(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean updateBookingStatus(int bookingId, BookingStatus status) {
+        for (Booking booking : bookings) {
+            if (booking.getBookingId() == bookingId) {
+                booking.setStatus(status);
                 return true;
             }
         }

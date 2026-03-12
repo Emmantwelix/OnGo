@@ -1,6 +1,8 @@
 package com.group9.ongo.presentation;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.models.Airline;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.BookingDetails;
+import com.group9.ongo.models.BookingStatus;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Passenger;
 
@@ -56,6 +59,13 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         holder.originCode.setText(flightService.getAirportCode(flight.getOrigin()));
         holder.destinationCode.setText(flightService.getAirportCode(flight.getDestination()));
         holder.flightDate.setText(flight.getDateString());
+
+        GradientDrawable background = (GradientDrawable) holder.bookingStatus.getBackground();
+        if (booking.getStatus() == BookingStatus.CANCELLED) {
+            background.setColor(Color.parseColor("#DC2626")); // Consistent Red
+        } else {
+            background.setColor(Color.parseColor("#2F6FED")); // Consistent Blue
+        }
 
         // Set the airline logo using the Airline enum
         holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());

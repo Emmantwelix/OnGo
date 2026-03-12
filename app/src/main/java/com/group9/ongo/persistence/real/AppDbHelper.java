@@ -35,7 +35,7 @@ import java.util.List;
 
 public class AppDbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "ongo.db";
-    public static final int DB_VERSION = 3;
+    public static final int DB_VERSION = 1;
 
     //bookings
     public static final String TABLE_BOOKINGS = "bookings";
@@ -43,6 +43,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public static final String COL_BOOKING_FLIGHT_ID = "flight_id";
     public static final String COL_BOOKING_USER_ID = "user_id";
     public static final String COL_BOOKING_SEAT_ID = "seat_id";
+    public static final String COL_BOOKING_STATUS = "status";
 
 
     //flights
@@ -169,6 +170,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         COL_BOOKING_FLIGHT_ID + " INTEGER NOT NULL, " +
                         COL_BOOKING_USER_ID + " INTEGER NOT NULL, " +
                         COL_BOOKING_SEAT_ID + " INTEGER NOT NULL, " +
+                        COL_BOOKING_STATUS + " TEXT NOT NULL, " +
 
                         "FOREIGN KEY (" + COL_BOOKING_FLIGHT_ID + ") REFERENCES " +
                         TABLE_FLIGHTS + "(" + COL_FLIGHT_ID + ") ON DELETE CASCADE, " +
