@@ -34,6 +34,7 @@ public class ErrorMessageConstants {
     public static final String FLIGHT_INVALID_AIRLINE = "Invalid airline";
     public static final String FLIGHT_NOT_FOUND = "Flight not found";
     public static final String FLIGHT_INVALID_PLANE = "Invalid plane type";
+    public static final String NO_FLIGHTS_AVAILABLE = "No flights available with search criteria";
 
 
     public static final String AIRCRAFT_NOT_FOUND = "Aircraft not found";
