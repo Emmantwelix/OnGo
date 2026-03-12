@@ -44,7 +44,11 @@
                 android:drawablePadding="12dp"
                 android:hint="Departing from?"
                 android:paddingStart="16dp"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:popupBackground="@drawable/rounded_dropdown_bg"
+                android:dropDownVerticalOffset="4dp" />
 
             <AutoCompleteTextView
                 android:id="@+id/etGoingTo"
@@ -58,7 +62,11 @@
                 android:drawablePadding="12dp"
                 android:hint="Going to?"
                 android:paddingStart="16dp"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:popupBackground="@drawable/rounded_dropdown_bg"
+                android:dropDownVerticalOffset="4dp" />
         </LinearLayout>
 
         <Button
@@ -78,8 +86,9 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/searchContainer"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
