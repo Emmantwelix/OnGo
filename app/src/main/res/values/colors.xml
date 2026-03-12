@@ -5,4 +5,5 @@
     <color name="seat_occupied">#F44336</color>
     <color name="seat_selected">#4CAF50</color>
     <color name="aircraft_nose">#EEEEEE</color>
+    <color name="status_cancelled">#D32F2F</color>
 </resources>

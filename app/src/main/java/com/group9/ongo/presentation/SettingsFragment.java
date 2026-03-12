@@ -20,6 +20,18 @@ public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        View view = inflater.inflate(R.layout.fragment_settings, container, false);
+
+        View btnViewCancelled = view.findViewById(R.id.btn_view_cancelled_container);
+        if (btnViewCancelled != null) {
+            btnViewCancelled.setOnClickListener(v -> {
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, CancelledFlightsFragment.newInstance())
+                        .addToBackStack(null)
+                        .commit();
+            });
+        }
+
+        return view;
     }
 }

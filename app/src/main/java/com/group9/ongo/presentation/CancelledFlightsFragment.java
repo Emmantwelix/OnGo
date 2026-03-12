@@ -2,10 +2,9 @@ package com.group9.ongo.presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view. View;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,17 +21,16 @@ import com.group9.ongo.models.BookingDetails;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment implements BookingAdapter.BookingActionListener {
+public class CancelledFlightsFragment extends Fragment implements BookingAdapter.BookingActionListener {
 
     private RecyclerView recyclerView;
     private BookingAdapter adapter;
     private TextView textNoBookings;
     private BookingService bookingService;
-
     private FlightService flightService;
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
+    public static CancelledFlightsFragment newInstance() {
+        return new CancelledFlightsFragment();
     }
 
     @Override
@@ -45,25 +43,34 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // Reuse fragment_home layout which has recycler_bookings, text_home_title, and text_no_bookings
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        // Update title for this specific fragment
+        TextView title = view.findViewById(R.id.text_home_title);
+        if (title != null) {
+            title.setText("Cancelled Flights");
+        }
 
         recyclerView = view.findViewById(R.id.recycler_bookings);
         textNoBookings = view.findViewById(R.id.text_no_bookings);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new BookingAdapter(new ArrayList<>(), flightService, this);
+        
+        // Use the hideActions = true flag to hide buttons for cancelled flights
+        adapter = new BookingAdapter(new ArrayList<>(), flightService, this, true);
         recyclerView.setAdapter(adapter);
 
-        loadBookings();
+        loadCancelledBookings();
 
         return view;
     }
 
-    private void loadBookings() {
-        // Updated service returns only active bookings
-        List<BookingDetails> bookings = bookingService.getBookingDetailsForCurrentUser();
+    private void loadCancelledBookings() {
+        List<BookingDetails> bookings = bookingService.getCancelledBookingsForCurrentUser();
 
         if (bookings.isEmpty()) {
+            textNoBookings.setText("No cancelled flights found");
             textNoBookings.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
         } else {
@@ -73,28 +80,16 @@ public class HomeFragment extends Fragment implements BookingAdapter.BookingActi
         }
     }
 
+    // Since hideActions is true, these won't be triggered from the UI
     @Override
-    public void onModify(BookingDetails b) {
-        Toast.makeText(getContext(), "Modify Flight: This feature is under construction", Toast.LENGTH_SHORT).show();
-    }
+    public void onModify(BookingDetails b) {}
 
     @Override
-    public void onCancel(BookingDetails b) {
-        try {
-            bookingService.cancelBooking(b.getBooking().getBookingId());
-            loadBookings();
-        } catch (Exception e) {
-            Toast.makeText(getContext(), "Error cancelling booking", Toast.LENGTH_SHORT).show();
-        }
-    }
+    public void onCancel(BookingDetails b) {}
 
     @Override
-    public void onEditInfo(BookingDetails b) {
-        Toast.makeText(getContext(), "Edit Info: This feature is under construction", Toast.LENGTH_SHORT).show();
-    }
+    public void onEditInfo(BookingDetails b) {}
 
     @Override
-    public void onViewDetails(BookingDetails b) {
-        Toast.makeText(getContext(), "View Details: This feature is under construction", Toast.LENGTH_SHORT).show();
-    }
+    public void onViewDetails(BookingDetails b) {}
 }

@@ -8,6 +8,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
@@ -33,11 +34,17 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
     private List<BookingDetails> bookings;
     private FlightService flightService;
     private BookingActionListener listener;
+    private boolean hideActions;
 
     public BookingAdapter(List<BookingDetails> bookings, FlightService flightService, BookingActionListener listener) {
+        this(bookings, flightService, listener, false);
+    }
+
+    public BookingAdapter(List<BookingDetails> bookings, FlightService flightService, BookingActionListener listener, boolean hideActions) {
         this.bookings = bookings;
         this.flightService = flightService;
         this.listener = listener;
+        this.hideActions = hideActions;
     }
 
     @NonNull
@@ -69,7 +76,19 @@ public class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingV
         // Set the airline logo using the Airline enum
         holder.airlineLogo.setImageResource(Airline.fromName(flight.getAirline()).getLogoResId());
 
-        holder.btnMoreOptions.setOnClickListener(v -> showPopupMenu(v, details));
+        // Update status badge color for cancelled bookings
+        if (booking.isCancelled()) {
+            holder.bookingStatus.setBackgroundResource(R.drawable.bg_status_badge_cancelled);
+        } else {
+            holder.bookingStatus.setBackgroundResource(R.drawable.bg_status_badge);
+        }
+
+        if (hideActions) {
+            holder.btnMoreOptions.setVisibility(View.GONE);
+        } else {
+            holder.btnMoreOptions.setVisibility(View.VISIBLE);
+            holder.btnMoreOptions.setOnClickListener(v -> showPopupMenu(v, details));
+        }
     }
 
     private void showPopupMenu(View view, BookingDetails details) {

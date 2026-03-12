@@ -48,6 +48,7 @@ public class FakeBookingRepository implements BookingRepository {
         }
 
         Booking newBooking = new Booking(id, booking.getUserId(), booking.getFlightId(), booking.getSeatId());
+        newBooking.setCancelled(booking.isCancelled());
         bookings.add(newBooking);
         return newBooking;
 
@@ -63,6 +64,17 @@ public class FakeBookingRepository implements BookingRepository {
             }
         }
         return false;
+    }
+
+    @Override
+    public Booking updateBooking(Booking booking) {
+        for (int i = 0; i < bookings.size(); i++) {
+            if (bookings.get(i).getBookingId() == booking.getBookingId()) {
+                bookings.set(i, booking);
+                return booking;
+            }
+        }
+        return null;
     }
 
 }

@@ -59,43 +59,47 @@ public class BookingServiceImpl implements BookingService {
 
         return booking;
     }
+
     @Override
     public boolean cancelBooking(int bookingId) throws ValidationException {
         Booking booking = bookingsRepo.getBookingById(bookingId);
 
         if(booking == null) return false;
 
-        passengerRepo.deletePassengersByBookingId(bookingId);
-
         Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
-
         seatService.unbookSeat(seat.getFlightId(), seat.getSeatId());
-
         flightService.isFlightFull(seat.getFlightId());
 
-        return bookingsRepo.deleteBooking(bookingId);
+        booking.setCancelled(true);
+        return bookingsRepo.updateBooking(booking) != null;
     }
 
     @Override
     public List<BookingDetails> getBookingDetailsForCurrentUser() {
+        return getBookingsByCancellationStatus(false);
+    }
+
+    @Override
+    public List<BookingDetails> getCancelledBookingsForCurrentUser() {
+        return getBookingsByCancellationStatus(true);
+    }
+
+    private List<BookingDetails> getBookingsByCancellationStatus(boolean cancelledStatus) {
         List<Booking> bookings = bookingsRepo.getBookingByUserId(currentUserId);
         List<BookingDetails> detailsList = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            try {
-                Flight flight = flightService.getFlightById(booking.getFlightId());
+            if (booking.isCancelled() == cancelledStatus) {
+                try {
+                    Flight flight = flightService.getFlightById(booking.getFlightId());
+                    Passenger passenger = passengerRepo.getPassengerByBookingId(booking.getBookingId());
 
-                //only one passenger per flight for now
-                Passenger passenger =
-                        passengerRepo.getPassengerByBookingId(booking.getBookingId());
-
-                if (flight != null && passenger != null) {
-                    detailsList.add(
-                            new BookingDetails(booking, flight, passenger)
-                    );
+                    if (flight != null && passenger != null) {
+                        detailsList.add(new BookingDetails(booking, flight, passenger));
+                    }
+                } catch (ValidationException e) {
+                    // Skip if details cannot be retrieved
                 }
-            } catch (ValidationException e) {
-                // If flight validation fails (e.g. flight not found), skip this booking details
             }
         }
         return detailsList;
