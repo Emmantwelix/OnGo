@@ -335,7 +335,45 @@ public class BookingServiceTest {
         assertEquals(Set.of(1, 2), flightIds);
     }
 
+    @Test
+    public void getBookingDetailsById_whenBookingExists_returnsBookingFlightAndPassenger() throws BookingException, ValidationException {
+        PassengerInput input = samplePassengerInput("X");
+        Booking booking = bookingService.createBooking(1, input, 1, "A");
 
+        BookingDetails details = bookingService.getBookingDetailsById(booking.getBookingId());
+
+        assertNotNull(details);
+        assertNotNull(details.getBooking());
+        assertNotNull(details.getFlight());
+        assertNotNull(details.getPassenger());
+
+        assertEquals(booking.getBookingId(), details.getBooking().getBookingId());
+        assertEquals(booking.getUserId(), details.getBooking().getUserId());
+        assertEquals(booking.getFlightId(), details.getFlight().getFlightId());
+        assertEquals(booking.getBookingId(), details.getPassenger().getBookingId());
+        assertEquals(input.getFirstName(), details.getPassenger().getFirstName());
+        assertEquals(input.getLastName(), details.getPassenger().getLastName());
+        assertEquals(input.getPassportNumber(), details.getPassenger().getPassportNumber());
+    }
+
+    @Test
+    public void getBookingDetailsById_whenBookingDoesNotExist_returnsNull() {
+        BookingDetails details = bookingService.getBookingDetailsById(9999);
+
+        assertNull(details);
+    }
+
+    @Test
+    public void getBookingDetailsById_whenPassengerMissing_returnsNull() throws BookingException, ValidationException {
+        PassengerInput input = samplePassengerInput("Y");
+        Booking booking = bookingService.createBooking(1, input, 1, "A");
+
+        passengerRepo.deletePassengersByBookingId(booking.getBookingId());
+
+        BookingDetails details = bookingService.getBookingDetailsById(booking.getBookingId());
+
+        assertNull(details);
+    }
 
     private PassengerInput samplePassengerInput(String tag) {
         return new PassengerInput(

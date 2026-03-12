@@ -5,4 +5,5 @@ public class SeatConstants {
     public static String WIDE_BODY = "ABC_DEFG_HJK";
     public static String NARROW_BODY = "ABC_DEF";
     public static String REGIONAL = "AC_DF";
+    public static String UNAVAILABLE_SEAT = "Unavailable";
 }

@@ -113,7 +113,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
         BookingDetails details = bookingService.getBookingDetailsById(bookingId);
 
         if (details == null) {
-            Toast.makeText(this, "Booking not found", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Booking details unavailable", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }

@@ -10,6 +10,7 @@ import static com.group9.ongo.business.constants.FlightConstants.LARGE_PRICE;
 import static com.group9.ongo.business.constants.FlightConstants.ROW_ONE;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
+import static com.group9.ongo.business.constants.SeatConstants.UNAVAILABLE_SEAT;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -132,21 +133,6 @@ public class SeatServiceTest {
         assertTrue(!seat.getIsBooked());
     }
 
-//    @Test
-//    public void testIsSeatBooked_returnsTrue_whenSeatIsBooked() throws ValidationException {
-//        int flightId = flightService.createFlight(AIR_CANADA, WINNIPEG, TORONTO, DEFAULT_TIME, DEFAULT_TIME2, 1, LARGE_PRICE);
-//        int seatId = seatService.bookSeat(flightId, 1, "A");
-//        boolean isBooked = seatService.isSeatBooked(flightId, seatId);
-//        assertTrue(isBooked);
-//    }
-//
-//    @Test
-//    public void testIsSeatBooked_returnsFalse_whenSeatIsNotBooked() throws ValidationException {
-//        int flightId = flightService.createFlight(AIR_CANADA, WINNIPEG, TORONTO, DEFAULT_TIME, DEFAULT_TIME2, 1, LARGE_PRICE);
-//        boolean isBooked = seatService.isSeatBooked(flightId, 1);
-//        assertFalse(isBooked);
-//    }
-
     @Test
     public void testFindSeat_throwsValidationException_whenSeatNotFound() throws ValidationException {
         int flightId = flightService.createFlight(AIR_CANADA, WINNIPEG, TORONTO, DEFAULT_TIME, DEFAULT_TIME2, 1, LARGE_PRICE);
@@ -165,6 +151,28 @@ public class SeatServiceTest {
         assertEquals(1, seat.getFlightId());
         assertEquals(ROW_ONE, seat.getSeatRow());
         assertEquals(COLUMN_1, seat.getLabel());
+    }
+
+    @Test
+    public void testGetFormattedSeatById_returnsFormattedSeat() throws ValidationException {
+        int flightId = flightService.createFlight(
+                AIR_CANADA, WINNIPEG, TORONTO, DEFAULT_TIME, DEFAULT_TIME2, 1, LARGE_PRICE
+        );
+
+        String formattedSeat = seatService.getFormattedSeatById(flightId, 1);
+
+        assertEquals("1A", formattedSeat);
+    }
+
+    @Test
+    public void testGetFormattedSeatById_whenSeatNotFound_returnsUnknownSeat() throws ValidationException {
+        int flightId = flightService.createFlight(
+                AIR_CANADA, WINNIPEG, TORONTO, DEFAULT_TIME, DEFAULT_TIME2, 1, LARGE_PRICE
+        );
+
+        String formattedSeat = seatService.getFormattedSeatById(flightId, A320_DETAILS.getCapacity() + 1);
+
+        assertEquals(UNAVAILABLE_SEAT, formattedSeat);
     }
 
 }

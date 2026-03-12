@@ -102,21 +102,27 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-
-    public BookingDetails getBookingDetailsById(int bookingId)
-    {
+    public BookingDetails getBookingDetailsById(int bookingId) {
         Booking booking = bookingsRepo.getBookingById(bookingId);
+
+        if (booking == null) {
+            return null;
+        }
 
         try {
             Flight flight = flightService.getFlightById(booking.getFlightId());
             Passenger passenger = passengerRepo.getPassengerByBookingId(bookingId);
 
-            return new BookingDetails(booking,flight,passenger);
+            if (passenger == null) {
+                return null;
+            }
 
-        } catch(ValidationException e) {
+            return new BookingDetails(booking, flight, passenger);
+
+        } catch (ValidationException e) {
             // If flight validation fails (e.g. flight not found), skip this booking details
+            return null;
         }
-
-        return null;
     }
+
 }
