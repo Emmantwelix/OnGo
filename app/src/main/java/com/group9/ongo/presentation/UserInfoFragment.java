@@ -1,6 +1,10 @@
 package com.group9.ongo.presentation;
 
 import static android.app.Activity.RESULT_OK;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.DATE_OF_BIRTH;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FIRST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.LAST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSPORT;
 
 import android.content.Context;
 import android.content.Intent;
@@ -145,7 +149,6 @@ public class UserInfoFragment extends Fragment {
         PassengerInput input = new PassengerInput(firstName, lastName, birthDateStr, passportNumber);
 
         BookingService bookingService = ((OnGoApp) getActivity().getApplication()).getBookingService();
-        FlightService flightService = ((OnGoApp) getActivity().getApplication()).getFlightService();
 
         try {
             int seatRow;
@@ -173,10 +176,10 @@ public class UserInfoFragment extends Fragment {
                 return;
             }
             switch (field) {
-                case "firstName": editFirstName.setError(e.getMessage()); break;
-                case "lastName": editLastName.setError(e.getMessage()); break;
-                case "birthDate": editBirthDate.setError(e.getMessage()); break;
-                case "passport": editPassportNumber.setError(e.getMessage()); break;
+                case FIRST_NAME: editFirstName.setError(e.getMessage()); break;
+                case LAST_NAME: editLastName.setError(e.getMessage()); break;
+                case DATE_OF_BIRTH: editBirthDate.setError(e.getMessage()); break;
+                case PASSPORT: editPassportNumber.setError(e.getMessage()); break;
                 default: Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show(); break;
             }
         } catch (BookingException e) {

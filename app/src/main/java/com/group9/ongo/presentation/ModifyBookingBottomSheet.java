@@ -1,0 +1,121 @@
+package com.group9.ongo.presentation;
+
+import static com.group9.ongo.business.constants.ErrorMessageConstants.DATE_OF_BIRTH;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FIRST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.LAST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSPORT;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+import com.group9.ongo.R;
+import com.group9.ongo.application.OnGoApp;
+import com.group9.ongo.business.services.Interfaces.PassengerService;
+import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Passenger;
+
+public class ModifyBookingBottomSheet extends BottomSheetDialogFragment {
+
+    private final Passenger passenger;
+    private final Runnable onUpdateSuccess;
+
+    public ModifyBookingBottomSheet(Passenger passenger, Runnable onUpdateSuccess) {
+        this.passenger = passenger;
+        this.onUpdateSuccess = onUpdateSuccess;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.layout_modify_booking, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextInputLayout layoutFirstName = view.findViewById(R.id.layout_first_name);
+        TextInputLayout layoutLastName = view.findViewById(R.id.layout_last_name);
+        TextInputLayout layoutDob = view.findViewById(R.id.layout_dob);
+        TextInputLayout layoutPassport = view.findViewById(R.id.layout_passport);
+
+        TextInputEditText editFirstName = view.findViewById(R.id.edit_first_name);
+        TextInputEditText editLastName = view.findViewById(R.id.edit_last_name);
+        TextInputEditText editDob = view.findViewById(R.id.edit_dob);
+        TextInputEditText editPassport = view.findViewById(R.id.edit_passport);
+        Button btnSave = view.findViewById(R.id.btn_save_changes);
+
+        // Pre-fill data
+        editFirstName.setText(passenger.getFirstName());
+        editLastName.setText(passenger.getLastName());
+        editDob.setText(passenger.getDateOfBirth().toString()); // Using ISO format for editing
+        editPassport.setText(passenger.getPassportNumber());
+
+        PassengerService passengerService = ((OnGoApp) requireActivity().getApplication()).getPassengerService();
+
+        btnSave.setOnClickListener(v -> {
+            String fName = editFirstName.getText().toString();
+            String lName = editLastName.getText().toString();
+            String dob = editDob.getText().toString();
+            String passport = editPassport.getText().toString();
+
+            if (layoutFirstName != null) layoutFirstName.setError(null);
+            if (layoutLastName != null) layoutLastName.setError(null);
+            if (layoutDob != null) layoutDob.setError(null);
+            if (layoutPassport != null) layoutPassport.setError(null);
+
+            try {
+                boolean success = passengerService.updatePassengerInfo(
+                        String.valueOf(passenger.getPassengerId()),
+                        fName,
+                        lName,
+                        dob,
+                        passport
+                );
+
+                if (success) {
+                    Toast.makeText(getContext(), "Passenger updated successfully", Toast.LENGTH_SHORT).show();
+                    if (onUpdateSuccess != null) {
+                        onUpdateSuccess.run();
+                    }
+                    dismiss();
+                } else {
+                    Toast.makeText(getContext(), "Failed to update passenger.", Toast.LENGTH_SHORT).show();
+                }
+            } catch (ValidationException e) {
+                String errorField = e.getField();
+                if (errorField != null) {
+                    switch (errorField) {
+                        case FIRST_NAME:
+                            if (layoutFirstName != null) layoutFirstName.setError(e.getMessage());
+                            break;
+                        case LAST_NAME:
+                            if (layoutLastName != null) layoutLastName.setError(e.getMessage());
+                            break;
+                        case DATE_OF_BIRTH:
+                            if (layoutDob != null) layoutDob.setError(e.getMessage());
+                            break;
+                        case PASSPORT:
+                            if (layoutPassport != null) layoutPassport.setError(e.getMessage());
+                            break;
+                        default:
+                            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                            break;
+                    }
+                } else {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+}

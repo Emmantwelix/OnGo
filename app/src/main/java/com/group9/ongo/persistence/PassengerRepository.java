@@ -9,4 +9,6 @@ public interface PassengerRepository {
     public Passenger getPassengerByBookingId(int bookingId);
 
     public boolean deletePassengersByBookingId(int bookingId);
+
+    boolean update(String id, String fName, String lName, String dob, String passport);
 }

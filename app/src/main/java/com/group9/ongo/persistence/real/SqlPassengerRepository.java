@@ -110,4 +110,24 @@ public class SqlPassengerRepository implements PassengerRepository {
         return rowsDeleted > 0;
     }
 
+    @Override
+    public boolean update(String id, String fName, String lName, String dob, String passport) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_PASSENGER_FIRST_NAME, fName);
+        values.put(COL_PASSENGER_LAST_NAME, lName);
+        values.put(COL_PASSENGER_DATE_OF_BIRTH, dob);
+        values.put(COL_PASSENGER_PASSPORT_NUMBER, passport);
+
+        int rowsUpdated = db.update(
+                TABLE_PASSENGERS,
+                values,
+                COL_PASSENGER_ID + "=?",
+                new String[]{id}
+        );
+
+        return rowsUpdated > 0;
+    }
+
 }

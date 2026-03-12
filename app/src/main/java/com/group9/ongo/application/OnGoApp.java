@@ -13,6 +13,8 @@ import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
 import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.LoginService;
+import com.group9.ongo.business.services.Interfaces.PassengerService;
+import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
 import com.group9.ongo.persistence.AircraftRepository;
@@ -42,6 +44,7 @@ public class OnGoApp extends Application {
     private FlightService flightService;
     private BookingService bookingService;
     private SeatService seatService;
+    private PassengerService passengerService;
 
     @Override
     public void onCreate() {
@@ -69,6 +72,7 @@ public class OnGoApp extends Application {
         BookingRepository bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
         PassengerRepository passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
         bookingService = new BookingServiceImpl(userId, bookingRepo, passengerRepo, flightService, seatService);
+        passengerService = new PassengerServiceImpl(passengerRepo);
     }
 
     public FlightService getFlightService() {
@@ -81,5 +85,9 @@ public class OnGoApp extends Application {
 
     public SeatService getSeatService(){
         return seatService;
+    }
+
+    public PassengerService getPassengerService() {
+        return passengerService;
     }
 }
