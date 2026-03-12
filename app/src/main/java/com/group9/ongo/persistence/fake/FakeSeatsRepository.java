@@ -50,7 +50,7 @@ public class FakeSeatsRepository implements SeatRepository {
     public Seat findSeat(int flightId, int seatRow, String seatColumn) {
         for (Seat seat : seats)
         {
-            if(seat.getFlightId() == flightId && seat.getSeatRow() == seatRow && seat.getSeatColumn().equals(seatColumn))
+            if(seat.getFlightId() == flightId && seat.getSeatRow() == seatRow && seat.getLabel().equals(seatColumn))
             {
                 return seat;
             }
@@ -63,7 +63,7 @@ public class FakeSeatsRepository implements SeatRepository {
     public int createSeat(int flight_id, int row, String column) {
         for (Seat seat : seats) {
             if (seat.getFlightId() == flight_id) {
-                if (seat.getSeatRow() == row && seat.getSeatColumn().equals(column)) {//found dupe
+                if (seat.getSeatRow() == row && seat.getLabel().equals(column)) {//found dupe
                     return -1;
                 }
             }
@@ -101,7 +101,6 @@ public class FakeSeatsRepository implements SeatRepository {
         createSeats(2, 160);
         createSeats(3, 250);
         createSeats(4,500);
-        createSeats(5, 1);
     }
 
     private void createSeats(int flightId, int capacity){

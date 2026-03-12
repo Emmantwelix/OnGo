@@ -1,6 +1,5 @@
 package com.group9.ongo.persistence;
 
-import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 
 import java.time.LocalTime;
@@ -10,7 +9,7 @@ import java.util.List;
 public interface FlightRepository {
     List<Flight> getAll();
     List<Flight> getAllAvailableFlights();
-
+    List<Flight> searchFlights(String origin, String destination);
     Flight getFlightById(int flightId);
 
     //return the id of the flight that was added, -1 if invalid
@@ -18,7 +17,7 @@ public interface FlightRepository {
 
     boolean deleteFlight(int flightId);
 
-    void schedualeFlight(int flightId);
+    void scheduleFlight(int flightId);
 
     void deScheduleFlight(int flightId);
 

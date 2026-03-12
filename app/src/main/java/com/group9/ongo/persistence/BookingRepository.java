@@ -10,8 +10,6 @@ public interface BookingRepository {
 
     public Booking addBooking(Booking booking);
 
-    public boolean updateBooking(Booking booking);
-
     public Booking getBookingById(int bookingId);
 
     public boolean deleteBooking(int bookingId);

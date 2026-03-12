@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="seat_occupied">#F44336</color>
+    <color name="seat_selected">#4CAF50</color>
+    <color name="aircraft_nose">#EEEEEE</color>
 </resources>

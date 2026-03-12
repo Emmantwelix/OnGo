@@ -102,6 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Passport Number"
+                        android:layout_marginBottom="24dp"
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
                         <com.google.android.material.textfield.TextInputEditText
@@ -110,6 +111,29 @@
                             android:layout_height="wrap_content"
                             android:inputType="textCapCharacters" />
                     </com.google.android.material.textfield.TextInputLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EEF0F2"
+                        android:layout_marginBottom="24dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btn_select_seat_user_info"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:text="Choose Your Seat"
+                        android:textColor="@color/black"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        app:backgroundTint="@color/white"
+                        app:strokeColor="@color/black"
+                        app:strokeWidth="1dp"
+                        app:cornerRadius="16dp"
+                        app:icon="@drawable/baseline_flight_24"
+                        app:iconTint="@color/black"
+                        app:iconGravity="textStart"
+                        app:iconPadding="12dp"/>
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

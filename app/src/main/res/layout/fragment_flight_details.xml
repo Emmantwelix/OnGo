@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="AC 123" />
 
-            <!-- Route Header (Centered & Enlarged, Split for perfect vertical alignment) -->
+            <!-- Route Header -->
             <LinearLayout
                 android:id="@+id/layout_route_header"
                 android:layout_width="wrap_content"
@@ -124,7 +124,6 @@
                     android:layout_height="wrap_content"
                     android:padding="16dp">
 
-                    <!-- Sub-header -->
                     <TextView
                         android:id="@+id/text_date_subheader"
                         android:layout_width="wrap_content"
@@ -135,7 +134,6 @@
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="Departing flight · Fri, Apr 3" />
 
-                    <!-- Departure Time -->
                     <TextView
                         android:id="@+id/text_depart_time"
                         android:layout_width="wrap_content"
@@ -148,7 +146,6 @@
                         app:layout_constraintTop_toBottomOf="@id/text_date_subheader"
                         tools:text="10:00 AM" />
 
-                    <!-- Long Arrow Line -->
                     <View
                         android:id="@+id/view_time_line"
                         android:layout_width="0dp"
@@ -160,7 +157,6 @@
                         app:layout_constraintStart_toEndOf="@id/text_depart_time"
                         app:layout_constraintTop_toTopOf="@id/text_depart_time" />
 
-                    <!-- Arrow Head -->
                     <ImageView
                         android:id="@+id/icon_time_arrow_head"
                         android:layout_width="14dp"
@@ -171,7 +167,6 @@
                         app:layout_constraintTop_toTopOf="@id/view_time_line"
                         app:tint="#D1D1D1" />
 
-                    <!-- Arrival Time -->
                     <TextView
                         android:id="@+id/text_land_time"
                         android:layout_width="wrap_content"
@@ -184,7 +179,6 @@
                         app:layout_constraintTop_toTopOf="@id/text_depart_time"
                         tools:text="12:30 PM" />
 
-                    <!-- Origin Code -->
                     <TextView
                         android:id="@+id/text_origin_code"
                         android:layout_width="wrap_content"
@@ -196,7 +190,6 @@
                         app:layout_constraintTop_toBottomOf="@id/text_depart_time"
                         tools:text="TOR" />
 
-                    <!-- Destination Code -->
                     <TextView
                         android:id="@+id/text_dest_code"
                         android:layout_width="wrap_content"
@@ -219,19 +212,12 @@
                 android:background="#F0F0F0"
                 app:layout_constraintTop_toBottomOf="@id/card_timeline_block" />
 
-            <!-- Flight Details Footer -->
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_airline_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:layout_constraintBottom_toTopOf="@+id/layout_available_seat"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/divider"
-                app:layout_constraintVertical_bias="0.5">
+                app:layout_constraintTop_toBottomOf="@+id/divider">
 
                 <TextView
                     android:id="@+id/text_duration"
@@ -311,29 +297,17 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/layout_available_seat"
-                android:layout_width="match_parent"
-                android:layout_height="42dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <TextView
+                android:id="@+id/text_available_seats"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#757575"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/layout_airline_details"
-                app:layout_constraintVertical_bias="0.5">
-
-                <TextView
-                    android:id="@+id/text_available_seats"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.5"
-                    tools:text="Available Seats" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@id/layout_airline_details"
+                tools:text="Available Seats" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

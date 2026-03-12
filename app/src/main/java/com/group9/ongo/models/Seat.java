@@ -1,18 +1,32 @@
 package com.group9.ongo.models;
 
 public class Seat {
-    int seat_id;
-    int flight_id;
-    int seat_row;
-    String seat_column;
-    boolean isBooked;
+    public enum Type { SEAT, AISLE }
+    public enum Status { AVAILABLE, OCCUPIED, SELECTED }
 
+    private int seat_id;
+    private int flight_id;
+    private final int row;
+    private final String label;
+    private final Type type;
+    private Status status;
+
+    // Original constructor for compatibility
     public Seat(int seat_id, int flight_id, int seat_row, String seat_column, boolean is_booked) {
         this.seat_id = seat_id;
         this.flight_id = flight_id;
-        this.seat_row = seat_row;
-        this.seat_column = seat_column;
-        this.isBooked = is_booked;
+        this.row = seat_row;
+        this.label = seat_column;
+        this.type = Type.SEAT;
+        this.status = is_booked ? Status.OCCUPIED : Status.AVAILABLE;
+    }
+
+    // New constructor for the seat selection feature
+    public Seat(int row, String label, Type type, Status status) {
+        this.row = row;
+        this.label = label;
+        this.type = type;
+        this.status = status;
     }
 
     public int getSeatId() {
@@ -23,24 +37,44 @@ public class Seat {
         return flight_id;
     }
 
-    public int getSeatRow() {
-        return seat_row;
+    public int getRow() {
+        return row;
     }
 
-    public String getSeatColumn() {
-        return seat_column;
+    public int getSeatRow() { // Compatibility
+        return row;
     }
 
-    public boolean getIsBooked() {
-        return isBooked;
+    public String getLabel() {
+        return label;
     }
 
-    public void bookSeat() {
-        isBooked = true;
+    public Type getType() {
+        return type;
     }
 
-    public void unbookSeat() {
-        isBooked = false;
+    public Status getStatus() {
+        return status;
     }
 
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public boolean getIsBooked() { // Compatibility
+        return status == Status.OCCUPIED;
+    }
+
+    public void bookSeat() { // Compatibility
+        this.status = Status.OCCUPIED;
+    }
+
+    public void unbookSeat() { // Compatibility
+        this.status = Status.AVAILABLE;
+    }
+
+    @Override
+    public String toString() {
+        return type == Type.AISLE ? "Aisle" : row + label;
+    }
 }

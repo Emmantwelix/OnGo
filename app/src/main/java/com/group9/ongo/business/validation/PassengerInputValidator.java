@@ -3,6 +3,12 @@ package com.group9.ongo.business.validation;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.DATE_OF_BIRTH;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FIRST_NAME;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.LAST_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_DOB_INVALID_DATE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_DOB_INVALID_DATE_RANGE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_DOB_INVALID_MONTH;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_DOB_INVALID_NUM;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_DOB_INVALID_YEAR;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_FUTURE_DOB;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_INVALID_BIRTHDATE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NO_BIRTHDATE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NO_FIRSTNAME;
@@ -38,12 +44,18 @@ public class PassengerInputValidator {
 
     private static void validateBirthDate(String dob) throws ValidationException {
         if (dob == null || dob.isBlank()) {
-            throw new ValidationException("Date of birth is required", "birthDate");
+            throw new ValidationException(PASSENGER_NO_BIRTHDATE, DATE_OF_BIRTH);
         }
+
 
         String[] parts = dob.split("-");
         if (parts.length != 3) {
-            throw new ValidationException("Date of birth must be in format YYYY-MM-DD", "birthDate");
+            throw new ValidationException(PASSENGER_INVALID_BIRTHDATE, DATE_OF_BIRTH);
+        }
+
+        // Enforce strict YYYY-MM-DD format
+        if (!dob.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            throw new ValidationException(PASSENGER_INVALID_BIRTHDATE, DATE_OF_BIRTH);
         }
 
         try {
@@ -52,28 +64,29 @@ public class PassengerInputValidator {
             int day = Integer.parseInt(parts[2]);
 
             if (month < 1 || month > 12) {
-                throw new ValidationException("Month must be between 01 and 12", "birthDate");
+                throw new ValidationException(PASSENGER_DOB_INVALID_MONTH, DATE_OF_BIRTH);
             }
 
             if (day < 1 || day > 31) {
-                throw new ValidationException("Day must be between 01 and 31", "birthDate");
+                throw new ValidationException(PASSENGER_DOB_INVALID_DATE_RANGE, DATE_OF_BIRTH);
             }
 
             if (year < 1850) {
-                throw new ValidationException("Birth year must be 1850 or later", "birthDate");
+                throw new ValidationException(PASSENGER_DOB_INVALID_YEAR, DATE_OF_BIRTH);
             }
 
             LocalDate birthDate = LocalDate.of(year, month, day);
             LocalDate today = LocalDate.now();
 
             if (birthDate.isAfter(today)) {
-                throw new ValidationException("Date of birth cannot be in the future", "birthDate");
+                throw new ValidationException(PASSENGER_FUTURE_DOB, DATE_OF_BIRTH);
             }
 
         } catch (NumberFormatException e) {
-            throw new ValidationException("Date of birth must contain valid numbers", "birthDate");
+            throw new ValidationException(PASSENGER_DOB_INVALID_NUM, DATE_OF_BIRTH);
         } catch (DateTimeException e) {
-            throw new ValidationException("Invalid date: " + e.getMessage(), "birthDate");
+            throw new ValidationException(PASSENGER_DOB_INVALID_DATE + e.getMessage(), DATE_OF_BIRTH);
+
         }
     }
 }
