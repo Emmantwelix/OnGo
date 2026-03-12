@@ -115,7 +115,6 @@ public class FakeFlightRepository implements FlightRepository {
         this.createFlight(PORTER_AIRLINES, TORONTO, MONTREAL, LocalTime.of(12, 0), LocalTime.of(14, 0), 2, 979.52, DEFAULT_FLIGHT_NUM, DEFAULT_DATE);
         this.createFlight(AIR_TRANSAT, WINNIPEG, VANCOUVER, LocalTime.of(14, 0), LocalTime.of(16, 0), 3, 200.01, DEFAULT_FLIGHT_NUM, DEFAULT_DATE);
         this.createFlight(WESTJET, MONTREAL, WINNIPEG, LocalTime.of(16, 0), LocalTime.of(18, 0), 4, 417.38, DEFAULT_FLIGHT_NUM, DEFAULT_DATE);
-        this.createFlight(AIR_TRANSAT, CALGARY, VANCOUVER, LocalTime.of(4, 0), LocalTime.of(6, 0), 3, 300.01, DEFAULT_FLIGHT_NUM, DEFAULT_DATE);
 
     }
 
