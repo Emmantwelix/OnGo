@@ -65,10 +65,6 @@ public class FlightServiceImpl implements FlightService {
         return sortedFlight;
     }
 
-    public  List<Flight> specificFlights(List<Flight> flight,String origin, String destination){
-        return repo.getAll(); //TEMP for now
-    }
-
     @Override
     public List<Flight> getAllFlights() {
         return repo.getAll();
