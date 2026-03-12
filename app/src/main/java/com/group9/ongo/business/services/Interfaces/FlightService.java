@@ -13,6 +13,8 @@ public interface FlightService {
 
     List<Flight> getAllAvailableFlights();
 
+    List<Flight> searchFlights(String origin, String destination) throws ValidationException;
+
     Flight getFlightById(int flightId) throws ValidationException;
 
     //returns the id of the flight that was added, will throw if invalid

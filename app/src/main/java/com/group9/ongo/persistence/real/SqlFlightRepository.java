@@ -112,6 +112,33 @@ public class SqlFlightRepository implements FlightRepository {
 
         return flights;
     }
+
+    @Override
+    public List<Flight> searchFlights(String origin, String destination) {
+
+        List<Flight> flights = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                TABLE_FLIGHTS,
+                null,
+                COL_FLIGHT_ORIGIN + " = ? AND " + COL_FLIGHT_DESTINATION + " = ?",
+                new String[]{origin, destination},
+                null,
+                null,
+                null
+        );
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                flights.add(mapCursorToFlight(cursor));
+            }
+            cursor.close();
+        }
+
+        return flights;
+    }
+
     @Override
     public int createFlight(String airline,
                             String origin,

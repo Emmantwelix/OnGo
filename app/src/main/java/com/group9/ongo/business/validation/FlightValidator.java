@@ -33,6 +33,30 @@ public class FlightValidator {
         }
     }
 
+    public static void validateLocation(String origin, String destination) throws ValidationException{
+        boolean validDestination = false;
+        boolean validOrigin = false;
+
+        for (String location : ARR_LOCATIONS)
+        {
+            if (location.equals(destination)) {
+                validDestination = true;
+            }
+            if (location.equals(origin)) {
+                validOrigin = true;
+            }
+        }
+        if ( !validOrigin ) {
+            throw new ValidationException(FLIGHT_INVALID_ORIGIN);
+        }
+        else if ( !validDestination ) {
+            throw new ValidationException(FLIGHT_INVALID_DESTINATION);
+        }
+        else if ( origin.equals(destination) ) {
+            throw new ValidationException(FLIGHT_SAME_ORIGIN_DESTINATION);
+        }
+    }
+
 
     public static void validateNewFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, double price) throws ValidationException {
         boolean validDestination = false;
