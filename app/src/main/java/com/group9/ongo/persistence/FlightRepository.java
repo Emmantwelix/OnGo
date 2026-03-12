@@ -9,7 +9,7 @@ import java.util.List;
 public interface FlightRepository {
     List<Flight> getAll();
     List<Flight> getAllAvailableFlights();
-
+    List<Flight> searchFlights(String origin, String destination);
     Flight getFlightById(int flightId);
 
     //return the id of the flight that was added, -1 if invalid

@@ -95,6 +95,62 @@ public class FlightServiceTest {
     }
 
     @Test
+    public void testSearchFlights_returnsFlights() throws ValidationException {
+        //arrange
+        service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+        //act
+        List<Flight> flights = service.searchFlights(WINNIPEG, TORONTO);
+        //assert
+        assertEquals(1, flights.size());
+        assertEquals(WINNIPEG, flights.get(0).getOrigin());
+        assertEquals(TORONTO, flights.get(0).getDestination());
+    }
+
+    @Test
+    public void testSearchFlights_whenInvalidOrigin_throwsException() throws ValidationException{
+        //arrange
+        // act
+        //assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.searchFlights("wakanda", WINNIPEG)
+        );
+        assertEquals("Invalid origin", exception.getMessage());
+    }
+
+    @Test
+    public void testSearchFlights_whenInvalidDestination_throwsException() throws ValidationException{
+        //arrange
+        // act
+        //assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.searchFlights(WINNIPEG, "city of atlantis")
+        );
+        assertEquals("Invalid destination", exception.getMessage());
+    }
+
+    @Test
+    public void testSearchFlights_whenSameLocation_throwsException() throws ValidationException {
+        //assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.searchFlights(WINNIPEG, WINNIPEG)
+        );
+        assertEquals("Origin and destination cannot be the same", exception.getMessage());
+    }
+
+    @Test
+    public void testSearchFlights_withNonExistingFlight_throwsException() throws ValidationException {
+        //assert
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.searchFlights(WINNIPEG, TORONTO)
+        );
+        assertEquals("No flights available with search criteria", exception.getMessage());
+    }
+
+        @Test
     public void addItem_addsValidItem() throws ValidationException {
         //arrange + act
         int flightID = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);

@@ -39,9 +39,22 @@ public class FakeFlightRepository implements FlightRepository {
     public List<Flight> getAll() {
         return Collections.unmodifiableList(flights);
     }
+
     @Override
     public List<Flight> getAllAvailableFlights() {
         return Collections.unmodifiableList(flights);
+    }
+
+    @Override
+    public List<Flight> searchFlights(String origin, String destination) {
+        List<Flight> results = new ArrayList<>();
+
+        for (Flight flight : flights) {
+            if (flight.getOrigin().equals(origin) && flight.getDestination().equals(destination)) {
+                results.add(flight);
+            }
+        }
+        return results; // return an empty list if no flights match the search criteria
     }
 
 

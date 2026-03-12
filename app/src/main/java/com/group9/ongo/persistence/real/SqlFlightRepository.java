@@ -112,6 +112,9 @@ public class SqlFlightRepository implements FlightRepository {
 
         return flights;
     }
+
+    @Override
+    public List<Flight> searchFlights(String origin, String destination) { return null;}
     @Override
     public int createFlight(String airline,
                             String origin,
