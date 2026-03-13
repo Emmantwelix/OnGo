@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,7 @@ public class UserInfoFragment extends Fragment {
     private TextView textFlightId;
     private Button btnConfirm;
     private MaterialButton btnSelectSeat;
+    private ImageButton btnBack;
     private OnBookingSuccessListener listener;
 
     private ActivityResultLauncher<Intent> seatSelectionLauncher;
@@ -107,9 +109,12 @@ public class UserInfoFragment extends Fragment {
         editPassportNumber = view.findViewById(R.id.edit_passport_number);
         btnConfirm = view.findViewById(R.id.btn_confirm);
         btnSelectSeat = view.findViewById(R.id.btn_select_seat_user_info);
+        btnBack = view.findViewById(R.id.btn_back);
 
         textFlightId.setText("Booking for Flight: " + flightId);
         updateSeatDisplay();
+
+        btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         btnSelectSeat.setOnClickListener(v -> {
             FlightService flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
