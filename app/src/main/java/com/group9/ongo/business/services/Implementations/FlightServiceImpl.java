@@ -243,8 +243,21 @@ public class FlightServiceImpl implements FlightService {
         if (value == null || value.isEmpty()) {
             return value;
         }
-        return value.substring(0, 1).toUpperCase(Locale.ROOT)
-                + value.substring(1).toLowerCase(Locale.ROOT);
+
+        String[] words = value.split(" ");
+        StringBuilder result = new StringBuilder();
+
+        for (String word : words) {
+            if (word.isEmpty()) continue;
+
+            result.append(word.substring(0,1).toUpperCase(Locale.ROOT))
+                    .append(word.substring(1).toLowerCase(Locale.ROOT))
+                    .append(" ");
+        }
+
+        return result.toString().trim();
     }
+
+
 
 }
