@@ -21,3 +21,18 @@ OnGo is a streamlined air travel booking and management application that enables
 
 # Architecture
 - [Architecture](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/db64579ffb4c49a19a02987b58c9ddd2421416a8/docs/architecture.md)
+
+
+# Before running
+
+* You need to sync with gradle before running the app
+
+# Avaiable Cities
+- Toronto
+- Montreal
+- Winnipeg
+- British Columbia
+- Vancouver
+- Quebec City
+- Calgary
+- Tsu

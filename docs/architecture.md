@@ -25,12 +25,19 @@ Each layer adheres to having a single repsonsibility and communicates only with 
 * Includes:
   * `BookingAdapter`
   * `FlightAdapter`
-  * Fragments (Tabs like Home, Search, Setting)
+  * Fragments (Tabs like Home, Search, Setting, UserInfo, FlightDetails)
   * `MainActivity`
+  * `ModifyBookingBottomSheet`
+  * `SeatSelectionActivity`
+  * `BookingDetailsActivity`
+  * `CancelledBookingActivity`
 * Responsible for:
   * Displaying list of Flight
   * Flight Details
   * Displays booked flight and its details
+  * Booking seats in flight
+  * Looking up flights based on origin and destination
+  * Letting users cancel flights and displaying cancelled flights
   * Talks to logic layer when data (like flight details) is needed
   
 UserInfoFragment does not store any user data, at the moment we only handle one user and their booking. Single user can book multiple flight under different people's name but it is the same user.
@@ -41,8 +48,13 @@ UserInfoFragment does not store any user data, at the moment we only handle one 
     * `FlightService`
     * `UserService`
     * `BookingService`
+    * `Generator`
+    * `LoginService`
+    * `PassangerService`
+    * `SeatService`
     * Validators
     * Exceptions
+    * Constants
 
 This layer handles the brunt of the workflow ochastration, it communicates with the repositories of our system to fetch and store data at the request of the presentation layer and validates the data being passed through. This class additionally throws domain specific exceptions to the presentation layer.
 
@@ -54,6 +66,11 @@ This layer handles the brunt of the workflow ochastration, it communicates with 
   * `Booking details`
   * `Passenger`
   * `PassengerInput`
+  * `Seat`
+  * `SeatMapConfig`
+  * `Airline`
+  * `BookingStatus`
+  * `Aircraft`
 * Representation of the data needed for OnGo.
 
 `BookingDetails` is a object class created to prevent a data clump code smell, this causes it to be tightly coupled with the flight, booking, and passenger classes.
@@ -62,9 +79,9 @@ This layer handles the brunt of the workflow ochastration, it communicates with 
 * Data access layer.
 * Structure:
 
-  * Repository interfaces: `BookingRepository`, `PassengerRepository`, `FlightRepository`, `UserRepository`
-  * Fake implementations: `FakeBookingRepository`, `FakePassengerRepository`, `FakeUserRepository`, `FakeFlightRepository`
-  * Real database implementations: n/a
+  * Repository interfaces: `BookingRepository`, `PassengerRepository`, `FlightRepository`, `UserRepository`, `AircraftRepository`, `SeatRepository`
+  * Fake implementations: `FakeBookingRepository`, `FakePassengerRepository`, `FakeUserRepository`, `FakeFlightRepository`, `FakeAircraftRepository`, `FakeSeatRepository`
+  * Real database implementations: `AppDbHelper`, `SqlAircraftRepository`, `SqlBookingRepository`, `SqlPassengerRepositoru`, `SqlFlightRepository`, `SqlUserRepository`, `SqlSeatRepository`
 
 Fakes are stub implementations of the interfaces made for testing.
 
