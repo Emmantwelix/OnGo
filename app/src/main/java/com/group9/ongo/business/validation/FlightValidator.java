@@ -6,21 +6,15 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_IN
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_ORIGIN;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_TIME_SEQUENCE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_LTIME_NULL;
-import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_PLANE;
-import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_CAPACITY;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_PRICE;
-import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_CAPACITY;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_PRICE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_SAME_ORIGIN_DESTINATION;
 import static com.group9.ongo.business.constants.FlightConstants.ARR_AIRLINES;
 import static com.group9.ongo.business.constants.FlightConstants.ARR_LOCATIONS;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_CAPACITY;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_PRICE;
-import static com.group9.ongo.business.constants.FlightConstants.MIN_CAPACITY;
 import static com.group9.ongo.business.constants.FlightConstants.MIN_PRICE;
 
-import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 
 import java.time.LocalTime;
@@ -78,6 +72,7 @@ public class FlightValidator {
         {
             if (airlineName.equals(airline)) {
                 validAirline = true;
+                break;
             }
         }
 

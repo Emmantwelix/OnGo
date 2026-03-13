@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 
 public class FlightServiceImpl implements FlightService {
 
@@ -53,7 +54,7 @@ public class FlightServiceImpl implements FlightService {
         this.aircraftRepo = aircraftRepo;
     }
 
-    private List<Flight> sortByPrice(List<Flight> flight) {
+    public List<Flight> sortByPrice(List<Flight> flight) {
         List<Flight> sortedFlight = new ArrayList<>(flight);
         sortedFlight.sort(Comparator.comparingDouble(Flight::getPrice));
         return sortedFlight;
@@ -61,9 +62,12 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> searchFlights(String origin, String destination) throws ValidationException {
-        validateLocation(origin, destination);
 
-        List<Flight> flights = repo.searchFlights(origin, destination);
+        String from = formatSearchLocation(origin);
+        String to  = formatSearchLocation(destination);
+
+        validateLocation(from, to);
+        List<Flight> flights = repo.searchFlights(from, to);
 
         if (flights.isEmpty()){
             throw new ValidationException(NO_FLIGHTS_AVAILABLE);
@@ -73,7 +77,7 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> getAllFlights() {
-        return sortByPrice(repo.getAll());
+        return repo.getAll();
     }
 
     @Override
@@ -202,6 +206,7 @@ public class FlightServiceImpl implements FlightService {
         return String.format("AC %d", flight.getFlightId());
     }
 
+    @Override
     public void isFlightFull(int flightId)
     {
         int availSeats = getAvailableSeats(flightId);
@@ -232,6 +237,14 @@ public class FlightServiceImpl implements FlightService {
     public Aircraft getAircraft(Flight flight)
     {
         return aircraftRepo.getAircraftById(flight.getAircraftId());
+    }
+
+    private String formatSearchLocation(String value) {
+        if (value == null || value.isEmpty()) {
+            return value;
+        }
+        return value.substring(0, 1).toUpperCase(Locale.ROOT)
+                + value.substring(1).toLowerCase(Locale.ROOT);
     }
 
 }
