@@ -71,8 +71,8 @@ public class OnGoApp extends Application {
 
         BookingRepository bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
         PassengerRepository passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
-        bookingService = new BookingServiceImpl(userId, bookingRepo, passengerRepo, flightService, seatService);
         passengerService = new PassengerServiceImpl(passengerRepo);
+        bookingService = new BookingServiceImpl(userId, bookingRepo, passengerService, flightService, seatService);
     }
 
     public FlightService getFlightService() {

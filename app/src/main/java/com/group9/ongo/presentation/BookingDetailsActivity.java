@@ -51,6 +51,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
 
     private SeatService seatService;
     private int bookingId = -1;
+    private BookingDetails bookingDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,32 +65,28 @@ public class BookingDetailsActivity extends AppCompatActivity {
 
         bookingId = getIntent().getIntExtra("booking_id", -1);
 
+        if (bookingId == -1) {
+            Toast.makeText(this, "Invalid booking", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         initViews();
         bindData();
 
         btnModifyBooking.setOnClickListener(v -> {
-            BookingDetails details = bookingService.getBookingDetailsById(bookingId);
-            if (details != null && details.getPassenger() != null) {
                 ModifyBookingBottomSheet bottomSheet = new ModifyBookingBottomSheet(
-                        details.getPassenger(),
+                        bookingDetails.getPassenger(),
                         this::bindData
                 );
                 bottomSheet.show(getSupportFragmentManager(), "ModifyBookingBottomSheet");
-            } else {
-                Toast.makeText(this, "Passenger details not found", Toast.LENGTH_SHORT).show();
-            }
         });
 
         btnCancelBooking.setOnClickListener(v -> {
             try {
-                boolean cancelled = bookingService.cancelBooking(bookingId);
-
-                if (cancelled) {
-                    Toast.makeText(this, "Booking cancelled", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(this, "Booking not found", Toast.LENGTH_SHORT).show();
-                }
+                bookingService.cancelBooking(bookingId);
+                Toast.makeText(this, "Booking cancelled", Toast.LENGTH_SHORT).show();
+                finish();
             } catch (ValidationException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -117,52 +114,44 @@ public class BookingDetailsActivity extends AppCompatActivity {
     }
 
     private void bindData() {
-        if (bookingId == -1) {
-            Toast.makeText(this, "Invalid booking", Toast.LENGTH_SHORT).show();
-            finish();
-            return;
-        }
+        try {
+            bookingDetails = bookingService.getBookingDetailsById(bookingId);
+            Booking booking = bookingDetails.getBooking();
+            Flight flight = bookingDetails.getFlight();
+            Passenger passenger = bookingDetails.getPassenger();
 
-        BookingDetails details = bookingService.getBookingDetailsById(bookingId);
+            textPassengerName.setText(passenger.getFirstName() + " " + passenger.getLastName());
+            textStatus.setText(booking.getBookingStatus());
+            textAirline.setText(flight.getAirline());
+            textFlightNumber.setText(flight.getFlightNumber());
+            textOrigin.setText(flight.getOrigin());
+            textDestination.setText(flight.getDestination());
+            textOriginTime.setText(flight.getDepartTimeString());
+            textDestinationTime.setText(flight.getLandTimeString());
+            textFlightDate.setText(flight.getDateString());
 
-        if (details == null) {
+            textOriginCode.setText(flightService.getAirportCode(flight.getOrigin()));
+            textDestinationCode.setText(flightService.getAirportCode(flight.getDestination()));
+
+            textPassportNumber.setText(passenger.getPassportNumber());
+            textBirthdate.setText(passenger.getDateOfBirthFormatted());
+            textSeatNumber.setText(seatService.getFormattedSeatById(flight.getFlightId(), booking.getSeatId()));
+
+            airlineLogo.setImageResource(
+                    Airline.fromName(flight.getAirline()).getLogoResId()
+            );
+
+            GradientDrawable background = (GradientDrawable) textStatus.getBackground();
+            if (booking.getStatus() == BookingStatus.CANCELLED) {
+                background.setColor(Color.parseColor("#DC2626"));
+                btnCancelBooking.setVisibility(View.GONE);
+                btnModifyBooking.setVisibility(View.GONE);
+            } else {
+                background.setColor(Color.parseColor("#2F6FED"));
+            }
+        } catch(ValidationException e) {
             Toast.makeText(this, "Booking details unavailable", Toast.LENGTH_SHORT).show();
             finish();
-            return;
-        }
-
-        Booking booking = details.getBooking();
-        Flight flight = details.getFlight();
-        Passenger passenger = details.getPassenger();
-
-        textPassengerName.setText(passenger.getFirstName() + " " + passenger.getLastName());
-        textStatus.setText(booking.getBookingStatus());
-        textAirline.setText(flight.getAirline());
-        textFlightNumber.setText(flight.getFlightNumber());
-        textOrigin.setText(flight.getOrigin());
-        textDestination.setText(flight.getDestination());
-        textOriginTime.setText(flight.getDepartTimeString());
-        textDestinationTime.setText(flight.getLandTimeString());
-        textFlightDate.setText(flight.getDateString());
-
-        textOriginCode.setText(flightService.getAirportCode(flight.getOrigin()));
-        textDestinationCode.setText(flightService.getAirportCode(flight.getDestination()));
-
-        textPassportNumber.setText(passenger.getPassportNumber());
-        textBirthdate.setText(passenger.getDateOfBirthFormatted());
-        textSeatNumber.setText(seatService.getFormattedSeatById(flight.getFlightId(),booking.getSeatId()));
-
-        airlineLogo.setImageResource(
-                Airline.fromName(flight.getAirline()).getLogoResId()
-        );
-
-        GradientDrawable background = (GradientDrawable) textStatus.getBackground();
-        if (booking.getStatus() == BookingStatus.CANCELLED) {
-            background.setColor(Color.parseColor("#DC2626")); // Red
-            btnCancelBooking.setVisibility(View.GONE);
-            btnModifyBooking.setVisibility(View.GONE);
-        } else {
-            background.setColor(Color.parseColor("#2F6FED")); // Blue
         }
     }
 }

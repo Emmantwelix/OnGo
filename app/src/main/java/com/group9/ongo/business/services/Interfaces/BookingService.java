@@ -11,11 +11,11 @@ import java.util.List;
 public interface BookingService {
     Booking createBooking(int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn) throws BookingException, ValidationException;
 
-    boolean cancelBooking(int bookingId) throws ValidationException;
+    void cancelBooking(int bookingId) throws ValidationException;
 
     List<BookingDetails> getBookingDetailsForCurrentUser();
 
     List<BookingDetails> getCancelledBookingDetailsForCurrentUser();
 
-    BookingDetails getBookingDetailsById(int bookingId);
+    BookingDetails getBookingDetailsById(int bookingId) throws ValidationException;
 }
