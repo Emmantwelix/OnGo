@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class FlightDetailsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_flight_details, container, false);
 
         // Bind views
+        ImageButton btnBack = view.findViewById(R.id.btn_back);
         TextView textOriginCity = view.findViewById(R.id.text_origin_city);
         TextView textDestCity = view.findViewById(R.id.text_dest_city);
         TextView textDateSubheader = view.findViewById(R.id.text_date_subheader);
@@ -68,6 +70,8 @@ public class FlightDetailsFragment extends Fragment {
         TextView textPrice = view.findViewById(R.id.text_price);
         TextView textAvailableSeats = view.findViewById(R.id.text_available_seats);
         MaterialButton btnNext = view.findViewById(R.id.btn_next);
+
+        btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
 
         FlightService flightService = ((OnGoApp) requireActivity().getApplication()).getFlightService();
 
