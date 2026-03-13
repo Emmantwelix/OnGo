@@ -10,6 +10,7 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_DOB_INVALID_YEAR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_FUTURE_DOB;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_INVALID_BIRTHDATE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NO_BIRTHDATE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NO_FIRSTNAME;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NO_LASTNAME;
@@ -17,6 +18,7 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSENGER_NULL_INPUT;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSPORT;
 
+import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
 
 import java.time.LocalDate;
@@ -24,6 +26,11 @@ import java.time.DateTimeException;
 
 public class PassengerInputValidator {
 
+    public static void validatePassenger(Passenger passenger) throws ValidationException {
+        if (passenger == null) {
+            throw new ValidationException(PASSENGER_NOT_FOUND);
+        }
+    }
     public static void validate(PassengerInput input) throws ValidationException {
         if (input == null) {
             throw new ValidationException(PASSENGER_NULL_INPUT);

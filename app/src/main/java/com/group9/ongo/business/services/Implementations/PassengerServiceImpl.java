@@ -3,6 +3,7 @@ package com.group9.ongo.business.services.Implementations;
 import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.validation.PassengerInputValidator;
 import com.group9.ongo.business.validation.ValidationException;
+import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.persistence.PassengerRepository;
 
@@ -19,5 +20,25 @@ public class PassengerServiceImpl implements PassengerService {
         PassengerInputValidator.validate(input);
 
         return passengerRepository.update(id, fName, lName, dob, passport);
+    }
+
+    @Override
+    public Passenger addPassenger(PassengerInput input, int bookingId) throws ValidationException
+    {
+        Passenger passenger = passengerRepository.addPassenger(input, bookingId);
+
+        PassengerInputValidator.validatePassenger(passenger);
+
+        return passenger;
+    }
+
+    @Override
+    public Passenger getPassengerByBookingId(int bookingId) throws ValidationException
+    {
+        Passenger passenger = passengerRepository.getPassengerByBookingId(bookingId);
+
+        PassengerInputValidator.validatePassenger(passenger);
+
+        return passenger;
     }
 }

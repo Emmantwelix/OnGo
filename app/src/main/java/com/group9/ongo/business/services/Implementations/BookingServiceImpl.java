@@ -1,10 +1,13 @@
 package com.group9.ongo.business.services.Implementations;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_CREATION_FAILED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_PASSENGER_ERROR;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_UPDATE_FAILED;
 
 import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.BookingValidator;
 import com.group9.ongo.business.validation.ValidationException;
@@ -16,7 +19,6 @@ import com.group9.ongo.models.Passenger;
 import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.BookingRepository;
-import com.group9.ongo.persistence.PassengerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,35 +26,47 @@ import java.util.List;
 public class BookingServiceImpl implements BookingService {
 
     private BookingRepository bookingsRepo;
-    private PassengerRepository passengerRepo;
+    private PassengerService passengerService;
 
     private FlightService flightService;
     private SeatService seatService;
 
     private int currentUserId;
 
-    public BookingServiceImpl( int currentUserId,BookingRepository bookingsRepo, PassengerRepository passengerRepo,
-                              FlightService flightService, SeatService seatService) {
+    public BookingServiceImpl( int currentUserId,BookingRepository bookingsRepo, PassengerService passengerService,
+                               FlightService flightService, SeatService seatService) {
         this.bookingsRepo = bookingsRepo;
-        this.passengerRepo = passengerRepo;
+        this.passengerService = passengerService;
         this.flightService = flightService;
         this.seatService = seatService;
         this.currentUserId = currentUserId;
     }
 
     @Override
-    public Booking createBooking(int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn) throws BookingException, ValidationException {
-        BookingValidator.validate(flightService.getFlightById(flightId), passengerInfo);
+    public Booking createBooking(int flightId, PassengerInput passengerInfo, int seatRow, String seatColumn)
+            throws BookingException, ValidationException {
 
-        //throws exception if seat is already booked or not found
+        BookingValidator.validateBookingFields(flightService.getFlightById(flightId), passengerInfo);
+
+        // throws exception if seat already booked
         int seatId = seatService.bookSeat(flightId, seatRow, seatColumn);
 
         Booking booking = bookingsRepo.addBooking(new Booking(0, currentUserId, flightId, seatId));
-        Passenger passenger = passengerRepo.addPassenger(passengerInfo, booking.getBookingId());
 
-        if (passenger == null) {
+        if (booking == null) {
+            // rollback seat reservation
+            seatService.unbookSeat(flightId, seatId);
+            throw new BookingException(BOOKING_CREATION_FAILED);
+        }
+
+        try {
+            passengerService.addPassenger(passengerInfo, booking.getBookingId());
+        } catch (ValidationException e) {
+
+            // rollback booking + seat
             bookingsRepo.deleteBooking(booking.getBookingId());
             seatService.unbookSeat(flightId, seatId);
+
             throw new BookingException(BOOKING_PASSENGER_ERROR);
         }
 
@@ -60,77 +74,74 @@ public class BookingServiceImpl implements BookingService {
 
         return booking;
     }
+
     @Override
-    public boolean cancelBooking(int bookingId) throws ValidationException {
-        Booking booking = bookingsRepo.getBookingById(bookingId);
+    public void cancelBooking(int bookingId) throws ValidationException {
+        Booking booking = getBookingById(bookingId);
 
-        if(booking == null) return false;
+        updateBookingStatusToCancelled(bookingId);
 
-        boolean updated = bookingsRepo.updateBookingStatus(bookingId, BookingStatus.CANCELLED);
-
-        if (updated) {
-            Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
-            seatService.unbookSeat(seat.getFlightId(), seat.getSeatId());
-            flightService.isFlightFull(seat.getFlightId());
-        }
-
-        return updated;
+        Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
+        seatService.unbookSeat(seat.getFlightId(), seat.getSeatId());
+        flightService.isFlightFull(seat.getFlightId());
     }
 
     @Override
     public List<BookingDetails> getBookingDetailsForCurrentUser() {
-        List<Booking> bookings = bookingsRepo.getBookingByUserId(currentUserId);
-        List<BookingDetails> detailsList = new ArrayList<>();
-
-        for (Booking booking : bookings) {
-            if (booking.getStatus() == BookingStatus.UPCOMING) {
-                BookingDetails details = getDetailsForBooking(booking);
-                if (details != null) {
-                    detailsList.add(details);
-                }
-            }
-        }
-        return detailsList;
+        return getBookingDetailsByStatus(BookingStatus.UPCOMING);
     }
 
     @Override
     public List<BookingDetails> getCancelledBookingDetailsForCurrentUser() {
+        return getBookingDetailsByStatus(BookingStatus.CANCELLED);
+    }
+
+    private List<BookingDetails> getBookingDetailsByStatus(BookingStatus status)
+    {
         List<Booking> bookings = bookingsRepo.getBookingByUserId(currentUserId);
         List<BookingDetails> detailsList = new ArrayList<>();
 
         for (Booking booking : bookings) {
-            if (booking.getStatus() == BookingStatus.CANCELLED) {
-                BookingDetails details = getDetailsForBooking(booking);
-                if (details != null) {
+            if (booking.getStatus() == status) {
+                try {
+                    BookingDetails details = getDetailsForBooking(booking);
                     detailsList.add(details);
+                } catch (ValidationException e) {
+                    // Skip this booking if related details cannot be loaded
                 }
             }
         }
+
         return detailsList;
     }
-
-    private BookingDetails getDetailsForBooking(Booking booking) {
-        try {
-            Flight flight = flightService.getFlightById(booking.getFlightId());
-            Passenger passenger = passengerRepo.getPassengerByBookingId(booking.getBookingId());
-
-            if (flight != null && passenger != null) {
-                return new BookingDetails(booking, flight, passenger);
-            }
-        } catch (ValidationException e) {
-        }
-        return null;
-    }
-
     @Override
-    public BookingDetails getBookingDetailsById(int bookingId) {
-        Booking booking = bookingsRepo.getBookingById(bookingId);
-
-        if (booking == null) {
-            return null;
-        }
+    public BookingDetails getBookingDetailsById(int bookingId) throws ValidationException {
+        Booking booking = getBookingById(bookingId);
 
         return getDetailsForBooking(booking);
+    }
+
+    private BookingDetails getDetailsForBooking(Booking booking) throws ValidationException {
+            Flight flight = flightService.getFlightById(booking.getFlightId());
+            Passenger passenger = passengerService.getPassengerByBookingId(booking.getBookingId());
+            return new BookingDetails(booking, flight, passenger);
+    }
+
+    private Booking getBookingById(int bookingId) throws ValidationException
+    {
+        Booking booking = bookingsRepo.getBookingById(bookingId);
+        BookingValidator.validateBooking(booking);
+        return booking;
+    }
+
+    private void updateBookingStatusToCancelled(int bookingId) throws ValidationException
+    {
+        boolean updated = bookingsRepo.updateBookingStatus(bookingId, BookingStatus.CANCELLED);
+
+        if(!updated){
+            throw new ValidationException(BOOKING_UPDATE_FAILED);
+        }
+
     }
 
 }

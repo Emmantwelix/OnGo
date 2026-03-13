@@ -42,6 +42,9 @@ public class ErrorMessageConstants {
 
     //BOOKING ERROR MESSAGES
     public static final String BOOKING_PASSENGER_ERROR = "Failed to create passenger. Booking has been rolled back.";
+    public static final String BOOKING_NOT_FOUND = "Booking not found";
+    public static final String BOOKING_CREATION_FAILED = "Failed to create booking";
+    public static final String BOOKING_UPDATE_FAILED = "Booking Update Failed";
 
     //PASSENGER ERROR MESSAGES
     public static final String FIRST_NAME = "firstName";
@@ -60,7 +63,7 @@ public class ErrorMessageConstants {
     public static final String PASSENGER_FUTURE_DOB = "Date of birth cannot be in the future";
     public static final String PASSENGER_DOB_INVALID_NUM = "Date of birth must contain valid numbers";
     public static final String PASSENGER_DOB_INVALID_DATE = "Invalid date: ";
-
+    public static final String PASSENGER_NOT_FOUND = "Passenger not found";
 
     //SEAT ERROR MESSAGES
     public static final String SEAT_NOT_FOUND = "Seat not found";
