@@ -150,7 +150,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         COL_SEAT_ROW + " INTEGER NOT NULL CHECK(" + COL_SEAT_ROW + " > 0), " +
                         COL_SEAT_COLUMN + " TEXT NOT NULL, " +
                         COL_SEAT_IS_BOOKED + " INTEGER NOT NULL DEFAULT 0 CHECK(" + COL_SEAT_IS_BOOKED + " IN (0,1)), " +
-                        "FOREIGN KEY(" + COL_SEAT_FLIGHT_ID + ") REFERENCES " + TABLE_FLIGHTS + "(" + COL_FLIGHT_ID + ")" +
+                        "FOREIGN KEY(" + COL_SEAT_FLIGHT_ID + ") REFERENCES " + TABLE_FLIGHTS + "(" + COL_FLIGHT_ID + ") ON DELETE CASCADE" +
                         ");"
         );
 
