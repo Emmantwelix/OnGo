@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,8 @@ public class BookingDetailsActivity extends AppCompatActivity {
     private int bookingId = -1;
     private BookingDetails bookingDetails;
 
+    private ImageButton btnBack;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +94,8 @@ public class BookingDetailsActivity extends AppCompatActivity {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void initViews() {
@@ -111,6 +116,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
         airlineLogo = findViewById(R.id.airlineLogo);
         btnModifyBooking = findViewById(R.id.btn_modify_booking);
         btnCancelBooking = findViewById(R.id.btn_cancel_booking);
+        btnBack = findViewById(R.id.btn_back);
     }
 
     private void bindData() {
