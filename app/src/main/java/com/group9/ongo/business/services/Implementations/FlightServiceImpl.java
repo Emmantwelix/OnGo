@@ -62,11 +62,11 @@ public class FlightServiceImpl implements FlightService {
 
     @Override
     public List<Flight> searchFlights(String origin, String destination) throws ValidationException {
-        validateLocation(origin, destination);
 
         String from = formatSearchLocation(origin);
         String to  = formatSearchLocation(destination);
 
+        validateLocation(from, to);
         List<Flight> flights = repo.searchFlights(from, to);
 
         if (flights.isEmpty()){
