@@ -4,14 +4,13 @@ import static com.group9.ongo.business.constants.FlightConstants.A320_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
+import static com.group9.ongo.business.constants.FlightConstants.ARR_AIRLINES;
+import static com.group9.ongo.business.constants.FlightConstants.ARR_LOCATIONS;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.B787_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
-import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
-import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.PORTER_AIRLINES;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
-import static com.group9.ongo.business.constants.FlightConstants.VANCOUVER;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
@@ -31,6 +30,7 @@ import com.group9.ongo.models.SeatMapConfig;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Random;
 
 
 public class AppDbHelper extends SQLiteOpenHelper {
@@ -93,6 +93,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public static final String COL_AIRCRAFT_HAS_WIFI = "has_wifi";
 
 
+    private final Random random = new Random();
 
     public AppDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -243,65 +244,99 @@ public class AppDbHelper extends SQLiteOpenHelper {
         return (int) db.insert(TABLE_AIRCRAFT, null, values);
     }
 
+
     private void seedFlights(SQLiteDatabase db, int[] aircraftIds) {
-        seedOneFlight(
-                db,
-                AIR_CANADA,
-                TORONTO,
-                WINNIPEG,
-                LocalTime.of(10, 0),
-                LocalTime.of(12, 0),
-                aircraftIds[0],
-                A320_DETAILS.getCapacity(),
-                603.49,
-                DEFAULT_FLIGHT_NUM,
-                DEFAULT_DATE
-        );
+        int flight_num = 1000;
 
-        seedOneFlight(
-                db,
-                PORTER_AIRLINES,
-                TORONTO,
-                MONTREAL,
-                LocalTime.of(12, 0),
-                LocalTime.of(14, 0),
-                aircraftIds[1],
-                B737_DETAILS.getCapacity(),
-                979.52,
-                DEFAULT_FLIGHT_NUM,
-                DEFAULT_DATE
-        );
+        for (String airline : ARR_AIRLINES) {
 
-        seedOneFlight(
-                db,
-                AIR_TRANSAT,
-                WINNIPEG,
-                VANCOUVER,
-                LocalTime.of(14, 0),
-                LocalTime.of(16, 0),
-                aircraftIds[2],
-                B787_DETAILS.getCapacity(),
-                200.01,
-                DEFAULT_FLIGHT_NUM,
-                DEFAULT_DATE
-        );
+            int aircraftId = getAircraftIdForAirline(airline, aircraftIds);
+            int capacity = getCapacityForAirline(airline);
 
-        seedOneFlight(
-                db,
-                WESTJET,
-                MONTREAL,
-                WINNIPEG,
-                LocalTime.of(16, 0),
-                LocalTime.of(18, 0),
-                aircraftIds[3],
-                A380_DETAILS.getCapacity(),
-                417.38,
-                DEFAULT_FLIGHT_NUM,
-                DEFAULT_DATE
-        );
+            for (String from : ARR_LOCATIONS) {
+                for (String to : ARR_LOCATIONS) {
+
+                    if (from.equals(to)) continue;
+
+                    LocalTime departure = randomDeparture();
+                    seedOneFlight(
+                            db,
+                            airline,
+                            from,
+                            to,
+                            departure,
+                            randomArrival(departure),
+                            aircraftId,
+                            capacity,
+                            randomPrice(),
+                            "FL"+flight_num,
+                            DEFAULT_DATE
+                    );
+                    flight_num++;
+                }
+            }
+        }
     }
 
-    private int seedOneFlight(SQLiteDatabase db,
+
+    private LocalTime randomDeparture() {
+        int hour = random.nextInt(16) + 6; // 6–21
+        int minute = random.nextInt(60);
+        return LocalTime.of(hour, minute);
+    }
+
+    private LocalTime randomArrival(LocalTime departure) {
+        int duration = random.nextInt(4) + 1; // 1–4 hours
+        return departure.plusHours(duration);
+    }
+
+    private int getAircraftIdForAirline(String airline, int[] aircraftIds) {
+
+        if (AIR_CANADA.equals(airline)) {
+            return aircraftIds[0]; // A320
+        }
+
+        if (WESTJET.equals(airline)) {
+            return aircraftIds[1]; // B737
+        }
+
+        if (AIR_TRANSAT.equals(airline)) {
+            return aircraftIds[2]; // B787
+        }
+
+        if (PORTER_AIRLINES.equals(airline)) {
+            return aircraftIds[3]; // A380
+        }
+
+        // fallback if airline changes
+        return aircraftIds[0];
+    }
+
+    private int getCapacityForAirline(String airline) {
+
+        if (AIR_CANADA.equals(airline)) {
+            return A320_DETAILS.getCapacity();
+        }
+
+        if (WESTJET.equals(airline)) {
+            return B737_DETAILS.getCapacity();
+        }
+
+        if (AIR_TRANSAT.equals(airline)) {
+            return B787_DETAILS.getCapacity();
+        }
+
+        if (PORTER_AIRLINES.equals(airline)) {
+            return A380_DETAILS.getCapacity();
+        }
+
+        return A320_DETAILS.getCapacity();
+    }
+    private double randomPrice() {
+        return 150 + Math.round(Math.random() * 85000) / 100.0;
+    }
+
+    private void seedOneFlight(SQLiteDatabase db,
                               String airline,
                               String origin,
                               String destination,
@@ -328,8 +363,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
         int flightId = (int) db.insert(TABLE_FLIGHTS, null, values);
 
         seedSeats(db, flightId, capacity);
-
-        return flightId;
     }
 
     private void seedSeats(SQLiteDatabase db, int flightId, int capacity) {
