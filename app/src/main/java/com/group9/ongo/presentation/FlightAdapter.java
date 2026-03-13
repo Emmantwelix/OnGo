@@ -88,4 +88,9 @@ public class FlightAdapter extends RecyclerView.Adapter<FlightAdapter.FlightView
             airlineLogo = itemView.findViewById(R.id.airlineLogo);
         }
     }
+
+    public void updateFlights(List<Flight> flights) {
+        this.flights = flights;
+        notifyDataSetChanged();
+    }
 }
