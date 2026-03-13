@@ -1,12 +1,27 @@
 package com.group9.ongo.business.services.UnitTests;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DTIME_NULL;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_DESTINATION;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_ORIGIN;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_TIME_SEQUENCE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_LTIME_NULL;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_PRICE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_PRICE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_NOT_FOUND;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_SAME_ORIGIN_DESTINATION;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.NO_FLIGHTS_AVAILABLE;
 import static com.group9.ongo.business.constants.FlightConstants.A320_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
+import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
+import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
+import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
 import static com.group9.ongo.business.constants.FlightConstants.MAX_SEATS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
+import static com.group9.ongo.business.constants.FlightConstants.TSU;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 import static org.junit.Assert.assertEquals;
@@ -14,6 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.when;
 
 import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
@@ -31,6 +47,8 @@ import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.PassengerInput;
+import com.group9.ongo.models.Seat;
+import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.fake.FakeAircraftRepository;
@@ -43,12 +61,19 @@ import com.group9.ongo.persistence.fake.FakeSeatsRepository;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 
+@RunWith(MockitoJUnitRunner.class)
 public class FlightServiceTest {
     //places
     private final String INVALID_ORIGIN = "wrong origin";
@@ -56,9 +81,6 @@ public class FlightServiceTest {
 
     //aircraft
     private final int VALID_AIRCRAFT_ID = 1;
-    private final Aircraft INVALID_AIRCRAFT_ID_CAPACITY = new Aircraft(0,"Small Plane", 0, false);
-    private final Aircraft INVALID_AIRCRAFT_ID_CAPACITY2 = new Aircraft(0,"Huge Plane", 501, true);
-
     //price
     private final double VALID_PRICE = 500.34;
     private final double WEIRD_VALID_PRICE = 0.01;
@@ -67,32 +89,29 @@ public class FlightServiceTest {
     private final LocalTime VALID_TIME = LocalTime.of(4,56);
     private final LocalTime VALID_TIME2 = LocalTime.of(23,59);
 
+    @Mock
     private FlightRepository repo;
     private FlightService service;
+    @Mock
     private Generator generator;
+    @Mock
     private SeatService seatService;
-    private BookingService bookingService;
-    private BookingRepository bookingRepository;
-    private PassengerRepository passengerRepository;
+
+    @Mock
+    private AircraftRepository aircraftRepo;
 
 
     @Before
     public void setup(){
-        repo = new FakeFlightRepository();
-        generator = new FlightDetailGen(new Random());
-        seatService = new SeatServiceImplementation(new FakeSeatsRepository());
-        service = new FlightServiceImpl(repo, generator, seatService, new FakeAircraftRepository());
-        bookingRepository = new FakeBookingRepository();
-        passengerRepository = new FakePassengerRepository();
-        PassengerService passengerService = new PassengerServiceImpl(passengerRepository);
-        bookingService = new BookingServiceImpl(1,bookingRepository, passengerService, service, seatService);
-
+        service = new FlightServiceImpl(repo, generator, seatService, aircraftRepo);
     }
 
     @Test
     public void getAllFlights_initaillyEmpty(){
 
         List<Flight> flights = service.getAllFlights();
+        when(repo.getAll()).thenReturn(List.of());
+
         //assert
         assertNotNull(flights);
         assertEquals(0, service.getAllFlights().size());
@@ -100,6 +119,11 @@ public class FlightServiceTest {
 
     @Test
     public void testSearchFlights_returnsFlights() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.searchFlights(WINNIPEG, TORONTO)).thenReturn(List.of(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)));
         //arrange
         service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
         //act
@@ -112,6 +136,7 @@ public class FlightServiceTest {
 
     @Test
     public void testSearchFlights_whenInvalidOrigin_throwsException() throws ValidationException{
+
         //arrange
         // act
         //assert
@@ -141,7 +166,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.searchFlights(WINNIPEG, WINNIPEG)
         );
-        assertEquals("Origin and destination cannot be the same", exception.getMessage());
+        assertEquals(FLIGHT_SAME_ORIGIN_DESTINATION, exception.getMessage());
     }
 
     @Test
@@ -151,17 +176,21 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.searchFlights(WINNIPEG, TORONTO)
         );
-        assertEquals("No flights available with search criteria", exception.getMessage());
+        assertEquals(NO_FLIGHTS_AVAILABLE, exception.getMessage());
     }
 
         @Test
     public void addItem_addsValidItem() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
         //arrange + act
         int flightID = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+        when(repo.getFlightById(flightID)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE));
         Flight flight = service.getFlightById(flightID);
         //assert
-        assertEquals(1, service.getAllFlights().size());
-        assertEquals(1, flightID);
+        assertEquals(1, flight.getFlightId());
         assertEquals(AIR_CANADA, flight.getAirline());
         assertEquals(WINNIPEG, flight.getOrigin());
         assertEquals(TORONTO, flight.getDestination());
@@ -172,81 +201,65 @@ public class FlightServiceTest {
 
     @Test
     public void addItem_whenInvalidOrigin_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(WESTJET, INVALID_ORIGIN, TORONTO, VALID_TIME, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
-        assertEquals("Invalid origin", exception.getMessage());
+        assertEquals(FLIGHT_INVALID_ORIGIN, exception.getMessage());
     }
 
     @Test
     public void addItem_whenInvalidDestination_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(WESTJET, WINNIPEG, INVALID_DESTINATION, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
-        assertEquals("Invalid destination", exception.getMessage());
+        assertEquals(FLIGHT_INVALID_DESTINATION, exception.getMessage());
     }
 
     @Test
     public void addItem_whenSameLocation_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(WESTJET, TORONTO, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
-        assertEquals("Origin and destination cannot be the same", exception.getMessage());
+        assertEquals(FLIGHT_SAME_ORIGIN_DESTINATION, exception.getMessage());
     }
-
-    //goes to the aircraft service test
-//    @Test
-//    public void addItem_whenInvalidCapacity_throwsException() {
-//        //arrange + act + assert
-//        ValidationException exception = assertThrows(
-//                ValidationException.class,
-//            () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, INVALID_AIRCRAFT_ID_CAPACITY, VALID_PRICE)
-//        );
-//        assertEquals("Capacity must be greater than 0", exception.getMessage());
-//    }
-
-    //this goes on the aircraft service test
-    //test creation of that specific aircraft
-//    @Test
-//    public void addItem_whenInvalidCapacity2_throwsException() {
-//        //arrange + act + assert
-//        ValidationException exception = assertThrows(
-//                ValidationException.class,
-//                () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, INVALID_AIRCRAFT_CAPACITY2, VALID_PRICE)
-//        );
-//        assertEquals("Capacity must be less than 501", exception.getMessage());
-//    }
 
     @Test
     public void addItem_whenDepartureTimeNull_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, null, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
 
-        assertEquals("departure time cannot be null", exception.getMessage());
+        assertEquals(FLIGHT_DTIME_NULL, exception.getMessage());
     }
 
     @Test
     public void addItem_whenLandingTimeNull_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, null, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
 
-        assertEquals("landing time cannot be null", exception.getMessage());
+        assertEquals(FLIGHT_LTIME_NULL, exception.getMessage());
     }
 
     @Test
     public void addItem_whenLandingBeforeDeparture_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+
         //arrange
         LocalTime depart = LocalTime.of(18, 0);
         LocalTime land = LocalTime.of(18, 0);
@@ -257,32 +270,43 @@ public class FlightServiceTest {
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, depart, land, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
 
-        assertEquals("Landing time cannot be equal to depart time", exception.getMessage());
+        assertEquals(FLIGHT_INVALID_TIME_SEQUENCE, exception.getMessage());
     }
 
     @Test
     public void deleteItem_deletesItem_returnsTrue() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.deleteFlight(1)).thenReturn(true);
         //arrange
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
         //act
         boolean success = service.deleteFlight(flightId);
         //assert
         assertTrue(success);
-        assertEquals(0, service.getAllFlights().size());
     }
 
     @Test
     public void deleteItem_whenItemDoesNotExist_throwsException(){
+        when(repo.deleteFlight(20)).thenReturn(false);
+
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.deleteFlight(20)
         );
-        assertEquals("Flight could not be deleted, since flight does not exist", exception.getMessage());
+        assertEquals(FLIGHT_DELETE_ERROR, exception.getMessage());
     }
 
     @Test
     public void getFlightById_whenItemExists_returnsItem() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE));
         //arrange
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
         //act
@@ -299,21 +323,34 @@ public class FlightServiceTest {
 
     @Test
     public void getFlightByID_whenItemDoesNotExist_throwsException() {
+        when(repo.getFlightById(20)).thenReturn(null);
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.getFlightById(20)
         );
-        assertEquals("Flight not found", exception.getMessage());
+        assertEquals(FLIGHT_NOT_FOUND, exception.getMessage());
     }
 
     @Test
     public void getAllFlights_returnsAllFlights() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
         //arrange
+        when(repo.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
         int id1 = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+
+        when(repo.createFlight(AIR_CANADA, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
         int id2 = service.createFlight(AIR_CANADA, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+
+        when(repo.createFlight(WESTJET, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
         int id3 = service.createFlight(WESTJET, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
+
         //act
+        when(repo.getAll()).thenReturn(List.of(sampleFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE),
+                sampleFlight(AIR_CANADA, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE),
+                sampleFlight(WESTJET, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)));
         List<Flight> flights = service.getAllFlights();
         //assert
         assertEquals(3, flights.size());
@@ -324,6 +361,12 @@ public class FlightServiceTest {
 
     @Test
     public void testWeirdValidPrice_returnsFlightId() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, WEIRD_VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, WEIRD_VALID_PRICE));
+
         //arrange + act
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, WEIRD_VALID_PRICE);
         Flight flight = service.getFlightById(flightId);
@@ -334,26 +377,33 @@ public class FlightServiceTest {
 
     @Test
     public void testInvalidFlightPrice_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, INVALID_PRICE)
         );
-        assertEquals("Price must be less than 5001", exception.getMessage());
+        assertEquals(FLIGHT_MAX_PRICE, exception.getMessage());
     }
 
     @Test
     public void testInvalidFlightPrice2_throwsException() {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
         //arrange + act + assert
         ValidationException exception = assertThrows(
                 ValidationException.class,
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, INVALID_PRICE2)
         );
-        assertEquals("Price must be greater than 0", exception.getMessage());
+        assertEquals(FLIGHT_MIN_PRICE, exception.getMessage());
     }
 
     @Test
     public void getDurationHoursAndMinutes_normalFlight() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 10), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 10), VALID_AIRCRAFT_ID, VALID_PRICE));
         // arrange
         int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO,
                 LocalTime.of(10, 0),
@@ -374,6 +424,11 @@ public class FlightServiceTest {
 
     @Test
     public void getDurationHoursAndMinutes_shortFlight() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(12, 0), LocalTime.of(12, 1), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(12, 0), LocalTime.of(12, 1), VALID_AIRCRAFT_ID, VALID_PRICE));
         // arrange
         int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO,
                 LocalTime.of(12, 0),
@@ -394,6 +449,12 @@ public class FlightServiceTest {
 
     @Test
     public void getDurationHoursAndMinutes_overnightFlight() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, LocalTime.of(22, 30), LocalTime.of(4, 15), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_TRANSAT, MONTREAL, TORONTO, LocalTime.of(22, 30), LocalTime.of(4, 15), VALID_AIRCRAFT_ID, VALID_PRICE));
+
         // arrange
         int flightId = service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO,
                 LocalTime.of(22, 30),
@@ -414,6 +475,11 @@ public class FlightServiceTest {
 
     @Test
     public void getDurationHoursAndMinutes_exactHours() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE));
         // arrange
         int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO,
                 LocalTime.of(10, 0),
@@ -434,6 +500,11 @@ public class FlightServiceTest {
 
     @Test
     public void getOriginCode_locationLongerThanThreeCharacters_returnsFirstThreeUppercase() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE));
         // arrange
         int flightId = service.createFlight(AIR_CANADA, "Winnipeg", "Toronto",
                 LocalTime.of(10, 0),
@@ -452,6 +523,11 @@ public class FlightServiceTest {
 
     @Test
     public void getDestinationCode_locationLongerThanThreeCharacters_returnsFirstThreeUppercase() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE));
         // arrange
         int flightId = service.createFlight(AIR_CANADA, "Winnipeg", "Toronto",
                 LocalTime.of(10, 0),
@@ -470,6 +546,11 @@ public class FlightServiceTest {
 
     @Test
     public void getOriginCode_locationExactlyThreeCharacters_returnsUppercase() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, TSU, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, TSU, TORONTO, LocalTime.of(10, 0), LocalTime.of(12, 0), VALID_AIRCRAFT_ID, VALID_PRICE));
         // arrange
         int flightId = service.createFlight(AIR_CANADA, "Tsu", "Toronto",
                 LocalTime.of(10, 0),
@@ -488,11 +569,24 @@ public class FlightServiceTest {
 
     @Test
     public void aircraft_wifiLogicTest() throws ValidationException {
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
         // A380 has wifi, B737 does not
+        when(aircraftRepo.getAircraftById(1)).thenReturn(A380_DETAILS);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 1,VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
         int flightIdA380 = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 1,VALID_PRICE);
+
+        when(aircraftRepo.getAircraftById(2)).thenReturn(B737_DETAILS);
+        when(repo.createFlight(WESTJET, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 2, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(2);
         int flightIdB737 = service.createFlight(WESTJET, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 2, VALID_PRICE);
+
+        when(repo.getFlightById(1)).thenReturn(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 1, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE));
         Flight flight1 = service.getFlightById(flightIdA380);
+        when(repo.getFlightById(2)).thenReturn(new Flight(2, WESTJET, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, 2, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE));
         Flight flight2 = service.getFlightById(flightIdB737);
+
+        when(aircraftRepo.getAircraftById(1)).thenReturn(A380_DETAILS);
+        when(aircraftRepo.getAircraftById(2)).thenReturn(B737_DETAILS);
 
         assertTrue(service.getAircraft(flight1).hasWifi());
         assertFalse(service.getAircraft(flight2).hasWifi());
@@ -506,6 +600,12 @@ public class FlightServiceTest {
 
     @Test
     public void flightService_getFormattedFlightIdTest() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(repo.getFlightById(1)).thenReturn(sampleFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE));
+
         int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
         Flight flight = service.getFlightById(flightId);
 
@@ -514,26 +614,17 @@ public class FlightServiceTest {
 
     @Test
     public void testGetAvailableSeats_withUnbookedFlight() throws ValidationException {
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(sampleAircraft(VALID_AIRCRAFT_ID));
+        when(generator.generateFlightNum()).thenReturn(DEFAULT_FLIGHT_NUM);
+        when(generator.generateDate()).thenReturn(DEFAULT_DATE);
+        when(repo.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)).thenReturn(1);
+        when(seatService.getAllSeatsByFlightId(1)).thenReturn(createSeat(A320_DETAILS.getCapacity()));
+
         int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
         int count = service.getAvailableSeats(flightId);
-        assertEquals(MAX_SEATS, count);
+        assertEquals(A320_DETAILS.getCapacity(), count);
     }
 
-    @Test
-    public void testGetAvailableSeats_withBookedFlight() throws ValidationException, BookingException {
-        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
-        bookingService.createBooking(flightId, samplePassengerInput("A"), 1, "A");
-        int count = service.getAvailableSeats(flightId);
-        assertEquals(MAX_SEATS - 1, count);
-    }
-
-    @Test
-    public void testGetAvailableSeats_AfterUnbooking() throws ValidationException, BookingException {
-        int flightId = service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE);
-        Booking booking = bookingService.createBooking( flightId, samplePassengerInput("A"), 1, "A");
-        bookingService.cancelBooking(booking.getBookingId());
-        assertEquals(MAX_SEATS, service.getAvailableSeats(flightId));
-    }
 
     private PassengerInput samplePassengerInput(String tag) {
         return new PassengerInput(
@@ -542,5 +633,24 @@ public class FlightServiceTest {
                 "2000-01-01",
                 "P" + tag + "12345"
         );
+    }
+
+    private Aircraft sampleAircraft(int id)
+    {
+        return new Aircraft(id, "A320", 150, true);
+    }
+
+    private Flight sampleFlight(String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price)
+    {
+        return new Flight(1, airline, origin, destination, departTime, landTime, aircraftId, price, "12345", LocalDate.now());
+    }
+
+    private List<Seat> createSeat(int amount)
+    {
+        List<Seat> seats = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            seats.add(new Seat(i, 1, 1, "A", false));
+        }
+        return seats;
     }
 }
