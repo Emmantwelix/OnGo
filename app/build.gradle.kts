@@ -39,6 +39,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    androidTestImplementation("androidx.test:core:1.6.1")
+    androidTestImplementation("androidx.test:runner:1.6.2")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.11.0")
