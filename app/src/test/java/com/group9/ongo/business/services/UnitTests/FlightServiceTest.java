@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services;
+package com.group9.ongo.business.services.UnitTests;
 
 import static com.group9.ongo.business.constants.FlightConstants.A320_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
@@ -15,13 +15,16 @@ import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
+import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Implementations.FlightDetailGen;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
+import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
 import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
+import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
@@ -81,7 +84,8 @@ public class FlightServiceTest {
         service = new FlightServiceImpl(repo, generator, seatService, new FakeAircraftRepository());
         bookingRepository = new FakeBookingRepository();
         passengerRepository = new FakePassengerRepository();
-        bookingService = new BookingServiceImpl(1,bookingRepository, passengerRepository, service, seatService);
+        PassengerService passengerService = new PassengerServiceImpl(passengerRepository);
+        bookingService = new BookingServiceImpl(1,bookingRepository, passengerService, service, seatService);
 
     }
 
