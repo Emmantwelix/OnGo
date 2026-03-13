@@ -1,5 +1,16 @@
 package com.group9.ongo.business.services.UnitTests;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DTIME_NULL;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_DESTINATION;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_ORIGIN;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_TIME_SEQUENCE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_LTIME_NULL;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MAX_PRICE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_MIN_PRICE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_NOT_FOUND;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_SAME_ORIGIN_DESTINATION;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.NO_FLIGHTS_AVAILABLE;
 import static com.group9.ongo.business.constants.FlightConstants.A320_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
@@ -70,9 +81,6 @@ public class FlightServiceTest {
 
     //aircraft
     private final int VALID_AIRCRAFT_ID = 1;
-    private final Aircraft INVALID_AIRCRAFT_ID_CAPACITY = new Aircraft(0,"Small Plane", 0, false);
-    private final Aircraft INVALID_AIRCRAFT_ID_CAPACITY2 = new Aircraft(0,"Huge Plane", 501, true);
-
     //price
     private final double VALID_PRICE = 500.34;
     private final double WEIRD_VALID_PRICE = 0.01;
@@ -88,12 +96,6 @@ public class FlightServiceTest {
     private Generator generator;
     @Mock
     private SeatService seatService;
-    @Mock
-    private BookingService bookingService;
-    @Mock
-    private BookingRepository bookingRepository;
-    @Mock
-    private PassengerRepository passengerRepository;
 
     @Mock
     private AircraftRepository aircraftRepo;
@@ -164,7 +166,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.searchFlights(WINNIPEG, WINNIPEG)
         );
-        assertEquals("Origin and destination cannot be the same", exception.getMessage());
+        assertEquals(FLIGHT_SAME_ORIGIN_DESTINATION, exception.getMessage());
     }
 
     @Test
@@ -174,7 +176,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.searchFlights(WINNIPEG, TORONTO)
         );
-        assertEquals("No flights available with search criteria", exception.getMessage());
+        assertEquals(NO_FLIGHTS_AVAILABLE, exception.getMessage());
     }
 
         @Test
@@ -205,7 +207,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.createFlight(WESTJET, INVALID_ORIGIN, TORONTO, VALID_TIME, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
-        assertEquals("Invalid origin", exception.getMessage());
+        assertEquals(FLIGHT_INVALID_ORIGIN, exception.getMessage());
     }
 
     @Test
@@ -216,7 +218,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.createFlight(WESTJET, WINNIPEG, INVALID_DESTINATION, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
-        assertEquals("Invalid destination", exception.getMessage());
+        assertEquals(FLIGHT_INVALID_DESTINATION, exception.getMessage());
     }
 
     @Test
@@ -227,7 +229,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.createFlight(WESTJET, TORONTO, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
-        assertEquals("Origin and destination cannot be the same", exception.getMessage());
+        assertEquals(FLIGHT_SAME_ORIGIN_DESTINATION, exception.getMessage());
     }
 
     @Test
@@ -239,7 +241,7 @@ public class FlightServiceTest {
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, null, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
 
-        assertEquals("departure time cannot be null", exception.getMessage());
+        assertEquals(FLIGHT_DTIME_NULL, exception.getMessage());
     }
 
     @Test
@@ -251,7 +253,7 @@ public class FlightServiceTest {
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, null, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
 
-        assertEquals("landing time cannot be null", exception.getMessage());
+        assertEquals(FLIGHT_LTIME_NULL, exception.getMessage());
     }
 
     @Test
@@ -268,7 +270,7 @@ public class FlightServiceTest {
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, depart, land, VALID_AIRCRAFT_ID, VALID_PRICE)
         );
 
-        assertEquals("Landing time cannot be equal to depart time", exception.getMessage());
+        assertEquals(FLIGHT_INVALID_TIME_SEQUENCE, exception.getMessage());
     }
 
     @Test
@@ -295,7 +297,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.deleteFlight(20)
         );
-        assertEquals("Flight could not be deleted, since flight does not exist", exception.getMessage());
+        assertEquals(FLIGHT_DELETE_ERROR, exception.getMessage());
     }
 
     @Test
@@ -327,7 +329,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.getFlightById(20)
         );
-        assertEquals("Flight not found", exception.getMessage());
+        assertEquals(FLIGHT_NOT_FOUND, exception.getMessage());
     }
 
     @Test
@@ -381,7 +383,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, INVALID_PRICE)
         );
-        assertEquals("Price must be less than 5001", exception.getMessage());
+        assertEquals(FLIGHT_MAX_PRICE, exception.getMessage());
     }
 
     @Test
@@ -392,7 +394,7 @@ public class FlightServiceTest {
                 ValidationException.class,
                 () -> service.createFlight(AIR_TRANSAT, MONTREAL, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, INVALID_PRICE2)
         );
-        assertEquals("Price must be greater than 0", exception.getMessage());
+        assertEquals(FLIGHT_MIN_PRICE, exception.getMessage());
     }
 
     @Test
