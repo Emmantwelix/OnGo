@@ -92,11 +92,17 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public static final String COL_AIRCRAFT_CAPACITY = "capacity";
     public static final String COL_AIRCRAFT_HAS_WIFI = "has_wifi";
 
+    private final boolean shouldSeed;
 
     private final Random random = new Random();
 
     public AppDbHelper(Context context) {
+        this(context, true);
+    }
+
+    public AppDbHelper(Context context, boolean shouldSeed) {
         super(context, DB_NAME, null, DB_VERSION);
+        this.shouldSeed = shouldSeed;
     }
 
     @Override
@@ -117,8 +123,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         COL_AIRCRAFT_HAS_WIFI + " INTEGER NOT NULL DEFAULT 0 CHECK(" + COL_AIRCRAFT_HAS_WIFI + " IN (0,1)) " +
                         ");"
         );
-
-        int[] aircraft_ids = seedDbWithAircraft(db);
 
         // flights table
         db.execSQL(
@@ -150,8 +154,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         ");"
         );
 
-        seedFlights(db, aircraft_ids);
-
         //users table
         db.execSQL(
                 "CREATE TABLE " + TABLE_USERS + " (" +
@@ -162,7 +164,6 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         ");"
         );
 
-        seedDbWithSampleUser(db);
 
         //bookings table
         db.execSQL(
@@ -197,6 +198,12 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         TABLE_BOOKINGS + "(" + COL_BOOKING_ID + ")" +
                         ");"
         );
+
+        if (shouldSeed) {
+            int[] aircraftIds = seedDbWithAircraft(db);
+            seedFlights(db, aircraftIds);
+            seedDbWithSampleUser(db);
+        }
 
     }
 
