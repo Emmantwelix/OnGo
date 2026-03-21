@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface FlightService {
     List<Flight> getAllFlights();
-
-    List<Flight> getAllAvailableFlights();
-
+    List<Flight> getAllFlightsByDuration(); //lowest to highest
+    List<Flight> getAllFlightsByDateTime(); //lowest to highest
+    List<Flight> getAllFlightsByAvailSeats(); //lowest to highest
     List<Flight> searchFlights(String origin, String destination) throws ValidationException;
 
     Flight getFlightById(int flightId) throws ValidationException;
@@ -26,8 +26,6 @@ public interface FlightService {
 
     int getDurationRemainingMinutes(Flight flight);
     int getAvailableSeats(int flightId);
-    Seat getAnAvailableSeat(int flight_id) throws ValidationException;
-
     String getOriginCode(Flight flight);
 
     String getDestinationCode(Flight flight);
