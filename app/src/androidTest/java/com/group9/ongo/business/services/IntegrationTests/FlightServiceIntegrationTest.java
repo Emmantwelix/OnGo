@@ -518,7 +518,7 @@ public class FlightServiceIntegrationTest {
     }
 
     @Test
-    public void testGetAllFlightsByAvailSeats_returnsSortedList() throws ValidationException {
+    public void testSortFlightsByAvailSeats_returnsSortedList() throws ValidationException {
         int flightId = service.createFlight(
                 AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, a320Id, VALID_PRICE
         );
@@ -529,7 +529,8 @@ public class FlightServiceIntegrationTest {
                 AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, b737Id, VALID_PRICE
         );
 
-        List<Flight> flights = service.getAllFlightsByAvailSeats();
+
+        List<Flight> flights = service.sortFlightsByAvailSeats(service.getAllFlights());
 
         assertEquals(flightId, flights.get(0).getFlightId());
         assertEquals(flightId3, flights.get(1).getFlightId());

@@ -13,7 +13,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="testGetAllFlightsByAvailSeats_returnsSortedList()">
+      <SelectionState runConfigName="testSortFlightsByAvailSeats_returnsSortedList()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

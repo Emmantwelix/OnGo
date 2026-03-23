@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface FlightService {
     List<Flight> getAllFlights();
-    List<Flight> getAllFlightsByDuration(); //lowest to highest
-    List<Flight> getAllFlightsByDateTime(); //lowest to highest
-    List<Flight> getAllFlightsByAvailSeats(); //lowest to highest
+    List<Flight> sortFlightsByDuration(List<Flight> flights); //lowest to highest
+    List<Flight> sortFlightsByDateTime(List<Flight> flights); //lowest to highest
+    List<Flight> sortFlightsByAvailSeats(List<Flight> flights); //lowest to highest
     List<Flight> searchFlights(String origin, String destination) throws ValidationException;
 
     Flight getFlightById(int flightId) throws ValidationException;

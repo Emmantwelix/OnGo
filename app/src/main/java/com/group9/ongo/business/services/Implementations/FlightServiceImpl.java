@@ -75,18 +75,24 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> getAllFlightsByDuration() {
-        return sortByDuration(repo.getAll());
+    public List<Flight> sortFlightsByDuration(List<Flight> flights) {
+        List<Flight> sortedFlight = new ArrayList<>(flights);
+        sortedFlight.sort(Comparator.comparingInt(this::calculateDuration));
+        return sortedFlight;
     }
 
     @Override
-    public List<Flight> getAllFlightsByDateTime() {
-        return sortByDateTime(repo.getAll());
+    public List<Flight> sortFlightsByDateTime(List<Flight> flights) {
+        List<Flight> sortedFlight = new ArrayList<>(flights);
+        sortedFlight.sort(Comparator.comparing(Flight::getDate).thenComparing(Flight::getDepartTime));
+        return sortedFlight;
     }
 
     @Override
-    public List<Flight> getAllFlightsByAvailSeats() {
-        return sortByAvailSeats(repo.getAll());
+    public List<Flight> sortFlightsByAvailSeats(List<Flight> flights) {
+        List<Flight> sortedFlight = new ArrayList<>(flights);
+        sortedFlight.sort(Comparator.comparingInt(this::getAvailableSeats));
+        return sortedFlight;
     }
 
 
@@ -249,22 +255,5 @@ public class FlightServiceImpl implements FlightService {
         return sortedFlight;
     }
 
-    private List<Flight> sortByDuration(List<Flight> flight) {
-        List<Flight> sortedFlight = new ArrayList<>(flight);
-        sortedFlight.sort(Comparator.comparingInt(this::calculateDuration));
-        return sortedFlight;
-    }
-
-    private List<Flight> sortByAvailSeats(List<Flight> flight) {
-        List<Flight> sortedFlight = new ArrayList<>(flight);
-        sortedFlight.sort(Comparator.comparingInt(this::getAvailableSeats));
-        return sortedFlight;
-    }
-
-    private List<Flight> sortByDateTime(List<Flight> flight) {
-        List<Flight> sortedFlight = new ArrayList<>(flight);
-        sortedFlight.sort(Comparator.comparing(Flight::getDate).thenComparing(Flight::getDepartTime));
-        return sortedFlight;
-    }
 
 }

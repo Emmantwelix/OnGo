@@ -629,41 +629,36 @@ public class FlightServiceTest {
     }
 
     @Test
-    public void testGetAllFlightsByDuration_returnsSortedList() throws ValidationException {
+    public void testSortFlightsByDuration_returnsSortedList() throws ValidationException {
 
-        when(repo.getAll()).thenReturn(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+        List<Flight> flights = service.sortFlightsByDuration(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
                 new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
-
-        List<Flight> flights = service.getAllFlightsByDuration();
         assertEquals(1, flights.get(0).getFlightId());
         assertEquals(2, flights.get(1).getFlightId());
     }
 
     @Test
-    public void testGetAllFlightsByDateTime_returnsSortedList() throws ValidationException {
-        when(repo.getAll()).thenReturn(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+    public void testSortFlightsByDateTime_returnsSortedList() throws ValidationException{
+        List<Flight> flights = service.sortFlightsByDateTime(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
                 new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
-        List<Flight> flights = service.getAllFlightsByDateTime();
         assertEquals(1, flights.get(0).getFlightId());
         assertEquals(2, flights.get(1).getFlightId());
     }
 
     @Test
-    public void testGetAllFlightsByDateTime_withSameDateDifferentTime_returnsSortedList() throws ValidationException {
-        when(repo.getAll()).thenReturn(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+    public void testSortFlightsByDateTime_withSameDateDifferentTime_returnsSortedList() throws ValidationException {
+        List<Flight> flights = service.sortFlightsByDateTime(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
                 new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)));
-        List<Flight> flights = service.getAllFlightsByDateTime();
         assertEquals(1, flights.get(0).getFlightId());
         assertEquals(2, flights.get(1).getFlightId());
     }
 
     @Test
-    public void testGetAllFlightsByAvailSeats_returnsSortedList() throws ValidationException {
-        when(repo.getAll()).thenReturn(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
-                new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
+    public void testSortFlightsByAvailSeats_returnsSortedList() throws ValidationException {
         when(seatService.getAllSeatsByFlightId(1)).thenReturn(List.of(new Seat(1, 1, 1, COLUMN_1, false)));
         when(seatService.getAllSeatsByFlightId(2)).thenReturn(List.of(new Seat(2, 2,2, COLUMN_1, false), new Seat(3, 2,2, COLUMN_1, false)));
-        List<Flight> flights = service.getAllFlightsByAvailSeats();
+        List<Flight> flights = service.sortFlightsByAvailSeats(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+                new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
         assertEquals(1, flights.get(0).getFlightId());
         assertEquals(2, flights.get(1).getFlightId());
     }
