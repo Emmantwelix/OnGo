@@ -58,15 +58,7 @@ public class FlightValidator {
         boolean validAirline = false;
 
 
-        for (String location : ARR_LOCATIONS)
-        {
-            if (location.equals(destination)) {
-                validDestination = true;
-            }
-            if (location.equals(origin)) {
-                validOrigin = true;
-            }
-        }
+        validateLocation(origin, destination);
 
         for (String airlineName : ARR_AIRLINES)
         {
@@ -79,14 +71,6 @@ public class FlightValidator {
         if (!validAirline)
         {
             throw new ValidationException(FLIGHT_INVALID_AIRLINE);
-        }
-        else if (!validOrigin)
-        {
-            throw new ValidationException(FLIGHT_INVALID_ORIGIN);
-        }
-        else if (!validDestination)
-        {
-            throw new ValidationException(FLIGHT_INVALID_DESTINATION);
         }
         else if(departTime == null)
         {
