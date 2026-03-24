@@ -34,7 +34,7 @@ public interface FlightService {
 
     String getFormattedFlightId(Flight flight);
 
-    void isFlightFull(int flightId);
+    void updateFlightAvailability(int flightId);
     String getAirportCode(String city);
     Aircraft getAircraft(Flight flight);
 }

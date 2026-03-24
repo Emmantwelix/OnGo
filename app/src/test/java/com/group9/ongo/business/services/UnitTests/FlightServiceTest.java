@@ -18,7 +18,6 @@ import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_SEATS;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
 import static com.group9.ongo.business.constants.FlightConstants.TSU;
@@ -31,32 +30,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
-import com.group9.ongo.business.services.BookingException;
-import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
-import com.group9.ongo.business.services.Implementations.FlightDetailGen;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
-import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
-import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
-import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
-import com.group9.ongo.models.Booking;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.persistence.AircraftRepository;
-import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
-import com.group9.ongo.persistence.fake.FakeAircraftRepository;
-import com.group9.ongo.persistence.PassengerRepository;
-import com.group9.ongo.persistence.fake.FakeBookingRepository;
-import com.group9.ongo.persistence.fake.FakeFlightRepository;
-import com.group9.ongo.persistence.fake.FakePassengerRepository;
-import com.group9.ongo.persistence.fake.FakeSeatsRepository;
 
 
 import org.junit.Before;
@@ -68,9 +52,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 
 @RunWith(MockitoJUnitRunner.class)

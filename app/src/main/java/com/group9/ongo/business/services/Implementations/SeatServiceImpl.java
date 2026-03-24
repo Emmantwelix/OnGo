@@ -14,10 +14,10 @@ import com.group9.ongo.persistence.SeatRepository;
 
 import java.util.List;
 
-public class SeatServiceImplementation  implements SeatService {
+public class SeatServiceImpl implements SeatService {
     private final SeatRepository seatRepository;
 
-    public SeatServiceImplementation(SeatRepository seatRepository) {
+    public SeatServiceImpl(SeatRepository seatRepository) {
         this.seatRepository = seatRepository;
     }
 

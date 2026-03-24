@@ -35,7 +35,7 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.services.Interfaces.Generator;
 import com.group9.ongo.business.services.Interfaces.SeatService;
@@ -96,7 +96,7 @@ public class FlightServiceIntegrationTest {
         seatRepository = new SqlSeatRepository(dbHelper);
         passengerRepository = new SqlPassengerRepository(dbHelper);
 
-        seatService = new SeatServiceImplementation(seatRepository);
+        seatService = new SeatServiceImpl(seatRepository);
 
         Generator fixedGenerator = new Generator() {
             @Override

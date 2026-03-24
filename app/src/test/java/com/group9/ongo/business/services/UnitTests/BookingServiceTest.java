@@ -114,7 +114,7 @@ public class BookingServiceTest {
 
         //verify these methods were called with this argument
         verify(passengerService).addPassenger(passengerInput, savedBooking.getBookingId());
-        verify(flightService).isFlightFull(flightId);
+        verify(flightService).updateFlightAvailability(flightId);
     }
 
     @Test
@@ -195,7 +195,7 @@ public class BookingServiceTest {
         assertEquals(BOOKING_PASSENGER_ERROR, exception.getMessage());
         verify(bookingsRepo).deleteBooking(savedBooking.getBookingId());
         verify(seatService).unbookSeat(flightId, seatId);
-        verify(flightService, never()).isFlightFull(flightId);
+        verify(flightService, never()).updateFlightAvailability(flightId);
     }
 
     @Test
@@ -218,7 +218,7 @@ public class BookingServiceTest {
         // Assert
         verify(bookingsRepo).updateBookingStatus(bookingId, BookingStatus.CANCELLED);
         verify(seatService).unbookSeat(flightId, seatId);
-        verify(flightService).isFlightFull(flightId);
+        verify(flightService).updateFlightAvailability(flightId);
     }
 
     @Test

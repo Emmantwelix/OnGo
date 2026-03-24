@@ -70,7 +70,7 @@ public class BookingServiceImpl implements BookingService {
             throw new BookingException(BOOKING_PASSENGER_ERROR);
         }
 
-        flightService.isFlightFull(flightId);
+        flightService.updateFlightAvailability(flightId);
 
         return booking;
     }
@@ -83,7 +83,7 @@ public class BookingServiceImpl implements BookingService {
 
         Seat seat = seatService.getSeatById(booking.getFlightId(), booking.getSeatId());
         seatService.unbookSeat(seat.getFlightId(), seat.getSeatId());
-        flightService.isFlightFull(seat.getFlightId());
+        flightService.updateFlightAvailability(seat.getFlightId());
     }
 
     @Override

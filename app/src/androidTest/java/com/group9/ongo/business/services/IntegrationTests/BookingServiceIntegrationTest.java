@@ -25,7 +25,7 @@ import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Implementations.FlightDetailGen;
 import com.group9.ongo.business.services.Implementations.FlightServiceImpl;
 import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
 import com.group9.ongo.business.services.Implementations.UserServiceImpl;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
@@ -95,7 +95,7 @@ public class BookingServiceIntegrationTest {
         aircraftRepository = new SqlAircraftRepository(dbHelper);
         UserRepository userRepository = new SqlUserRepository(dbHelper);
 
-        seatService = new SeatServiceImplementation(seatRepository);
+        seatService = new SeatServiceImpl(seatRepository);
 
         Generator generator = new FlightDetailGen(new Random(1));
         flightService = new FlightServiceImpl(

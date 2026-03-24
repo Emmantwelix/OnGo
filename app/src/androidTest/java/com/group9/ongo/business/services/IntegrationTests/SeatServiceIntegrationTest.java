@@ -21,7 +21,7 @@ import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
@@ -64,7 +64,7 @@ public class SeatServiceIntegrationTest {
         AppDbHelper dbHelper = new AppDbHelper(context, false);
 
         seatRepository = new SqlSeatRepository(dbHelper);
-        seatService = new SeatServiceImplementation(seatRepository);
+        seatService = new SeatServiceImpl(seatRepository);
         flightRepository = new SqlFlightRepository(dbHelper);
         aircraftRepository = new SqlAircraftRepository(dbHelper);
 

@@ -16,7 +16,7 @@ import com.group9.ongo.business.services.Interfaces.LoginService;
 import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
 import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
@@ -56,7 +56,7 @@ public class OnGoApp extends Application {
         Generator fnGenerator = new FlightDetailGen(new Random());
 
         SeatRepository seatRepository = USE_SQL ? new SqlSeatRepository(dbHelper) : new FakeSeatsRepository(true);
-        seatService = new SeatServiceImplementation(seatRepository);
+        seatService = new SeatServiceImpl(seatRepository);
 
         AircraftRepository aircraftRepository = USE_SQL ? new SqlAircraftRepository(dbHelper) : new FakeAircraftRepository();
         FlightRepository flightRepository = USE_SQL ? new SqlFlightRepository(dbHelper) : new FakeFlightRepository(true);

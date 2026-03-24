@@ -207,7 +207,7 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public void isFlightFull(int flightId)
+    public void updateFlightAvailability(int flightId)
     {
         int availSeats = getAvailableSeats(flightId);
         if (availSeats <= 0)

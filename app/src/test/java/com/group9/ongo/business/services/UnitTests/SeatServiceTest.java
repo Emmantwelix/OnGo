@@ -15,7 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.group9.ongo.business.services.Implementations.SeatServiceImplementation;
+import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Seat;
@@ -40,7 +40,7 @@ public class SeatServiceTest {
 
     @Before
     public void setUp() {
-        seatService = new SeatServiceImplementation(seatRepository);
+        seatService = new SeatServiceImpl(seatRepository);
     }
 
     @Test
