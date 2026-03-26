@@ -517,6 +517,26 @@ public class FlightServiceIntegrationTest {
         assertEquals(A320_DETAILS.getCapacity(), count);
     }
 
+    @Test
+    public void testSortFlightsByAvailSeats_returnsSortedList() throws ValidationException {
+        int flightId = service.createFlight(
+                AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, a320Id, VALID_PRICE
+        );
+        int flightId2 = service.createFlight(
+                AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, a380Id, VALID_PRICE
+        );
+        int flightId3 = service.createFlight(
+                AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, b737Id, VALID_PRICE
+        );
+
+
+        List<Flight> flights = service.sortFlightsByAvailSeats(service.getAllFlights());
+
+        assertEquals(flightId, flights.get(0).getFlightId());
+        assertEquals(flightId3, flights.get(1).getFlightId());
+    }
+
+
     private boolean containsFlightId(List<Flight> flights, int flightId) {
         for (Flight flight : flights) {
             if (flight.getFlightId() == flightId) {

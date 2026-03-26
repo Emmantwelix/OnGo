@@ -16,9 +16,12 @@ import static com.group9.ongo.business.constants.FlightConstants.A380_DETAILS;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_CANADA;
 import static com.group9.ongo.business.constants.FlightConstants.AIR_TRANSAT;
 import static com.group9.ongo.business.constants.FlightConstants.B737_DETAILS;
+import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
+import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE2;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
+import static com.group9.ongo.business.constants.FlightConstants.ROW_ONE;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
 import static com.group9.ongo.business.constants.FlightConstants.TSU;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
@@ -606,6 +609,42 @@ public class FlightServiceTest {
         int count = service.getAvailableSeats(flightId);
         assertEquals(A320_DETAILS.getCapacity(), count);
     }
+
+    @Test
+    public void testSortFlightsByDuration_returnsSortedList() throws ValidationException {
+
+        List<Flight> flights = service.sortFlightsByDuration(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+                new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
+        assertEquals(1, flights.get(0).getFlightId());
+        assertEquals(2, flights.get(1).getFlightId());
+    }
+
+    @Test
+    public void testSortFlightsByDateTime_returnsSortedList() throws ValidationException{
+        List<Flight> flights = service.sortFlightsByDateTime(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+                new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
+        assertEquals(1, flights.get(0).getFlightId());
+        assertEquals(2, flights.get(1).getFlightId());
+    }
+
+    @Test
+    public void testSortFlightsByDateTime_withSameDateDifferentTime_returnsSortedList() throws ValidationException {
+        List<Flight> flights = service.sortFlightsByDateTime(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+                new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE)));
+        assertEquals(1, flights.get(0).getFlightId());
+        assertEquals(2, flights.get(1).getFlightId());
+    }
+
+    @Test
+    public void testSortFlightsByAvailSeats_returnsSortedList() throws ValidationException {
+        when(seatService.getAllSeatsByFlightId(1)).thenReturn(List.of(new Seat(1, 1, 1, COLUMN_1, false)));
+        when(seatService.getAllSeatsByFlightId(2)).thenReturn(List.of(new Seat(2, 2,2, COLUMN_1, false), new Seat(3, 2,2, COLUMN_1, false)));
+        List<Flight> flights = service.sortFlightsByAvailSeats(List.of(new Flight(1, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE),
+                new Flight(2, AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME2, VALID_TIME, VALID_AIRCRAFT_ID, VALID_PRICE, DEFAULT_FLIGHT_NUM, DEFAULT_DATE2)));
+        assertEquals(1, flights.get(0).getFlightId());
+        assertEquals(2, flights.get(1).getFlightId());
+    }
+
 
 
     private PassengerInput samplePassengerInput(String tag) {

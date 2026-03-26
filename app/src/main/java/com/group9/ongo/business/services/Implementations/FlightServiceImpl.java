@@ -54,12 +54,6 @@ public class FlightServiceImpl implements FlightService {
         this.aircraftRepo = aircraftRepo;
     }
 
-    public List<Flight> sortByPrice(List<Flight> flight) {
-        List<Flight> sortedFlight = new ArrayList<>(flight);
-        sortedFlight.sort(Comparator.comparingDouble(Flight::getPrice));
-        return sortedFlight;
-    }
-
     @Override
     public List<Flight> searchFlights(String origin, String destination) throws ValidationException {
 
@@ -81,9 +75,26 @@ public class FlightServiceImpl implements FlightService {
     }
 
     @Override
-    public List<Flight> getAllAvailableFlights() {
-        return sortByPrice(repo.getAllAvailableFlights());
+    public List<Flight> sortFlightsByDuration(List<Flight> flights) {
+        List<Flight> sortedFlight = new ArrayList<>(flights);
+        sortedFlight.sort(Comparator.comparingInt(this::calculateDuration));
+        return sortedFlight;
     }
+
+    @Override
+    public List<Flight> sortFlightsByDateTime(List<Flight> flights) {
+        List<Flight> sortedFlight = new ArrayList<>(flights);
+        sortedFlight.sort(Comparator.comparing(Flight::getDate).thenComparing(Flight::getDepartTime));
+        return sortedFlight;
+    }
+
+    @Override
+    public List<Flight> sortFlightsByAvailSeats(List<Flight> flights) {
+        List<Flight> sortedFlight = new ArrayList<>(flights);
+        sortedFlight.sort(Comparator.comparingInt(this::getAvailableSeats));
+        return sortedFlight;
+    }
+
 
 
     @Override
@@ -136,29 +147,9 @@ public class FlightServiceImpl implements FlightService {
         return availableSeats;
     }
 
-    @Override
-    public Seat getAnAvailableSeat(int flight_id) throws ValidationException {
-        boolean availSeat = false;
-        Seat seat1 = null;
-
-        while (!availSeat) {
-            List<Seat> seats = seatService.getAllSeatsByFlightId(flight_id);
-            for (Seat seat : seats) {
-                if (!seat.getIsBooked()) {
-                    availSeat = true;
-                    seat1 = seat;
-                }
-            }
-        }
-
-        if (!availSeat)
-        {
-            throw new ValidationException(NO_AVAILABLE_SEAT);
-        }
-        return seat1;
+    private int getAvailableSeats(Flight flight){
+        return getAvailableSeats(flight.getFlightId());
     }
-
-
     //calculates the total minutes
     private int calculateDuration(Flight flight) {
         Duration duration = Duration.between(flight.getDepartTime(), flight.getLandTime());
@@ -258,6 +249,11 @@ public class FlightServiceImpl implements FlightService {
         return result.toString().trim();
     }
 
+    private List<Flight> sortByPrice(List<Flight> flight) {
+        List<Flight> sortedFlight = new ArrayList<>(flight);
+        sortedFlight.sort(Comparator.comparingDouble(Flight::getPrice));
+        return sortedFlight;
+    }
 
 
 }

@@ -67,6 +67,7 @@ public class FlightConstants {
     //DATE
     public final static int MAX_DATE_LENGTH = 8;
     public final static LocalDate DEFAULT_DATE = LocalDate.of(2026, 12, 25);
+    public final static LocalDate DEFAULT_DATE2 = LocalDate.of(2027, 2, 5);
     public final static LocalTime DEFAULT_TIME = LocalTime.of(12, 30);
     public final static LocalTime DEFAULT_TIME2 = LocalTime.of(2, 30);
 
