@@ -1,16 +1,22 @@
 package com.group9.ongo.business.validation;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_ALREADY_EXIST;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_EMAIL;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_PHONE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_LONG_PASSWORD;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_LONG;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_SHORT;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NOT_FOUND;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_SHORT_PASSWORD;
 import static com.group9.ongo.business.constants.UserConstants.EMAIL_REGEX;
 import static com.group9.ongo.business.constants.UserConstants.LENGTH_PHONE;
 import static com.group9.ongo.business.constants.UserConstants.MAX_LENGTH_NAME;
+import static com.group9.ongo.business.constants.UserConstants.MAX_PASSWORD_LENGTH;
 import static com.group9.ongo.business.constants.UserConstants.MIN_LENGTH_NAME;
+import static com.group9.ongo.business.constants.UserConstants.MIN_PASSWORD_LENGTH;
 
 import com.group9.ongo.models.User;
+import com.group9.ongo.persistence.UserRepository;
 
 public class UserValidator {
     private static final int MAX_LENGTH_NAME = 10;
@@ -24,7 +30,7 @@ public class UserValidator {
         }
     }
     
-    public static void validateNewUser(String name, String email, String phone) throws ValidationException {
+    public static void validateNewUser(String name, String email, String phone, String password, UserRepository userRepo) throws ValidationException {
         if (name == null || name.length() < MIN_LENGTH_NAME) {
             throw new ValidationException(USER_NAME_TO_SHORT);
         }
@@ -36,6 +42,18 @@ public class UserValidator {
         }
         else if (!email.matches(EMAIL_REGEX)) {
             throw new ValidationException(USER_INVALID_EMAIL);
+        }
+        else if (password.length() < MIN_PASSWORD_LENGTH )
+        {
+            throw new ValidationException(USER_SHORT_PASSWORD);
+        }
+        else if (password.length() > MAX_PASSWORD_LENGTH)
+        {
+            throw new ValidationException(USER_LONG_PASSWORD);
+        }
+        else if (userRepo.findUserIDByEmailAndPassword(email, password) != -1)
+        {
+            throw new ValidationException(USER_ALREADY_EXIST);
         }
     }
 

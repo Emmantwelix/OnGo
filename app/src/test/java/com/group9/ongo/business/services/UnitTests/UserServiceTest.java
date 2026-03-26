@@ -3,9 +3,11 @@ package com.group9.ongo.business.services.UnitTests;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_EMAIL;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_PHONE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_LONG_PASSWORD;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_LONG;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_SHORT;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NOT_FOUND;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_SHORT_PASSWORD;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
@@ -37,6 +39,10 @@ public class UserServiceTest {
     private static final String INVALID_EMAIL = "@.";
     private static final String VALID_PHONE = "2045566812";
     private static final String INVALID_PHONE = "14203567823";
+    private static final String VALID_PASSWORD = "password";
+    private static final String SHORT_PASSWORD = "p";
+    private static final String LONG_PASSWORD = "thispasswordiswaytoolongforoursystem";
+
 
     @Mock
     private UserRepository userRepository;
@@ -52,28 +58,29 @@ public class UserServiceTest {
     public void createUser_whenValidInput_returnsUserId() throws ValidationException {
         // Arrange
         int expectedUserId = 1;
-        when(userRepository.addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE)).thenReturn(expectedUserId);
-
+        when(userRepository.addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)).thenReturn(expectedUserId);
+        when(userRepository.findUserIDByEmailAndPassword(VALID_EMAIL, VALID_PASSWORD)).thenReturn(-1);
         // Act
-        int result = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        int result = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         // Assert
         assertEquals(expectedUserId, result);
-        verify(userRepository).addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        verify(userRepository).addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
     }
 
     @Test
     public void createUser_whenWeirdButValidName_returnsUserId() throws ValidationException {
         // Arrange
         int expectedUserId = 2;
-        when(userRepository.addUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE)).thenReturn(expectedUserId);
+        when(userRepository.addUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)).thenReturn(expectedUserId);
+        when(userRepository.findUserIDByEmailAndPassword(VALID_EMAIL, VALID_PASSWORD)).thenReturn(-1);
 
         // Act
-        int result = userService.createUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        int result = userService.createUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         // Assert
         assertEquals(expectedUserId, result);
-        verify(userRepository).addUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        verify(userRepository).addUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
     }
 
     @Test
@@ -81,12 +88,12 @@ public class UserServiceTest {
         // Arrange / Act
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(LONG_NAME, VALID_EMAIL, VALID_PHONE)
+                () -> userService.createUser(LONG_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)
         );
 
         // Assert
         assertEquals(USER_NAME_TO_LONG, exception.getMessage());
-        verify(userRepository, never()).addUser(LONG_NAME, VALID_EMAIL, VALID_PHONE);
+        verify(userRepository, never()).addUser(LONG_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
     }
 
     @Test
@@ -94,26 +101,27 @@ public class UserServiceTest {
         // Arrange / Act
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE)
+                () -> userService.createUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)
         );
 
         // Assert
         assertEquals(USER_NAME_TO_SHORT, exception.getMessage());
-        verify(userRepository, never()).addUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE);
+        verify(userRepository, never()).addUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
     }
 
     @Test
     public void createUser_whenWeirdButValidEmail_returnsUserId() throws ValidationException {
         // Arrange
         int expectedUserId = 3;
-        when(userRepository.addUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE)).thenReturn(expectedUserId);
+        when(userRepository.addUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)).thenReturn(expectedUserId);
+        when(userRepository.findUserIDByEmailAndPassword(WEIRD_VALID_EMAIL, VALID_PASSWORD)).thenReturn(-1);
 
         // Act
-        int result = userService.createUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE);
+        int result = userService.createUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         // Assert
         assertEquals(expectedUserId, result);
-        verify(userRepository).addUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE);
+        verify(userRepository).addUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
     }
 
     @Test
@@ -121,12 +129,12 @@ public class UserServiceTest {
         // Arrange / Act
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(VALID_NAME, INVALID_EMAIL, VALID_PHONE)
+                () -> userService.createUser(VALID_NAME, INVALID_EMAIL, VALID_PHONE, VALID_PASSWORD)
         );
 
         // Assert
         assertEquals(USER_INVALID_EMAIL, exception.getMessage());
-        verify(userRepository, never()).addUser(VALID_NAME, INVALID_EMAIL, VALID_PHONE);
+        verify(userRepository, never()).addUser(VALID_NAME, INVALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
     }
 
     @Test
@@ -134,19 +142,45 @@ public class UserServiceTest {
         // Arrange / Act
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(VALID_NAME, VALID_EMAIL, INVALID_PHONE)
+                () -> userService.createUser(VALID_NAME, VALID_EMAIL, INVALID_PHONE, VALID_PASSWORD)
         );
 
         // Assert
         assertEquals(USER_INVALID_PHONE, exception.getMessage());
-        verify(userRepository, never()).addUser(VALID_NAME, VALID_EMAIL, INVALID_PHONE);
+        verify(userRepository, never()).addUser(VALID_NAME, VALID_EMAIL, INVALID_PHONE, VALID_PASSWORD);
+    }
+
+    @Test
+    public void createUser_whenPasswordTooShort_throwsValidationException() {
+        // Arrange / Act
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, SHORT_PASSWORD)
+        );
+
+        // Assert
+        assertEquals(USER_SHORT_PASSWORD, exception.getMessage());
+        verify(userRepository, never()).addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, SHORT_PASSWORD);
+    }
+
+    @Test
+    public void createUser_whenPasswordTooLong_throwsValidationException() {
+        // Arrange / Act
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, LONG_PASSWORD)
+        );
+
+        // Assert
+        assertEquals(USER_LONG_PASSWORD, exception.getMessage());
+        verify(userRepository, never()).addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, LONG_PASSWORD);
     }
 
     @Test
     public void getUserById_whenUserExists_returnsUser() throws ValidationException {
         // Arrange
         int userId = 4;
-        User user = new User(userId, VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        User user = new User(userId, VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
         when(userRepository.getUserById(userId)).thenReturn(user);
 
         // Act

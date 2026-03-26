@@ -112,13 +112,15 @@ public class BookingServiceIntegrationTest {
         currentUserId = userService.createUser(
                 "User",
                 "user@test.com",
-                "2045551234"
+                "2045551234",
+                "mama"
         );
 
         secondUserId = userService.createUser(
                 "UserTwo",
                 "usertwo@test.com",
-                "4315551234"
+                "4315551234",
+                "whyuquime"
         );
 
         bookingService = new BookingServiceImpl(

@@ -2,6 +2,7 @@ package com.group9.ongo.persistence.real;
 
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_USER_EMAIL;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_USER_ID;
+import static com.group9.ongo.persistence.real.AppDbHelper.COL_USER_PASSWORD;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_USER_PHONE;
 import static com.group9.ongo.persistence.real.AppDbHelper.COL_USER_USERNAME;
 import static com.group9.ongo.persistence.real.AppDbHelper.TABLE_USERS;
@@ -44,8 +45,9 @@ public class SqlUserRepository implements UserRepository {
             String username = cursor.getString(cursor.getColumnIndexOrThrow(COL_USER_USERNAME));
             String email = cursor.getString(cursor.getColumnIndexOrThrow(COL_USER_EMAIL));
             String phone = cursor.getString(cursor.getColumnIndexOrThrow(COL_USER_PHONE));
+            String password = cursor.getString(cursor.getColumnIndexOrThrow(COL_USER_PASSWORD));
 
-            user = new User(id, username, email, phone);
+            user = new User(id, username, email, phone, password);
         }
 
         cursor.close();
@@ -54,7 +56,7 @@ public class SqlUserRepository implements UserRepository {
     }
 
     @Override
-    public int addUser(String name, String email, String phone) {
+    public int addUser(String name, String email, String phone, String password) {
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -62,6 +64,7 @@ public class SqlUserRepository implements UserRepository {
         values.put(COL_USER_USERNAME, name);
         values.put(COL_USER_EMAIL, email);
         values.put(COL_USER_PHONE, phone);
+        values.put(COL_USER_PASSWORD, password);
 
         long id = db.insert(TABLE_USERS, null, values);
 
@@ -87,15 +90,15 @@ public class SqlUserRepository implements UserRepository {
     }
 
     @Override
-    public int findUserIDByEmailAndName(String name, String email) {
+    public int findUserIDByEmailAndPassword(String name, String password) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         Cursor cursor = db.query(
                 TABLE_USERS,
                 new String[]{COL_USER_ID},
-                COL_USER_USERNAME + "=? AND " + COL_USER_EMAIL + "=?",
-                new String[]{name, email},
+                COL_USER_EMAIL + "=? AND " + COL_USER_PASSWORD + "=?",
+                new String[]{name, password},
                 null,
                 null,
                 null

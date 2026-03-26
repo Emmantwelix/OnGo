@@ -15,6 +15,7 @@ import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PASSWORD;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PHONE_NUM;
 
 import android.content.ContentValues;
@@ -75,6 +76,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
     public static final String COL_USER_USERNAME = "username";
     public static final String COL_USER_EMAIL = "email";
     public static final String COL_USER_PHONE = "phone";
+    public static final String COL_USER_PASSWORD = "password";
+
 
     //seats
     public static final String TABLE_SEATS = "seats";
@@ -160,7 +163,8 @@ public class AppDbHelper extends SQLiteOpenHelper {
                         COL_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         COL_USER_USERNAME + " TEXT NOT NULL, " +
                         COL_USER_EMAIL + " TEXT NOT NULL, " +
-                        COL_USER_PHONE + " TEXT NOT NULL " +
+                        COL_USER_PHONE + " TEXT NOT NULL, " +
+                        COL_USER_PASSWORD + " TEXT NOT NULL " +
                         ");"
         );
 
@@ -226,6 +230,7 @@ public class AppDbHelper extends SQLiteOpenHelper {
         values.put(COL_USER_USERNAME, SAMPLE_USER_NAME);
         values.put(COL_USER_EMAIL, SAMPLE_USER_EMAIL);
         values.put(COL_USER_PHONE, SAMPLE_USER_PHONE_NUM);
+        values.put(COL_USER_PASSWORD, SAMPLE_USER_PASSWORD);
 
         db.insert(TABLE_USERS, null, values);
     }

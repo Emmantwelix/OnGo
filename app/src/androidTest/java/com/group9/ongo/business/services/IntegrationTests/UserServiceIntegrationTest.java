@@ -3,9 +3,11 @@ package com.group9.ongo.business.services.IntegrationTests;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_EMAIL;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_PHONE;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_LONG_PASSWORD;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_LONG;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_SHORT;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NOT_FOUND;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_SHORT_PASSWORD;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
@@ -40,6 +42,9 @@ public class UserServiceIntegrationTest {
     private static final String INVALID_EMAIL = "@.";
     private static final String VALID_PHONE = "2045566812";
     private static final String INVALID_PHONE = "14203567823";
+    private static final String VALID_PASSWORD = "password";
+    private static final String SHORT_PASSWORD = "p";
+    private static final String LONG_PASSWORD = "thispasswordiswaytoolongforoursystem";
 
     private UserRepository userRepository;
     private UserService userService;
@@ -56,7 +61,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void createUser_whenValidInput_returnsUserId() throws ValidationException {
-        int result = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        int result = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         assertTrue(result > 0);
 
@@ -70,7 +75,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void createUser_whenWeirdButValidName_returnsUserId() throws ValidationException {
-        int result = userService.createUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        int result = userService.createUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         assertTrue(result > 0);
 
@@ -86,7 +91,7 @@ public class UserServiceIntegrationTest {
     public void createUser_whenNameTooLong_throwsValidationException() {
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(LONG_NAME, VALID_EMAIL, VALID_PHONE)
+                () -> userService.createUser(LONG_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)
         );
 
         assertEquals(USER_NAME_TO_LONG, exception.getMessage());
@@ -96,7 +101,7 @@ public class UserServiceIntegrationTest {
     public void createUser_whenNameTooShort_throwsValidationException() {
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE)
+                () -> userService.createUser(SHORT_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)
         );
 
         assertEquals(USER_NAME_TO_SHORT, exception.getMessage());
@@ -104,7 +109,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void createUser_whenWeirdButValidEmail_returnsUserId() throws ValidationException {
-        int result = userService.createUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE);
+        int result = userService.createUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         assertTrue(result > 0);
 
@@ -120,7 +125,7 @@ public class UserServiceIntegrationTest {
     public void createUser_whenInvalidEmail_throwsValidationException() {
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(VALID_NAME, INVALID_EMAIL, VALID_PHONE)
+                () -> userService.createUser(VALID_NAME, INVALID_EMAIL, VALID_PHONE, VALID_PASSWORD)
         );
 
         assertEquals(USER_INVALID_EMAIL, exception.getMessage());
@@ -130,15 +135,35 @@ public class UserServiceIntegrationTest {
     public void createUser_whenInvalidPhone_throwsValidationException() {
         ValidationException exception = assertThrows(
                 ValidationException.class,
-                () -> userService.createUser(VALID_NAME, VALID_EMAIL, INVALID_PHONE)
+                () -> userService.createUser(VALID_NAME, VALID_EMAIL, INVALID_PHONE, VALID_PASSWORD)
         );
 
         assertEquals(USER_INVALID_PHONE, exception.getMessage());
     }
 
     @Test
+    public void createUser_whenPasswordTooShort_throwsValidationException() {
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, SHORT_PASSWORD)
+        );
+
+        assertEquals(USER_SHORT_PASSWORD, exception.getMessage());
+    }
+
+    @Test
+    public void createUser_whenPasswordTooLong_throwsValidationException() {
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, LONG_PASSWORD)
+        );
+
+        assertEquals(USER_LONG_PASSWORD, exception.getMessage());
+    }
+
+    @Test
     public void getUserById_whenUserExists_returnsUser() throws ValidationException {
-        int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         User result = userService.getUserById(userId);
 
@@ -161,7 +186,7 @@ public class UserServiceIntegrationTest {
 
     @Test
     public void deleteUser_whenUserExists_doesNotThrow() throws ValidationException {
-        int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE);
+        int userId = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
         userService.deleteUser(userId);
 
