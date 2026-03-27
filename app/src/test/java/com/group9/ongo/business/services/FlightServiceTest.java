@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.UnitTests;
+package com.group9.ongo.business.services;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DTIME_NULL;
@@ -21,7 +21,6 @@ import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE2;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
-import static com.group9.ongo.business.constants.FlightConstants.ROW_ONE;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
 import static com.group9.ongo.business.constants.FlightConstants.TSU;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;

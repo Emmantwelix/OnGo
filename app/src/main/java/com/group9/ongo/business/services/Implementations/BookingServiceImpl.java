@@ -124,7 +124,8 @@ public class BookingServiceImpl implements BookingService {
     private BookingDetails getDetailsForBooking(Booking booking) throws ValidationException {
             Flight flight = flightService.getFlightById(booking.getFlightId());
             Passenger passenger = passengerService.getPassengerByBookingId(booking.getBookingId());
-            return new BookingDetails(booking, flight, passenger);
+            String formattedSeat = seatService.getFormattedSeatById(flight.getFlightId(), booking.getSeatId());
+            return new BookingDetails(booking, flight, passenger, formattedSeat);
     }
 
     private Booking getBookingById(int bookingId) throws ValidationException

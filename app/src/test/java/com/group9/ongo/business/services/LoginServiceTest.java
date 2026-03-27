@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.UnitTests;
+package com.group9.ongo.business.services;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;

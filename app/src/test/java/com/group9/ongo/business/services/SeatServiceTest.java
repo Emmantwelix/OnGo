@@ -1,30 +1,36 @@
-package com.group9.ongo.business.services.UnitTests;
+package com.group9.ongo.business.services;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_BOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_EXISTS;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_UNBOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_NOT_FOUND;
+import static com.group9.ongo.business.constants.SeatConstants.NARROW_BODY;
 import static com.group9.ongo.business.constants.SeatConstants.UNAVAILABLE_SEAT;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.group9.ongo.business.services.Implementations.SeatMapService;
 import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Seat;
+import com.group9.ongo.models.SeatMapConfig;
 import com.group9.ongo.persistence.SeatRepository;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
@@ -353,6 +359,66 @@ public class SeatServiceTest {
         assertEquals(UNAVAILABLE_SEAT, result);
         verify(seatRepository).getSeatById(flightId, seatId);
     }
+
+    @Test
+    public void getSeatMapConfiguration_returnsConfigFromSeatMapService() {
+        // Arrange
+        int capacity = 12;
+        SeatMapConfig expectedConfig = new SeatMapConfig(NARROW_BODY, 3, 2);
+
+        try (MockedStatic<SeatMapService> mockedSeatMapService = mockStatic(SeatMapService.class)) {
+            mockedSeatMapService
+                    .when(() -> SeatMapService.createFromCapacity(capacity))
+                    .thenReturn(expectedConfig);
+
+            // Act
+            SeatMapConfig result = seatService.getSeatMapConfiguration(capacity);
+
+            // Assert
+            assertEquals(expectedConfig, result);
+            mockedSeatMapService.verify(() -> SeatMapService.createFromCapacity(capacity), times(1));
+        }
+    }
+
+    @Test
+    public void getSeatsForDisplay_returnsGridSeatsWithBookedSeatsApplied() {
+        // Arrange
+        int flightId = 1;
+        SeatMapConfig config = new SeatMapConfig(NARROW_BODY, 3, 2);
+
+        List<Seat> gridSeats = Arrays.asList(
+                seat(0, flightId, 1, "A", false),
+                seat(0, flightId, 1, "B", false),
+                seat(0, flightId, 1, "C", false)
+        );
+
+        List<Seat> realSeats = Arrays.asList(
+                seat(10, flightId, 1, "B", true)
+        );
+
+        SeatServiceImpl spySeatService = org.mockito.Mockito.spy(new SeatServiceImpl(seatRepository));
+        doReturn(realSeats).when(spySeatService).getAllSeatsByFlightId(flightId);
+
+        try (MockedStatic<SeatMapService> mockedSeatMapService = mockStatic(SeatMapService.class)) {
+            mockedSeatMapService
+                    .when(() -> SeatMapService.generateSeats(config))
+                    .thenReturn(gridSeats);
+
+            // Act
+            List<Seat> result = spySeatService.getSeatsForDisplay(flightId, config);
+
+            // Assert
+            assertEquals(gridSeats, result);
+            assertEquals(3, result.size());
+
+            mockedSeatMapService.verify(() -> SeatMapService.generateSeats(config), times(1));
+            mockedSeatMapService.verify(() -> SeatMapService.applyBookedSeats(gridSeats, realSeats), times(1));
+            verify(spySeatService).getAllSeatsByFlightId(flightId);
+        }
+    }
+
+
+
 
     private Seat seat(int seatId, int flightId, int row, String column, boolean isBooked) {
         return new Seat(seatId, flightId, row, column, isBooked);

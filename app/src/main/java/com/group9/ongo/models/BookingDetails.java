@@ -5,11 +5,13 @@ public class BookingDetails {
     private final Booking booking;
     private final Flight flight;
     private final Passenger passenger;
+    private final String formattedSeat;
 
-    public BookingDetails(Booking booking, Flight flight, Passenger passenger) {
+    public BookingDetails(Booking booking, Flight flight, Passenger passenger, String formattedSeat) {
         this.booking = booking;
         this.flight = flight;
         this.passenger = passenger;
+        this.formattedSeat = formattedSeat;
     }
 
     public Booking getBooking() {
@@ -23,4 +25,6 @@ public class BookingDetails {
     public Passenger getPassenger() {
         return passenger;
     }
+
+    public String getFormattedSeat() { return formattedSeat; }
 }

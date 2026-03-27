@@ -49,8 +49,6 @@ public class BookingDetailsActivity extends AppCompatActivity {
     private BookingService bookingService;
 
     private FlightService flightService;
-
-    private SeatService seatService;
     private int bookingId = -1;
     private BookingDetails bookingDetails;
 
@@ -64,7 +62,6 @@ public class BookingDetailsActivity extends AppCompatActivity {
 
         bookingService = ((OnGoApp) getApplication()).getBookingService();
         flightService =  ((OnGoApp) getApplication()).getFlightService();
-        seatService = ((OnGoApp) getApplication()).getSeatService();
 
         bookingId = getIntent().getIntExtra("booking_id", -1);
 
@@ -125,6 +122,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
             Booking booking = bookingDetails.getBooking();
             Flight flight = bookingDetails.getFlight();
             Passenger passenger = bookingDetails.getPassenger();
+            String formattedSeat = bookingDetails.getFormattedSeat();
 
             textPassengerName.setText(passenger.getFirstName() + " " + passenger.getLastName());
             textStatus.setText(booking.getBookingStatus());
@@ -141,7 +139,7 @@ public class BookingDetailsActivity extends AppCompatActivity {
 
             textPassportNumber.setText(passenger.getPassportNumber());
             textBirthdate.setText(passenger.getDateOfBirthFormatted());
-            textSeatNumber.setText(seatService.getFormattedSeatById(flight.getFlightId(), booking.getSeatId()));
+            textSeatNumber.setText(formattedSeat);
 
             airlineLogo.setImageResource(
                     Airline.fromName(flight.getAirline()).getLogoResId()

@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.UnitTests;
+package com.group9.ongo.business.services;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_CREATION_FAILED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_NOT_FOUND;
@@ -18,7 +18,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.group9.ongo.business.services.BookingException;
 import com.group9.ongo.business.services.Implementations.BookingServiceImpl;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
@@ -304,14 +303,17 @@ public class BookingServiceTest {
         // Arrange
         int bookingId = 400;
         int flightId = 25;
+        int seatId = 90;
+        String formattedSeat = "12A";
 
-        Booking booking = new Booking(bookingId, CURRENT_USER_ID, flightId, 90);
+        Booking booking = new Booking(bookingId, CURRENT_USER_ID, flightId, seatId);
         Flight flight = sampleFlight(flightId);
         Passenger passenger = samplePassenger(bookingId);
 
         when(bookingsRepo.getBookingById(bookingId)).thenReturn(booking);
         when(flightService.getFlightById(flightId)).thenReturn(flight);
         when(passengerService.getPassengerByBookingId(bookingId)).thenReturn(passenger);
+        when(seatService.getFormattedSeatById(flightId, seatId)).thenReturn(formattedSeat);
 
         // Act
         BookingDetails result = bookingService.getBookingDetailsById(bookingId);
@@ -321,6 +323,7 @@ public class BookingServiceTest {
         assertEquals(booking, result.getBooking());
         assertEquals(flight, result.getFlight());
         assertEquals(passenger, result.getPassenger());
+        assertEquals(formattedSeat, result.getFormattedSeat());
     }
 
     @Test

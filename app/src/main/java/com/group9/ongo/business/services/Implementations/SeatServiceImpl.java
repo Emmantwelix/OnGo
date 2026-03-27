@@ -105,5 +105,24 @@ public class SeatServiceImpl implements SeatService {
         }
     }
 
+    @Override
+    public SeatMapConfig getSeatMapConfiguration(int capacity)
+    {
+        return SeatMapService.createFromCapacity(capacity);
+    }
 
+    @Override
+    public List<Seat> getSeatsForDisplay(int flightId, SeatMapConfig config)
+    {
+        // 1. Generate the standard map grid for a configuration
+        List<Seat> gridSeats = SeatMapService.generateSeats(config);
+
+        // 2. Fetch actual booked status from the seatService
+        List<Seat> realSeats = getAllSeatsByFlightId(flightId);
+
+        // 3. Mark matching seats as OCCUPIED in our grid
+        SeatMapService.applyBookedSeats(gridSeats,realSeats);
+
+        return gridSeats;
+    }
 }

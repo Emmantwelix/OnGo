@@ -26,6 +26,7 @@ import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Seat;
+import com.group9.ongo.models.SeatMapConfig;
 import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.FlightRepository;
 import com.group9.ongo.persistence.SeatRepository;
@@ -55,7 +56,7 @@ public class SeatServiceIntegrationTest {
     private int testFlightId;
 
     @Before
-    public void setUp() throws ValidationException {
+    public void setUp() {
 
         Context context = ApplicationProvider.getApplicationContext();
 
@@ -255,6 +256,42 @@ public class SeatServiceIntegrationTest {
         String result = seatService.getFormattedSeatById(testFlightId, 999999);
 
         assertEquals(UNAVAILABLE_SEAT, result);
+    }
+
+    @Test
+    public void getSeatsForDisplay_marksBookedSeatsInGeneratedGrid() throws Exception {
+        int capacity = 8;
+
+        // Create seats using the same mapping logic the service uses
+        seatService.createSeats(testFlightId, capacity);
+
+        List<Seat> realSeats = seatService.getAllSeatsByFlightId(testFlightId);
+
+        assertTrue(realSeats.size() > 0);
+
+        
+        Seat bookedSeat = realSeats.get(0);
+        seatService.bookSeat(testFlightId, bookedSeat.getSeatRow(), bookedSeat.getLabel());
+
+        SeatMapConfig config = seatService.getSeatMapConfiguration(capacity);
+
+        List<Seat> displaySeats = seatService.getSeatsForDisplay(testFlightId, config);
+
+        assertNotNull(displaySeats);
+        assertTrue(displaySeats.size() > 0);
+
+        Seat matchingDisplaySeat = null;
+        for (Seat seat : displaySeats) {
+            if (seat.getType() == Seat.Type.SEAT
+                    && seat.getSeatRow() == bookedSeat.getSeatRow()
+                    && bookedSeat.getLabel().equals(seat.getLabel())) {
+                matchingDisplaySeat = seat;
+                break;
+            }
+        }
+
+        assertNotNull(matchingDisplaySeat);
+        assertTrue(matchingDisplaySeat.getIsBooked());
     }
 
 

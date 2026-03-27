@@ -1,10 +1,7 @@
 package com.group9.ongo.models;
-
-import static com.group9.ongo.business.constants.FlightConstants.DATE_FORMATTER;
-import static com.group9.ongo.business.constants.FlightConstants.TIME_FORMATTER;
-
 import java.time.LocalTime;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Flight {
     private final String airline;
@@ -18,6 +15,10 @@ public class Flight {
     private final String flightNumber;
     private final LocalDate date;
     private boolean availability;
+    private final String DATE_FORMAT = "yyyy-MM-dd";
+    private final String TIME_FORMAT_PATTERN = "hh:mm a";
+    private final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN);
+    private final DateTimeFormatter DATE_FORMATTER =  DateTimeFormatter.ofPattern(DATE_FORMAT);
 
     public Flight(int flightId, String airline, String origin, String destination, LocalTime departTime, LocalTime landTime, int aircraftId, double price, String flightNumber, LocalDate date) {
         this.airline = airline;

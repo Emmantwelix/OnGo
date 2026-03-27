@@ -160,9 +160,11 @@ public class BookingServiceIntegrationTest {
         assertEquals(input.getFirstName(), details.getPassenger().getFirstName());
         assertEquals(input.getLastName(), details.getPassenger().getLastName());
         assertEquals(input.getPassportNumber(), details.getPassenger().getPassportNumber());
+        assertEquals("1A", details.getFormattedSeat());
 
         Seat seat = seatService.getSeatById(flightId, booking.getSeatId());
         assertTrue(seat.getIsBooked());
+        assertEquals(seat.getSeatRow() + seat.getLabel(), details.getFormattedSeat());
     }
 
     @Test

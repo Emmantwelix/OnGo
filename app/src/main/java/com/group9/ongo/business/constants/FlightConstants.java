@@ -4,11 +4,9 @@ import com.group9.ongo.models.Aircraft;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class FlightConstants {
     private FlightConstants(){}
-
     public final static Aircraft A320_DETAILS = new Aircraft(0,"Airbus A320", 150, true);
     public final static Aircraft B737_DETAILS = new Aircraft(0,"Boeing 737", 160, false);
     public final static Aircraft A380_DETAILS = new Aircraft(0,"Airbus A380", 500, true);
@@ -57,11 +55,7 @@ public class FlightConstants {
     public final static double LOWER_PRICE = 183.35;
     public final static double MAX_PRICE = 5000;
     public final static double MIN_PRICE = 0; //0 is invalid
-    
-    //TIME
-    public final static String TIME_FORMAT_PATTERN = "hh:mm a";
-    public final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(TIME_FORMAT_PATTERN);
-    
+
     public final static int MAX_TIME_LENGTH = 4;
 
     //DATE
@@ -80,7 +74,6 @@ public class FlightConstants {
             "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     public final static String[] NUMBERS = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
     public final static String DATE_FORMAT = "yyyy-MM-dd";
-    public final static DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_FORMAT);
     public final static int DATE_RANGE = 21;
 
     //SEATS
