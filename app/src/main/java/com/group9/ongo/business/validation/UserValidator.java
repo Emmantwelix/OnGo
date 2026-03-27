@@ -1,6 +1,6 @@
 package com.group9.ongo.business.validation;
 
-import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_ALREADY_EXIST;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_EMAIL_ALREADY_USED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_EMAIL;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_PHONE;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_LONG_PASSWORD;
@@ -30,7 +30,7 @@ public class UserValidator {
         }
     }
     
-    public static void validateNewUser(String name, String email, String phone, String password, UserRepository userRepo) throws ValidationException {
+    public static void validateNewUser(String name, String email, String phone, String password, int userId) throws ValidationException {
         if (name == null || name.length() < MIN_LENGTH_NAME) {
             throw new ValidationException(USER_NAME_TO_SHORT);
         }
@@ -51,9 +51,9 @@ public class UserValidator {
         {
             throw new ValidationException(USER_LONG_PASSWORD);
         }
-        else if (userRepo.findUserIDByEmailAndPassword(email, password) != -1)
+        else if ( userId == -1)
         {
-            throw new ValidationException(USER_ALREADY_EXIST);
+            throw new ValidationException(USER_EMAIL_ALREADY_USED);
         }
     }
 

@@ -7,5 +7,7 @@ public interface UserRepository {
     int addUser(String name, String email, String phone, String password);
     boolean deleteUser(int userId);
 
-    int findUserIDByEmailAndPassword(String name, String password);
+    int findUserIDByEmailAndPassword(String email, String password);
+
+    int findUserIDByEmail(String email);
 }

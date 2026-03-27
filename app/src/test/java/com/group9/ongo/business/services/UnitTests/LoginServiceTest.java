@@ -1,5 +1,6 @@
 package com.group9.ongo.business.services.UnitTests;
 
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PASSWORD;
 import static org.junit.Assert.assertEquals;
@@ -34,14 +35,14 @@ public class LoginServiceTest {
         // Arrange
         int expectedUserId = 5;
 
-        when(userRepo.findUserIDByEmailAndPassword(SAMPLE_USER_NAME, SAMPLE_USER_PASSWORD)).thenReturn(expectedUserId);
+        when(userRepo.findUserIDByEmailAndPassword(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD)).thenReturn(expectedUserId);
 
         // Act
-        int result = loginService.login(SAMPLE_USER_NAME, SAMPLE_USER_PASSWORD);
+        int result = loginService.login(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
 
         // Assert
         assertEquals(expectedUserId, result);
-        verify(userRepo).findUserIDByEmailAndPassword(SAMPLE_USER_NAME, SAMPLE_USER_PASSWORD);
+        verify(userRepo).findUserIDByEmailAndPassword(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
     }
 
     @Test

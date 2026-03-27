@@ -36,7 +36,7 @@ import java.util.Random;
 
 public class AppDbHelper extends SQLiteOpenHelper {
     public static final String DB_NAME = "ongo.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
 
     //bookings
     public static final String TABLE_BOOKINGS = "bookings";

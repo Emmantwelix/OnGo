@@ -90,7 +90,7 @@ public class SqlUserRepository implements UserRepository {
     }
 
     @Override
-    public int findUserIDByEmailAndPassword(String name, String password) {
+    public int findUserIDByEmailAndPassword(String email, String password) {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -98,7 +98,33 @@ public class SqlUserRepository implements UserRepository {
                 TABLE_USERS,
                 new String[]{COL_USER_ID},
                 COL_USER_EMAIL + "=? AND " + COL_USER_PASSWORD + "=?",
-                new String[]{name, password},
+                new String[]{email, password},
+                null,
+                null,
+                null
+        );
+
+        int userId = -1;
+
+        if (cursor.moveToNext()) {
+            userId = cursor.getInt(cursor.getColumnIndexOrThrow(COL_USER_ID));
+        }
+
+        cursor.close();
+
+        return userId;
+    }
+
+    @Override
+    public int findUserIDByEmail(String email) {
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                TABLE_USERS,
+                new String[]{COL_USER_ID},
+                COL_USER_EMAIL + "=?",
+                new String[]{email},
                 null,
                 null,
                 null

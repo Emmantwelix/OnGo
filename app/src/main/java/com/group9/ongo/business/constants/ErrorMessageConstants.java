@@ -13,7 +13,7 @@ public class ErrorMessageConstants {
     public static final String USER_NOT_FOUND = "User not found";
     public static final String USER_SHORT_PASSWORD = "Password is to short";
     public static final String USER_LONG_PASSWORD = "Password is to long";
-    public static final String USER_ALREADY_EXIST = "User already exists";
+    public static final String USER_EMAIL_ALREADY_USED = "Email already in use by another user";
 
 
     //FLIGHT ERROR MESSAGES

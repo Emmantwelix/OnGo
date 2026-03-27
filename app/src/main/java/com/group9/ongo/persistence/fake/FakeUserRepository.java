@@ -50,9 +50,19 @@ public class FakeUserRepository implements UserRepository {
     }
 
     @Override
-    public int findUserIDByEmailAndPassword(String name, String password) {
+    public int findUserIDByEmailAndPassword(String email, String password) {
         for (User user : users) {
-            if (user.getUsername().equals(name) && user.getEmail().equals(password)) {
+            if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
+                return user.getUserId();
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public int findUserIDByEmail(String email) {
+        for (User user : users) {
+            if (user.getEmail().equals(email)) {
                 return user.getUserId();
             }
         }
