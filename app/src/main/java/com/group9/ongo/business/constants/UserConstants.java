@@ -9,4 +9,7 @@ public class UserConstants {
     public static final String SAMPLE_USER_NAME = "john doe";
     public static final String SAMPLE_USER_EMAIL = "johnd@example.com";
     public static final String SAMPLE_USER_PHONE_NUM = "2042345433";
+    public static final int MIN_PASSWORD_LENGTH = 3;
+    public static final int MAX_PASSWORD_LENGTH = 10;
+    public static final String SAMPLE_USER_PASSWORD = "12345678";
 }

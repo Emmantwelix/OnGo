@@ -11,8 +11,8 @@ public class LoginServiceImpl implements LoginService {
     }
 
     @Override
-    public int login(String username, String email)
+    public int login(String email, String password)
     {
-        return userRepo.findUserIDByEmailAndName(username, email);
+        return userRepo.findUserIDByEmailAndPassword(email, password);
     }
 }

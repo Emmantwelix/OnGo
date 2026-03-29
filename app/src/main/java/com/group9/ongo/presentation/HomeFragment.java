@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -54,10 +55,16 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_bookings);
         textNoBookings = view.findViewById(R.id.text_no_bookings);
+        Button buttonSignIn = view.findViewById(R.id.button_signin);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new BookingAdapter(new ArrayList<>(), flightService);
         recyclerView.setAdapter(adapter);
+
+        buttonSignIn.setOnClickListener(v -> {
+            AuthDialogFragment authDialog = new AuthDialogFragment();
+            authDialog.show(getChildFragmentManager(), "AuthDialog");
+        });
 
         loadBookings();
 

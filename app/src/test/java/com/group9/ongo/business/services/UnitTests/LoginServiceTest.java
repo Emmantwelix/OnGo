@@ -1,5 +1,8 @@
 package com.group9.ongo.business.services.UnitTests;
 
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PASSWORD;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -30,33 +33,31 @@ public class LoginServiceTest {
     @Test
     public void login_whenUserExists_returnsUserId() {
         // Arrange
-        String username = "John";
-        String email = "john@email.com";
         int expectedUserId = 5;
 
-        when(userRepo.findUserIDByEmailAndName(username, email)).thenReturn(expectedUserId);
+        when(userRepo.findUserIDByEmailAndPassword(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD)).thenReturn(expectedUserId);
 
         // Act
-        int result = loginService.login(username, email);
+        int result = loginService.login(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
 
         // Assert
         assertEquals(expectedUserId, result);
-        verify(userRepo).findUserIDByEmailAndName(username, email);
+        verify(userRepo).findUserIDByEmailAndPassword(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
     }
 
     @Test
     public void login_whenUserDoesNotExist_returnsNegativeOne() {
         // Arrange
-        String username = "Jane";
+        String password = "Jane";
         String email = "jane@email.com";
 
-        when(userRepo.findUserIDByEmailAndName(username, email)).thenReturn(-1);
+        when(userRepo.findUserIDByEmailAndPassword(email, password)).thenReturn(-1);
 
         // Act
-        int result = loginService.login(username, email);
+        int result = loginService.login(email, password);
 
         // Assert
         assertEquals(-1, result);
-        verify(userRepo).findUserIDByEmailAndName(username, email);
+        verify(userRepo).findUserIDByEmailAndPassword(email, password);
     }
 }

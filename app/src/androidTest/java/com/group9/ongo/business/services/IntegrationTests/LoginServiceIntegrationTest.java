@@ -1,5 +1,9 @@
 package com.group9.ongo.business.services.IntegrationTests;
 
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PASSWORD;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PHONE_NUM;
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
@@ -38,14 +42,11 @@ public class LoginServiceIntegrationTest {
     @Test
     public void login_whenUserExists_returnsUserId() {
         // Arrange
-        String username = "John";
-        String email = "john@email.com";
-        String phone = "2045566812";
 
-        int createdUserId = userRepo.addUser(username, email, phone);
+        int createdUserId = userRepo.addUser(SAMPLE_USER_NAME, SAMPLE_USER_EMAIL, SAMPLE_USER_PHONE_NUM, SAMPLE_USER_PASSWORD);
 
         // Act
-        int result = loginService.login(username, email);
+        int result = loginService.login(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
 
         // Assert
         assertEquals(createdUserId, result);
@@ -54,11 +55,11 @@ public class LoginServiceIntegrationTest {
     @Test
     public void login_whenUserDoesNotExist_returnsNegativeOne() {
         // Arrange
-        String username = "Jane";
+        String password = "Jane";
         String email = "jane@email.com";
 
         // Act
-        int result = loginService.login(username, email);
+        int result = loginService.login(email, password);
 
         // Assert
         assertEquals(-1, result);

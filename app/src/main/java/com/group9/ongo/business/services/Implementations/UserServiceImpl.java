@@ -22,9 +22,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
     @Override
-    public int createUser(String name, String email, String phone) throws ValidationException {
-        UserValidator.validateNewUser(name, email, phone);
-        return repo.addUser(name, email, phone);
+    public int createUser(String name, String email, String phone, String password) throws ValidationException {
+        int userId = repo.findUserIDByEmail(email);
+        UserValidator.validateNewUser(name, email, phone, password, userId);
+        return repo.addUser(name, email, phone, password);
     }
     @Override
     public void deleteUser(int userId) throws ValidationException {

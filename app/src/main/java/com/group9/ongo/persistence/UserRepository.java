@@ -4,8 +4,10 @@ import com.group9.ongo.models.User;
 
 public interface UserRepository {
     User getUserById(int userId);
-    int addUser(String name, String email, String phone);
+    int addUser(String name, String email, String phone, String password);
     boolean deleteUser(int userId);
 
-    int findUserIDByEmailAndName(String name, String email);
+    int findUserIDByEmailAndPassword(String email, String password);
+
+    int findUserIDByEmail(String email);
 }
