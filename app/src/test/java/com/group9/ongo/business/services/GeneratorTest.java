@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.UnitTests;
+package com.group9.ongo.business.services;
 
 import static com.group9.ongo.business.constants.FlightConstants.DATE_RANGE;
 import static org.junit.Assert.assertEquals;

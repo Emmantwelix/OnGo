@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.UnitTests;
+package com.group9.ongo.business.services;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_EMAIL;

@@ -50,15 +50,10 @@ public class SeatSelectionActivity extends AppCompatActivity {
             Aircraft aircraft = flightService.getAircraft(flight);
             
             if (aircraft != null) {
-                // 1. Generate the standard map grid for this aircraft
-                SeatMapConfig config = SeatMapService.createFromCapacity(aircraft.getCapacity());
-                List<Seat> gridSeats = SeatMapService.generateSeats(config);
-                
-                // 2. Fetch actual booked status from the seatService
-                List<Seat> realSeats = seatService.getAllSeatsByFlightId(flightId);
-                
-                // 3. Mark matching seats as OCCUPIED in our grid
-                SeatMapService.applyBookedSeats(gridSeats,realSeats);
+
+                SeatMapConfig config = seatService.getSeatMapConfiguration(aircraft.getCapacity());
+
+                List<Seat> gridSeats = seatService.getSeatsForDisplay(flightId, config);
 
                 seatMapView.setSeatData(gridSeats, config.getLayout().length());
                 Toast.makeText(this, "Loading map for " + aircraft.getModelName(), Toast.LENGTH_SHORT).show();

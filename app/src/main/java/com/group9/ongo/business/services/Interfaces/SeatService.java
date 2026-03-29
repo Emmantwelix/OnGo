@@ -1,7 +1,9 @@
 package com.group9.ongo.business.services.Interfaces;
 
+import com.group9.ongo.business.services.Implementations.SeatMapService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Seat;
+import com.group9.ongo.models.SeatMapConfig;
 
 import java.util.List;
 
@@ -14,4 +16,6 @@ public interface SeatService {
     void unbookSeat(int flight_id, int seat_id) throws ValidationException;
     Seat findSeat(int flight_id, int seatRow, String seatColumn) throws ValidationException;
     String getFormattedSeatById(int flight_id, int seatId);
+    List<Seat> getSeatsForDisplay(int flightId, SeatMapConfig config);
+    SeatMapConfig getSeatMapConfiguration(int capacity);
 }
