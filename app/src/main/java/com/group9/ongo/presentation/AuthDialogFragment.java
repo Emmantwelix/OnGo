@@ -33,6 +33,22 @@ public class AuthDialogFragment extends DialogFragment {
     private LoginService loginService;
     private UserService userService;
 
+    public interface AuthListener {
+        void onAuthSuccess();
+    }
+
+    private AuthListener listener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof AuthListener) {
+            listener = (AuthListener) getParentFragment();
+        } else if (context instanceof AuthListener) {
+            listener = (AuthListener) context;
+        }
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -121,6 +137,9 @@ public class AuthDialogFragment extends DialogFragment {
             app.updateBookingServiceUser(userId);
             
             Toast.makeText(getContext(), "Login Successful!", Toast.LENGTH_SHORT).show();
+            if (listener != null) {
+                listener.onAuthSuccess();
+            }
             dismiss();
         } else {
             Toast.makeText(getContext(), "Invalid email or password", Toast.LENGTH_SHORT).show();

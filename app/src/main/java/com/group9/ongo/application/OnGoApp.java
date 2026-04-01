@@ -1,8 +1,5 @@
 package com.group9.ongo.application;
 
-import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
-import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
-
 import android.app.Application;
 
 import com.group9.ongo.business.services.Implementations.LoginServiceImpl;
@@ -50,6 +47,7 @@ public class OnGoApp extends Application {
     private UserService userService;
     private LoginService loginService;
     private BookingRepository bookingRepo;
+    private PassengerRepository passengerRepo;
 
     @Override
     public void onCreate() {
@@ -72,42 +70,22 @@ public class OnGoApp extends Application {
         userService = new UserServiceImpl(userRepository);
         loginService = new LoginServiceImpl(userRepository);
 
-        int userId = -1;
-
         bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
         passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
         passengerService = new PassengerServiceImpl(passengerRepo);
-
-        bookingService = new BookingServiceImpl(userId, bookingRepo, passengerService, flightService, seatService);
+        
+        // Start in guest mode (-1)
+        bookingService = new BookingServiceImpl(-1, bookingRepo, passengerService, flightService, seatService);
     }
-
-    private PassengerRepository passengerRepo;
 
     public void updateBookingServiceUser(int userId) {
         bookingService = new BookingServiceImpl(userId, bookingRepo, passengerService, flightService, seatService);
     }
 
-    public FlightService getFlightService() {
-        return flightService;
-    }
-
-    public BookingService getBookingService() {
-        return bookingService;
-    }
-
-    public SeatService getSeatService(){
-        return seatService;
-    }
-
-    public PassengerService getPassengerService() {
-        return passengerService;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public LoginService getLoginService() {
-        return loginService;
-    }
+    public FlightService getFlightService() { return flightService; }
+    public BookingService getBookingService() { return bookingService; }
+    public SeatService getSeatService(){ return seatService; }
+    public PassengerService getPassengerService() { return passengerService; }
+    public UserService getUserService() { return userService; }
+    public LoginService getLoginService() { return loginService; }
 }
