@@ -8,15 +8,10 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME_TO_SHORT;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_SHORT_PASSWORD;
-import static com.group9.ongo.business.constants.UserConstants.EMAIL_REGEX;
-import static com.group9.ongo.business.constants.UserConstants.LENGTH_PHONE;
-import static com.group9.ongo.business.constants.UserConstants.MAX_LENGTH_NAME;
 import static com.group9.ongo.business.constants.UserConstants.MAX_PASSWORD_LENGTH;
-import static com.group9.ongo.business.constants.UserConstants.MIN_LENGTH_NAME;
 import static com.group9.ongo.business.constants.UserConstants.MIN_PASSWORD_LENGTH;
 
 import com.group9.ongo.models.User;
-import com.group9.ongo.persistence.UserRepository;
 
 public class UserValidator {
     private static final int MAX_LENGTH_NAME = 10;

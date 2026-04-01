@@ -131,6 +131,8 @@ public class BookingServiceIntegrationTest {
                 seatService
         );
 
+        // Using a second BookingService instance to simulate a different user
+        // Ensures bookings and cancellations are isolated per user
         bookingService2 = new BookingServiceImpl(
                 secondUserId,
                 bookingRepository,

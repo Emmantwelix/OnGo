@@ -1,5 +1,6 @@
 package com.group9.ongo.business.services;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.AIRCRAFT_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DTIME_NULL;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_DESTINATION;
@@ -55,6 +56,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -99,6 +101,20 @@ public class FlightServiceTest {
         //assert
         assertNotNull(flights);
         assertEquals(0, service.getAllFlights().size());
+    }
+
+    @Test
+    public void testCreateFlightWithInvalidAircraft_throwsException() throws ValidationException
+    {
+        //arrange
+        when(aircraftRepo.getAircraftById(VALID_AIRCRAFT_ID)).thenReturn(null);
+
+        //act
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, VALID_AIRCRAFT_ID, VALID_PRICE)
+        );
+        assertEquals(AIRCRAFT_NOT_FOUND, exception.getMessage());
     }
 
     @Test

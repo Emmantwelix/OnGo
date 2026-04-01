@@ -1,5 +1,6 @@
 package com.group9.ongo.business.services.IntegrationTests;
 
+import static com.group9.ongo.business.constants.ErrorMessageConstants.AIRCRAFT_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DTIME_NULL;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_INVALID_DESTINATION;
@@ -140,6 +141,18 @@ public class FlightServiceIntegrationTest {
         assertEquals(WINNIPEG, flights.get(0).getOrigin());
         assertEquals(TORONTO, flights.get(0).getDestination());
     }
+
+    @Test
+    public void testCreateFlightWithInvalidAircraft_throwsException() throws ValidationException
+    {
+        ValidationException exception = assertThrows(
+                ValidationException.class,
+                () -> service.createFlight(AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, -1, VALID_PRICE)
+        );
+
+        assertEquals(AIRCRAFT_NOT_FOUND, exception.getMessage());
+    }
+
 
     @Test
     public void testSearchFlights_whenInvalidOrigin_throwsException() {
