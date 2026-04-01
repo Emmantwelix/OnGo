@@ -2,6 +2,7 @@ package com.group9.ongo.application;
 
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
+import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PASSWORD;
 
 import android.app.Application;
 
@@ -67,7 +68,7 @@ public class OnGoApp extends Application {
 
         //simulate a fake login
         LoginService loginService = new LoginServiceImpl(userRepository);
-        int userId  = loginService.login(SAMPLE_USER_NAME, SAMPLE_USER_EMAIL);
+        int userId  = loginService.login(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
 
         BookingRepository bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
         PassengerRepository passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();

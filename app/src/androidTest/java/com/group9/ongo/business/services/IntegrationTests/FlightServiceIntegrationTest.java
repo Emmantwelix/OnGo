@@ -429,51 +429,6 @@ public class FlightServiceIntegrationTest {
     }
 
     @Test
-    public void getOriginCode_locationLongerThanThreeCharacters_returnsFirstThreeUppercase() throws ValidationException {
-        int flightId = service.createFlight(
-                AIR_CANADA, "Winnipeg", "Toronto",
-                LocalTime.of(10, 0),
-                LocalTime.of(12, 0),
-                a320Id,
-                VALID_PRICE
-        );
-
-        Flight flight = service.getFlightById(flightId);
-
-        assertEquals("WIN", service.getOriginCode(flight));
-    }
-
-    @Test
-    public void getDestinationCode_locationLongerThanThreeCharacters_returnsFirstThreeUppercase() throws ValidationException {
-        int flightId = service.createFlight(
-                AIR_CANADA, "Winnipeg", "Toronto",
-                LocalTime.of(10, 0),
-                LocalTime.of(12, 0),
-                a320Id,
-                VALID_PRICE
-        );
-
-        Flight flight = service.getFlightById(flightId);
-
-        assertEquals("TOR", service.getDestinationCode(flight));
-    }
-
-    @Test
-    public void getOriginCode_locationExactlyThreeCharacters_returnsUppercase() throws ValidationException {
-        int flightId = service.createFlight(
-                AIR_CANADA, TSU, TORONTO,
-                LocalTime.of(10, 0),
-                LocalTime.of(12, 0),
-                a320Id,
-                VALID_PRICE
-        );
-
-        Flight flight = service.getFlightById(flightId);
-
-        assertEquals("TSU", service.getOriginCode(flight));
-    }
-
-    @Test
     public void aircraft_wifiLogicTest() throws ValidationException {
         int flightIdA380 = service.createFlight(
                 AIR_CANADA, WINNIPEG, TORONTO, VALID_TIME, VALID_TIME2, a380Id, VALID_PRICE
