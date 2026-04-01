@@ -1,15 +1,8 @@
 package com.group9.ongo.persistence.fake;
 
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_1;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_2;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_3;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_4;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_5;
-import static com.group9.ongo.business.constants.FlightConstants.COLUMN_6;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_COLUMNS;
-import static com.group9.ongo.business.constants.FlightConstants.MAX_ROWS;
-
+import com.group9.ongo.business.services.Implementations.SeatMapService;
 import com.group9.ongo.models.Seat;
+import com.group9.ongo.models.SeatMapConfig;
 import com.group9.ongo.persistence.SeatRepository;
 
 import java.util.ArrayList;
@@ -18,8 +11,6 @@ import java.util.List;
 public class FakeSeatsRepository implements SeatRepository {
     private final List<Seat> seats = new ArrayList<>();
     private int nextId = 1;
-
-    public FakeSeatsRepository() {}
     public FakeSeatsRepository(boolean populate) {
         if (populate) {
             populate_with_sample_data();
@@ -104,49 +95,17 @@ public class FakeSeatsRepository implements SeatRepository {
     }
 
     private void createSeats(int flightId, int capacity){
-        String letter = " ";
-        int amountRows = capacity / MAX_COLUMNS;
-        int extraRow = capacity % MAX_COLUMNS;
+        //use centralized seat generation logic
+        SeatMapConfig config = SeatMapService.createFromCapacity(capacity);
+        List<Seat> generatedSeats = SeatMapService.generateSeats(config);
 
-        for (int i = 0; i < amountRows; i++) {
-            for (int j = 0; j < MAX_COLUMNS; j++) {
-                if (j == 0) {
-                    letter = COLUMN_1;
-                } else if (j == 1) {
-                    letter = COLUMN_2;
-                } else if (j == 2) {
-                    letter = COLUMN_3;
-                } else if (j == 3) {
-                    letter = COLUMN_4;
-                } else if (j == 4) {
-                    letter = COLUMN_5;
-                } else {
-                    letter = COLUMN_6;
-                }
-                Seat seat = new Seat(nextId, flightId, i+1, letter, false);
-                seats.add(seat);
-                nextId++;
+        for(Seat seat : generatedSeats) {
+            if(seat.getType() == Seat.Type.SEAT) {
+                Seat addedSeat = new Seat(nextId, flightId, seat.getRow(), seat.getLabel(),false);
+                seats.add(addedSeat);
+                nextId ++;
             }
         }
-
-        //extra row
-            for (int j = 0; j < extraRow; j++) {
-                if (j == 0) {
-                    letter = COLUMN_1;
-                } else if (j == 1) {
-                    letter = COLUMN_2;
-                } else if (j == 2) {
-                    letter = COLUMN_3;
-                } else if (j == 3) {
-                    letter = COLUMN_4;
-                } else {
-                    letter = COLUMN_5;
-                }
-
-                Seat seat = new Seat(nextId, flightId, amountRows+1, letter, false);
-                seats.add(seat);
-                nextId++;
-            }
     }
 
 }
