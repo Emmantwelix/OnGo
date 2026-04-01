@@ -17,6 +17,7 @@ import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.Seat;
 import com.group9.ongo.models.SeatMapConfig;
+import com.group9.ongo.models.SelectedSeat;
 
 import java.util.List;
 
@@ -76,7 +77,7 @@ public class SeatSelectionActivity extends AppCompatActivity {
         confirmButton.setOnClickListener(v -> {
             if (selectedSeat != null) {
                 Intent resultIntent = new Intent();
-                resultIntent.putExtra(EXTRA_SELECTED_SEAT, selectedSeat.getRow() + selectedSeat.getLabel());
+                resultIntent.putExtra(EXTRA_SELECTED_SEAT, new SelectedSeat(selectedSeat.getRow() ,selectedSeat.getLabel()));
                 setResult(RESULT_OK, resultIntent);
                 finish();
             }

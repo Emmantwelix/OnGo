@@ -35,6 +35,7 @@ import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Aircraft;
 import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.PassengerInput;
+import com.group9.ongo.models.SelectedSeat;
 
 public class UserInfoFragment extends Fragment {
 
@@ -47,8 +48,7 @@ public class UserInfoFragment extends Fragment {
     private static final String ARG_FLIGHT_ID = "flight_id";
     private static final String ARG_SELECTED_SEAT = "selected_seat";
     private int flightId;
-    private String selectedSeat;
-
+    private SelectedSeat selectedSeat;
     private TextInputEditText editFirstName, editLastName, editBirthDate, editPassportNumber;
     private TextView textFlightId;
     private Button btnConfirm;
@@ -62,7 +62,7 @@ public class UserInfoFragment extends Fragment {
         UserInfoFragment fragment = new UserInfoFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_FLIGHT_ID, flightId);
-        args.putString(ARG_SELECTED_SEAT, selectedSeat);
+        args.putSerializable(ARG_SELECTED_SEAT, selectedSeat);
         fragment.setArguments(args);
         return fragment;
     }
@@ -82,7 +82,7 @@ public class UserInfoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             flightId = getArguments().getInt(ARG_FLIGHT_ID);
-            selectedSeat = getArguments().getString(ARG_SELECTED_SEAT);
+            selectedSeat = (SelectedSeat) getArguments().getSerializable(ARG_SELECTED_SEAT);
         }
 
         // Handle seat selection result
@@ -90,7 +90,8 @@ public class UserInfoFragment extends Fragment {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        selectedSeat = result.getData().getStringExtra(SeatSelectionActivity.EXTRA_SELECTED_SEAT);
+                        selectedSeat = (SelectedSeat) result.getData()
+                                .getSerializableExtra(SeatSelectionActivity.EXTRA_SELECTED_SEAT);
                         updateSeatDisplay();
                     }
                 }
@@ -138,7 +139,7 @@ public class UserInfoFragment extends Fragment {
     }
 
     private void updateSeatDisplay() {
-        if (selectedSeat != null && !selectedSeat.isEmpty()) {
+        if (selectedSeat != null) {
             btnSelectSeat.setText("Change Seat (" + selectedSeat + ")");
         } else {
             btnSelectSeat.setText("Choose Your Seat");
@@ -159,9 +160,9 @@ public class UserInfoFragment extends Fragment {
             int seatRow;
             String seatCol;
             
-            if (selectedSeat != null && !selectedSeat.isEmpty()) {
-                seatRow = Integer.parseInt(selectedSeat.replaceAll("[^0-9]", ""));
-                seatCol = selectedSeat.replaceAll("[0-9]", "");
+            if (selectedSeat != null){
+                seatRow = selectedSeat.getSeatRow();
+                seatCol = selectedSeat.getSeatColumn();
             } else {
                 Toast.makeText(getContext(), "Please select a seat before confirming", Toast.LENGTH_SHORT).show();
                 return;
