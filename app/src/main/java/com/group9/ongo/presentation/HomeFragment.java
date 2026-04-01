@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment implements AuthDialogFragment.AuthLis
     private TextView welcomeText;
     private Button loginButton;
     private TextView textDescription;
+    private TextView textHomeTitle;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -65,6 +66,7 @@ public class HomeFragment extends Fragment implements AuthDialogFragment.AuthLis
         loginButton = view.findViewById(R.id.button_signin);
         welcomeText = view.findViewById(R.id.text_welcome);
         textDescription = view.findViewById(R.id.text_description);
+        textHomeTitle = view.findViewById(R.id.text_home_title);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new BookingAdapter(new ArrayList<>(), flightService);
@@ -93,6 +95,7 @@ public class HomeFragment extends Fragment implements AuthDialogFragment.AuthLis
             welcomeText.setVisibility(View.VISIBLE);
             loginButton.setVisibility(View.GONE);
             textDescription.setVisibility(View.GONE);
+            textHomeTitle.setVisibility(View.VISIBLE);
             
             OnGoApp app = (OnGoApp) requireActivity().getApplication();
             try {
@@ -108,10 +111,20 @@ public class HomeFragment extends Fragment implements AuthDialogFragment.AuthLis
             welcomeText.setText("Welcome to Ongo");
             loginButton.setVisibility(View.VISIBLE);
             textDescription.setVisibility(View.VISIBLE);
+            textHomeTitle.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            textNoBookings.setVisibility(View.GONE);
         }
     }
 
     private void loadBookings() {
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("current_user_id", -1);
+        
+        if (userId == -1) {
+            return; // Don't load anything if guest
+        }
+
         OnGoApp app = (OnGoApp) requireActivity().getApplication();
         bookingService = app.getBookingService();
         List<BookingDetails> bookings = bookingService.getBookingDetailsForCurrentUser();
