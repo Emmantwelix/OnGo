@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -42,6 +43,7 @@ public class SettingsFragment extends Fragment {
         });
 
         Button signOutBtn = view.findViewById(R.id.button_sign_out);
+        TextView loginPrompt = view.findViewById(R.id.text_login_prompt);
         
         SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
         int userId = sharedPref.getInt("current_user_id", -1);
@@ -49,6 +51,11 @@ public class SettingsFragment extends Fragment {
         if (userId == -1) {
             signOutBtn.setVisibility(View.GONE);
             cardViewCancelled.setVisibility(View.GONE);
+            loginPrompt.setVisibility(View.VISIBLE);
+        } else {
+            signOutBtn.setVisibility(View.VISIBLE);
+            cardViewCancelled.setVisibility(View.VISIBLE);
+            loginPrompt.setVisibility(View.GONE);
         }
 
         signOutBtn.setOnClickListener(v -> {
