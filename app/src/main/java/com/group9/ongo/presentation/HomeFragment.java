@@ -1,5 +1,7 @@
 package com.group9.ongo.presentation;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +19,9 @@ import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.BookingDetails;
+import com.group9.ongo.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +32,6 @@ public class HomeFragment extends Fragment {
     private BookingAdapter adapter;
     private TextView textNoBookings;
     private BookingService bookingService;
-
     private FlightService flightService;
 
     public static HomeFragment newInstance() {
@@ -71,7 +74,34 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        
+        // 1. Get User ID from SharedPreferences
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("current_user_id", -1);
+
+        if (userId != -1) {
+            // 2. Get User details from service
+            OnGoApp app = (OnGoApp) requireActivity().getApplication();
+            try {
+                User currentUser = app.getUserService().getUserById(userId); 
+                
+                if (currentUser != null) {
+                    // 3. Update UI
+                    TextView welcomeText = view.findViewById(R.id.text_welcome);
+                    welcomeText.setText("Welcome, " + currentUser.getName());
+                }
+            } catch (ValidationException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void loadBookings() {
+        // Refresh booking service in case user changed
+        bookingService = ((OnGoApp) requireActivity().getApplication()).getBookingService();
         List<BookingDetails> bookings = bookingService.getBookingDetailsForCurrentUser();
 
         if (bookings.isEmpty()) {

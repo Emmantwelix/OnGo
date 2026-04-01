@@ -17,6 +17,8 @@ import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
+import com.group9.ongo.business.services.Interfaces.UserService;
+import com.group9.ongo.business.services.Implementations.UserServiceImpl;
 import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
@@ -45,6 +47,9 @@ public class OnGoApp extends Application {
     private BookingService bookingService;
     private SeatService seatService;
     private PassengerService passengerService;
+    private UserService userService;
+    private LoginService loginService;
+    private BookingRepository bookingRepo;
 
     @Override
     public void onCreate() {
@@ -64,14 +69,21 @@ public class OnGoApp extends Application {
         flightService = new FlightServiceImpl(flightRepository, fnGenerator, seatService, aircraftRepository);
 
         UserRepository userRepository = USE_SQL ? new SqlUserRepository(dbHelper) : new FakeUserRepository();
+        userService = new UserServiceImpl(userRepository);
+        loginService = new LoginServiceImpl(userRepository);
 
-        //simulate a fake login
-        LoginService loginService = new LoginServiceImpl(userRepository);
-        int userId  = loginService.login(SAMPLE_USER_NAME, SAMPLE_USER_EMAIL);
-
-        BookingRepository bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
-        PassengerRepository passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
+        int userId = -1;
+        
+        bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
+        passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
         passengerService = new PassengerServiceImpl(passengerRepo);
+        
+        bookingService = new BookingServiceImpl(userId, bookingRepo, passengerService, flightService, seatService);
+    }
+
+    private PassengerRepository passengerRepo;
+
+    public void updateBookingServiceUser(int userId) {
         bookingService = new BookingServiceImpl(userId, bookingRepo, passengerService, flightService, seatService);
     }
 
@@ -89,5 +101,13 @@ public class OnGoApp extends Application {
 
     public PassengerService getPassengerService() {
         return passengerService;
+    }
+
+    public UserService getUserService() {
+        return userService;
+    }
+
+    public LoginService getLoginService() {
+        return loginService;
     }
 }
