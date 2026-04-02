@@ -75,6 +75,11 @@ public class FlightConstants {
     public final static int FLIGHT_NUM_LENGTH = 6;
     public final static String DEFAULT_FLIGHT_NUM = "AA0000";
 
+    // SORTING FUNCTION
+    public final static String DURATION = "Shortest Duration";
+    public final static String DATE = "Earliest Date";
+    public final static String AVAILABLE_SEAT = "Fewest Available Seat";
+    public final static String[] ARR_SORT_FUNCTION = {DURATION, DATE, AVAILABLE_SEAT};
     //MISCELLANEOUS
     public final static String[] ALPHABET = {"A", "B", "C", "D", "E", "F", "G",
             "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
