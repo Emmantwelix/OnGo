@@ -44,9 +44,6 @@ public class FlightConstants {
     public static final String QUEBEC_CITY_CODE = "YQB";
     public static final String DEFAULT_CODE = "YYY";
 
-    public final static int MAX_CAPACITY = 500;
-    public final static int MIN_CAPACITY = 1;
-
     //PRICE
     public final static double LARGER_PRICE = 903.94;
     public final static double LARGE_PRICE = 799.49;
@@ -83,15 +80,6 @@ public class FlightConstants {
     public final static int DATE_RANGE = 21;
 
     //SEATS
-    public final static int MAX_ROWS = 3;
-    public final static int MAX_COLUMNS = 6;
-    public final static int MAX_SEATS = 18;
-    public final static int ROW_ONE = 1;
     public final static String COLUMN_1 = "A";
-    public final static String COLUMN_2 = "B";
-    public final static String COLUMN_3 = "C";
-    public final static String COLUMN_4 = "D";
-    public final static String COLUMN_5 = "E";
-    public final static String COLUMN_6 = "F";
 
 }

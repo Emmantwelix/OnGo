@@ -94,8 +94,8 @@ public class FlightDetailsFragment extends Fragment {
             // Timeline & Codes
             textDepartTime.setText(flight.getDepartTimeString());
             textLandTime.setText(flight.getLandTimeString());
-            textOriginCode.setText(flightService.getOriginCode(flight));
-            textDestCode.setText(flightService.getDestinationCode(flight));
+            textOriginCode.setText(flightService.getAirportCode(flight.getOrigin()));
+            textDestCode.setText(flightService.getAirportCode(flight.getDestination()));
 
             // Flight Details
             int hours = flightService.getDurationHours(flight);

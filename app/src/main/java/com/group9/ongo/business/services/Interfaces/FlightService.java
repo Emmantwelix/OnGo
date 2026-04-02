@@ -26,10 +26,6 @@ public interface FlightService {
 
     int getDurationRemainingMinutes(Flight flight);
     int getAvailableSeats(int flightId);
-    String getOriginCode(Flight flight);
-
-    String getDestinationCode(Flight flight);
-
     String getFormattedFlightId(Flight flight);
 
     void updateFlightAvailability(int flightId);
