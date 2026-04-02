@@ -1,5 +1,11 @@
 package com.group9.ongo.presentation;
 
+import static com.group9.ongo.business.constants.FlightConstants.ARR_LOCATIONS;
+import static com.group9.ongo.business.constants.FlightConstants.ARR_SORT_FUNCTION;
+import static com.group9.ongo.business.constants.FlightConstants.DATE;
+import static com.group9.ongo.business.constants.FlightConstants.DURATION;
+import static com.group9.ongo.business.constants.FlightConstants.AVAILABLE_SEAT;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.flexbox.FlexboxLayout;
 import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
-import com.group9.ongo.business.constants.FlightConstants;
 import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
@@ -50,6 +57,9 @@ public class SearchFragment extends Fragment {
         View noFlightsContainer = view.findViewById(R.id.noFlightsContainer);
         TextView textNoFlightsError = view.findViewById(R.id.textNoFlightsError);
         FlexboxLayout citiesContainer = view.findViewById(R.id.citiesContainer);
+        TextView toggleAdvanced = view.findViewById(R.id.toggleAdvanced);
+        LinearLayout advancedContainer = view.findViewById(R.id.advancedContainer);
+        Spinner sortSpinner = view.findViewById(R.id.sortSpinner);
 
         FlightService flightService =
                 ((OnGoApp) requireActivity().getApplication()).getFlightService();
@@ -58,8 +68,27 @@ public class SearchFragment extends Fragment {
                 requireContext(),
                 R.layout.item_suggestion,
                 R.id.suggestion,
-                FlightConstants.ARR_LOCATIONS
+                ARR_LOCATIONS
         );
+
+        toggleAdvanced.setOnClickListener(v -> {
+            if (advancedContainer.getVisibility() == View.GONE) {
+                advancedContainer.setVisibility(View.VISIBLE);
+            } else {
+                advancedContainer.setVisibility(View.GONE);
+            }
+        });
+
+        String[] sortOptions = ARR_SORT_FUNCTION;
+
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                sortOptions
+        );
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sortSpinner.setAdapter(spinnerAdapter);
 
         depart.setAdapter(adapter);
         going.setAdapter(adapter);
@@ -97,6 +126,15 @@ public class SearchFragment extends Fragment {
             try {
                 List<Flight> flights = flightService.searchFlights(from, to);
 
+                if (advancedContainer.getVisibility() == View.VISIBLE){
+                    String selectedSort = sortSpinner.getSelectedItem().toString();
+                    flights = switch (selectedSort) {
+                        case DURATION -> flightService.sortFlightsByDuration(flights);
+                        case AVAILABLE_SEAT -> flightService.sortFlightsByAvailSeats(flights);
+                        case DATE -> flightService.sortFlightsByDateTime(flights);
+                        default -> flights;
+                    };
+                }
                 flightAdapter.updateFlights(flights);
                 recyclerView.setVisibility(View.VISIBLE);
                 noFlightsContainer.setVisibility(View.GONE);
@@ -114,7 +152,7 @@ public class SearchFragment extends Fragment {
         citiesContainer.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(getContext());
 
-        for (String city : FlightConstants.ARR_LOCATIONS) {
+        for (String city : ARR_LOCATIONS) {
             View cityChip = inflater.inflate(R.layout.item_city_chip, citiesContainer, false);
             TextView textCity = cityChip.findViewById(R.id.textCity);
             textCity.setText(city);
