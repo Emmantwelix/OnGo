@@ -59,7 +59,7 @@ public class UserServiceTest {
         // Arrange
         int expectedUserId = 1;
         when(userRepository.addUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)).thenReturn(expectedUserId);
-        when(userRepository.findUserIDByEmailAndPassword(VALID_EMAIL, VALID_PASSWORD)).thenReturn(-1);
+        when(userRepository.findUserIDByEmail(VALID_EMAIL)).thenReturn(-1);
         // Act
         int result = userService.createUser(VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
 
@@ -73,7 +73,7 @@ public class UserServiceTest {
         // Arrange
         int expectedUserId = 2;
         when(userRepository.addUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)).thenReturn(expectedUserId);
-        when(userRepository.findUserIDByEmailAndPassword(VALID_EMAIL, VALID_PASSWORD)).thenReturn(-1);
+        when(userRepository.findUserIDByEmail(VALID_EMAIL)).thenReturn(-1);
 
         // Act
         int result = userService.createUser(WEIRD_VALID_NAME, VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);
@@ -114,7 +114,7 @@ public class UserServiceTest {
         // Arrange
         int expectedUserId = 3;
         when(userRepository.addUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE, VALID_PASSWORD)).thenReturn(expectedUserId);
-        when(userRepository.findUserIDByEmailAndPassword(WEIRD_VALID_EMAIL, VALID_PASSWORD)).thenReturn(-1);
+        when(userRepository.findUserIDByEmail(WEIRD_VALID_EMAIL)).thenReturn(-1);
 
         // Act
         int result = userService.createUser(VALID_NAME, WEIRD_VALID_EMAIL, VALID_PHONE, VALID_PASSWORD);

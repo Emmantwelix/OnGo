@@ -51,7 +51,7 @@ public class UserValidator {
         {
             throw new ValidationException(USER_LONG_PASSWORD);
         }
-        else if ( userId == -1)
+        else if ( userId != -1)
         {
             throw new ValidationException(USER_EMAIL_ALREADY_USED);
         }
