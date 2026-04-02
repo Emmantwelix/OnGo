@@ -148,12 +148,10 @@ public class UserInfoFragment extends Fragment implements AuthDialogFragment.Aut
     }
 
     private void validateAndConfirm() {
-        // 1. Check if logged in
         SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
         int userId = sharedPref.getInt("current_user_id", -1);
 
         if (userId == -1) {
-            // Not logged in, redirect to sign in
             AuthDialogFragment authDialog = new AuthDialogFragment();
             authDialog.show(getChildFragmentManager(), "AuthDialog");
             return;
@@ -209,7 +207,6 @@ public class UserInfoFragment extends Fragment implements AuthDialogFragment.Aut
 
     @Override
     public void onAuthSuccess() {
-        // Retry booking after successful login
         validateAndConfirm();
     }
 
