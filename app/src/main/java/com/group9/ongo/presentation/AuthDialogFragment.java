@@ -1,4 +1,8 @@
 package com.group9.ongo.presentation;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_EMAIL;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_NAME;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_PASSWORD;
+import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_PHONE_NUMBER;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -38,6 +42,8 @@ public class AuthDialogFragment extends DialogFragment {
     }
 
     private AuthListener listener;
+
+    private TextInputEditText editName, editPhone, editEmail, editPassword;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -81,10 +87,10 @@ public class AuthDialogFragment extends DialogFragment {
         TextInputLayout layoutName = view.findViewById(R.id.layout_name);
         TextInputLayout layoutPhone = view.findViewById(R.id.layout_phone);
         
-        TextInputEditText editName = view.findViewById(R.id.edit_name);
-        TextInputEditText editPhone = view.findViewById(R.id.edit_phone);
-        TextInputEditText editEmail = view.findViewById(R.id.edit_email);
-        TextInputEditText editPassword = view.findViewById(R.id.edit_password);
+        editName = view.findViewById(R.id.edit_name);
+        editPhone = view.findViewById(R.id.edit_phone);
+        editEmail = view.findViewById(R.id.edit_email);
+        editPassword = view.findViewById(R.id.edit_password);
 
         Button buttonSubmit = view.findViewById(R.id.button_auth_submit);
         TextView textSwitch = view.findViewById(R.id.text_switch_auth);
@@ -164,7 +170,18 @@ public class AuthDialogFragment extends DialogFragment {
                 }
             }
         } catch (ValidationException e) {
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            String field = e.getField();
+            if (field == null) {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            switch (field) {
+                case USER_NAME: editName.setError(e.getMessage()); break;
+                case USER_PASSWORD: editPassword.setError(e.getMessage()); break;
+                case USER_EMAIL: editEmail.setError(e.getMessage()); break;
+                case USER_PHONE_NUMBER: editPhone.setError(e.getMessage()); break;
+                default: Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show(); break;
+            }
         }
     }
 
