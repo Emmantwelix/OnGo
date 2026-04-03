@@ -96,6 +96,18 @@ public class SeatMapView extends View {
         this.listener = listener;
     }
 
+    /**
+     * Helper for programmatic seat selection (e.g. for testing).
+     */
+    public void selectSeat(int row, String label) {
+        for (Seat seat : seats) {
+            if (seat.getRow() == row && seat.getLabel().equalsIgnoreCase(label)) {
+                handleSeatClick(seat);
+                return;
+            }
+        }
+    }
+
     private float getTotalModelHeight() {
         if (columns <= 0) return 0;
         int rows = (int) Math.ceil((double) seats.size() / columns);
