@@ -15,6 +15,11 @@ public class ErrorMessageConstants {
     public static final String USER_LONG_PASSWORD = "Password is to long";
     public static final String USER_EMAIL_ALREADY_USED = "Email already in use by another user";
 
+    public static final String USER_PHONE_NUMBER = "Phone Number";
+    public static final String USER_PASSWORD = "password";
+    public static final String USER_EMAIL = "email";
+    public static final String USER_NAME = "name";
+
 
     //FLIGHT ERROR MESSAGES
     public static final String FLIGHT_DELETE_ERROR = "Flight could not be deleted, since flight does not exist";

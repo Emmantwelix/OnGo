@@ -1,9 +1,5 @@
 package com.group9.ongo.application;
 
-import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
-import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;
-import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_PASSWORD;
-
 import android.app.Application;
 
 import com.group9.ongo.business.services.Implementations.LoginServiceImpl;
@@ -18,6 +14,8 @@ import com.group9.ongo.business.services.Interfaces.PassengerService;
 import com.group9.ongo.business.services.Implementations.PassengerServiceImpl;
 import com.group9.ongo.business.services.Interfaces.SeatService;
 import com.group9.ongo.business.services.Implementations.SeatServiceImpl;
+import com.group9.ongo.business.services.Interfaces.UserService;
+import com.group9.ongo.business.services.Implementations.UserServiceImpl;
 import com.group9.ongo.persistence.AircraftRepository;
 import com.group9.ongo.persistence.BookingRepository;
 import com.group9.ongo.persistence.FlightRepository;
@@ -46,6 +44,10 @@ public class OnGoApp extends Application {
     private BookingService bookingService;
     private SeatService seatService;
     private PassengerService passengerService;
+    private UserService userService;
+    private LoginService loginService;
+    private BookingRepository bookingRepo;
+    private PassengerRepository passengerRepo;
 
     @Override
     public void onCreate() {
@@ -65,30 +67,25 @@ public class OnGoApp extends Application {
         flightService = new FlightServiceImpl(flightRepository, fnGenerator, seatService, aircraftRepository);
 
         UserRepository userRepository = USE_SQL ? new SqlUserRepository(dbHelper) : new FakeUserRepository();
+        userService = new UserServiceImpl(userRepository);
+        loginService = new LoginServiceImpl(userRepository);
 
-        //simulate a fake login
-        LoginService loginService = new LoginServiceImpl(userRepository);
-        int userId  = loginService.login(SAMPLE_USER_EMAIL, SAMPLE_USER_PASSWORD);
-
-        BookingRepository bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
-        PassengerRepository passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
+        bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
+        passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
         passengerService = new PassengerServiceImpl(passengerRepo);
+        
+        // Start in guest mode (-1)
+        bookingService = new BookingServiceImpl(-1, bookingRepo, passengerService, flightService, seatService);
+    }
+
+    public void updateBookingServiceUser(int userId) {
         bookingService = new BookingServiceImpl(userId, bookingRepo, passengerService, flightService, seatService);
     }
 
-    public FlightService getFlightService() {
-        return flightService;
-    }
-
-    public BookingService getBookingService() {
-        return bookingService;
-    }
-
-    public SeatService getSeatService(){
-        return seatService;
-    }
-
-    public PassengerService getPassengerService() {
-        return passengerService;
-    }
+    public FlightService getFlightService() { return flightService; }
+    public BookingService getBookingService() { return bookingService; }
+    public SeatService getSeatService(){ return seatService; }
+    public PassengerService getPassengerService() { return passengerService; }
+    public UserService getUserService() { return userService; }
+    public LoginService getLoginService() { return loginService; }
 }

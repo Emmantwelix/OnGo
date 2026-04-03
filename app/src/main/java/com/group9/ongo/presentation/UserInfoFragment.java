@@ -8,6 +8,7 @@ import static com.group9.ongo.business.constants.ErrorMessageConstants.PASSPORT;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ import com.group9.ongo.models.Flight;
 import com.group9.ongo.models.PassengerInput;
 import com.group9.ongo.models.SelectedSeat;
 
-public class UserInfoFragment extends Fragment {
+public class UserInfoFragment extends Fragment implements AuthDialogFragment.AuthListener {
 
     private static final String TAG = "UserInfoFragment";
 
@@ -147,6 +148,15 @@ public class UserInfoFragment extends Fragment {
     }
 
     private void validateAndConfirm() {
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("current_user_id", -1);
+
+        if (userId == -1) {
+            AuthDialogFragment authDialog = new AuthDialogFragment();
+            authDialog.show(getChildFragmentManager(), "AuthDialog");
+            return;
+        }
+
         String firstName = editFirstName.getText().toString().trim();
         String lastName = editLastName.getText().toString().trim();
         String birthDateStr = editBirthDate.getText().toString().trim();
@@ -193,6 +203,11 @@ public class UserInfoFragment extends Fragment {
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Error parsing seat selection", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onAuthSuccess() {
+        validateAndConfirm();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.group9.ongo.presentation;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,19 +19,24 @@ import com.group9.ongo.R;
 import com.group9.ongo.application.OnGoApp;
 import com.group9.ongo.business.services.Interfaces.BookingService;
 import com.group9.ongo.business.services.Interfaces.FlightService;
+import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.BookingDetails;
+import com.group9.ongo.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements AuthDialogFragment.AuthListener {
 
     private RecyclerView recyclerView;
     private BookingAdapter adapter;
     private TextView textNoBookings;
     private BookingService bookingService;
-
     private FlightService flightService;
+    private TextView welcomeText;
+    private Button loginButton;
+    private TextView textDescription;
+    private TextView textHomeTitle;
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -45,6 +52,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        updateUIState();
         loadBookings();
     }
 
@@ -55,23 +63,70 @@ public class HomeFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.recycler_bookings);
         textNoBookings = view.findViewById(R.id.text_no_bookings);
-        Button buttonSignIn = view.findViewById(R.id.button_signin);
+        loginButton = view.findViewById(R.id.button_signin);
+        welcomeText = view.findViewById(R.id.text_welcome);
+        textDescription = view.findViewById(R.id.text_description);
+        textHomeTitle = view.findViewById(R.id.text_home_title);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new BookingAdapter(new ArrayList<>(), flightService);
         recyclerView.setAdapter(adapter);
 
-        buttonSignIn.setOnClickListener(v -> {
+        loginButton.setOnClickListener(v -> {
             AuthDialogFragment authDialog = new AuthDialogFragment();
             authDialog.show(getChildFragmentManager(), "AuthDialog");
         });
 
-        loadBookings();
-
         return view;
     }
 
+    @Override
+    public void onAuthSuccess() {
+        updateUIState();
+        loadBookings();
+    }
+
+    private void updateUIState() {
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("current_user_id", -1);
+        boolean isLoggedIn = userId != -1;
+
+        if (isLoggedIn) {
+            welcomeText.setVisibility(View.VISIBLE);
+            loginButton.setVisibility(View.GONE);
+            textDescription.setVisibility(View.GONE);
+            textHomeTitle.setVisibility(View.VISIBLE);
+            
+            OnGoApp app = (OnGoApp) requireActivity().getApplication();
+            try {
+                User currentUser = app.getUserService().getUserById(userId);
+                if (currentUser != null) {
+                    welcomeText.setText("Welcome, " + currentUser.getUsername());
+                }
+            } catch (ValidationException e) {
+                e.printStackTrace();
+            }
+        } else {
+            welcomeText.setVisibility(View.VISIBLE);
+            welcomeText.setText("Welcome to Ongo");
+            loginButton.setVisibility(View.VISIBLE);
+            textDescription.setVisibility(View.VISIBLE);
+            textHomeTitle.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
+            textNoBookings.setVisibility(View.GONE);
+        }
+    }
+
     private void loadBookings() {
+        SharedPreferences sharedPref = requireActivity().getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("current_user_id", -1);
+        
+        if (userId == -1) {
+            return; // Don't load anything if guest
+        }
+
+        OnGoApp app = (OnGoApp) requireActivity().getApplication();
+        bookingService = app.getBookingService();
         List<BookingDetails> bookings = bookingService.getBookingDetailsForCurrentUser();
 
         if (bookings.isEmpty()) {
