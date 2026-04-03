@@ -1,5 +1,7 @@
 package com.group9.ongo.presentation;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -8,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.group9.ongo.R;
+import com.group9.ongo.application.OnGoApp;
 
 public class MainActivity extends AppCompatActivity implements UserInfoFragment.OnBookingSuccessListener {
 
@@ -18,6 +21,15 @@ public class MainActivity extends AppCompatActivity implements UserInfoFragment.
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // RESTORE USER SESSION HERE
+        OnGoApp app = (OnGoApp) getApplication();
+        SharedPreferences sharedPref = getSharedPreferences("OngoPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPref.getInt("current_user_id", -1);
+
+        if (userId != -1) {
+            app.updateBookingServiceUser(userId);
+        }
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 

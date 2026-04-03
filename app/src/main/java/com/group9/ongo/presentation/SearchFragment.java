@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -31,6 +32,7 @@ import com.group9.ongo.business.services.Interfaces.FlightService;
 import com.group9.ongo.business.validation.ValidationException;
 import com.group9.ongo.models.Flight;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends Fragment {
@@ -86,7 +88,6 @@ public class SearchFragment extends Fragment {
                 android.R.layout.simple_spinner_item,
                 sortOptions
         );
-
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sortSpinner.setAdapter(spinnerAdapter);
 
@@ -113,6 +114,46 @@ public class SearchFragment extends Fragment {
         recyclerView.setVisibility(View.VISIBLE);
         noFlightsContainer.setVisibility(View.GONE);
 
+        final List<Flight> currentFlights = new ArrayList<>();
+        final boolean[] ignoreFirstSpinnerEvent = {true};
+
+        Runnable applySort = () -> {
+            if (currentFlights.isEmpty()) {
+                return;
+            }
+
+            List<Flight> flightsToDisplay = new ArrayList<>(currentFlights);
+            String selectedSort = sortSpinner.getSelectedItem().toString();
+
+            flightsToDisplay = switch (selectedSort) {
+                case DURATION -> flightService.sortFlightsByDuration(flightsToDisplay);
+                case AVAILABLE_SEAT -> flightService.sortFlightsByAvailSeats(flightsToDisplay);
+                case DATE -> flightService.sortFlightsByDateTime(flightsToDisplay);
+                default -> flightsToDisplay;
+            };
+
+            flightAdapter.updateFlights(flightsToDisplay);
+            recyclerView.setVisibility(View.VISIBLE);
+            noFlightsContainer.setVisibility(View.GONE);
+        };
+
+        sortSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (ignoreFirstSpinnerEvent[0]) {
+                    ignoreFirstSpinnerEvent[0] = false;
+                    return;
+                }
+
+                applySort.run();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // do nothing
+            }
+        });
+
         btnSearch.setOnClickListener(v -> {
             String from = depart.getText().toString().trim();
             String to = going.getText().toString().trim();
@@ -122,24 +163,16 @@ public class SearchFragment extends Fragment {
                 return;
             }
 
-
             try {
                 List<Flight> flights = flightService.searchFlights(from, to);
 
-                if (advancedContainer.getVisibility() == View.VISIBLE){
-                    String selectedSort = sortSpinner.getSelectedItem().toString();
-                    flights = switch (selectedSort) {
-                        case DURATION -> flightService.sortFlightsByDuration(flights);
-                        case AVAILABLE_SEAT -> flightService.sortFlightsByAvailSeats(flights);
-                        case DATE -> flightService.sortFlightsByDateTime(flights);
-                        default -> flights;
-                    };
-                }
-                flightAdapter.updateFlights(flights);
-                recyclerView.setVisibility(View.VISIBLE);
-                noFlightsContainer.setVisibility(View.GONE);
+                currentFlights.clear();
+                currentFlights.addAll(flights);
+
+                applySort.run();
 
             } catch (ValidationException e) {
+                currentFlights.clear();
                 flightAdapter.updateFlights(List.of());
                 recyclerView.setVisibility(View.GONE);
                 noFlightsContainer.setVisibility(View.VISIBLE);
@@ -159,5 +192,4 @@ public class SearchFragment extends Fragment {
             citiesContainer.addView(cityChip);
         }
     }
-
 }
