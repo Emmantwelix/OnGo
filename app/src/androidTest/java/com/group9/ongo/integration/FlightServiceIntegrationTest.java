@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.IntegrationTests;
+package com.group9.ongo.integration;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.AIRCRAFT_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_DELETE_ERROR;
@@ -21,7 +21,6 @@ import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_DATE;
 import static com.group9.ongo.business.constants.FlightConstants.DEFAULT_FLIGHT_NUM;
 import static com.group9.ongo.business.constants.FlightConstants.MONTREAL;
 import static com.group9.ongo.business.constants.FlightConstants.TORONTO;
-import static com.group9.ongo.business.constants.FlightConstants.TSU;
 import static com.group9.ongo.business.constants.FlightConstants.WESTJET;
 import static com.group9.ongo.business.constants.FlightConstants.WINNIPEG;
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.IntegrationTests;
+package com.group9.ongo.integration;
 
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_EMAIL;
 import static com.group9.ongo.business.constants.UserConstants.SAMPLE_USER_NAME;

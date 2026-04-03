@@ -33,7 +33,7 @@ public class UserServiceTest {
     private static final String VALID_NAME = "John Doe";
     private static final String WEIRD_VALID_NAME = "c$$2s";
     private static final String SHORT_NAME = "";
-    private static final String LONG_NAME = "ThisNameIsTooLong";
+    private static final String LONG_NAME = "Alexanderthegreat Maximilian Christopher Johnson Maximus";
     private static final String VALID_EMAIL = "johnD@gmail.com";
     private static final String WEIRD_VALID_EMAIL = "X@Y.Z";
     private static final String INVALID_EMAIL = "@.";
@@ -41,7 +41,7 @@ public class UserServiceTest {
     private static final String INVALID_PHONE = "14203567823";
     private static final String VALID_PASSWORD = "password";
     private static final String SHORT_PASSWORD = "p";
-    private static final String LONG_PASSWORD = "thispasswordiswaytoolongforoursystem";
+    private static final String LONG_PASSWORD = "thispasswordistoolongwhowriteslikethiswthidktbhinsanityrightornoman?";
 
 
     @Mock
@@ -85,6 +85,7 @@ public class UserServiceTest {
 
     @Test
     public void createUser_whenNameTooLong_throwsValidationException() {
+        when(userRepository.findUserIDByEmail(VALID_EMAIL)).thenReturn(-1);
         // Arrange / Act
         ValidationException exception = assertThrows(
                 ValidationException.class,

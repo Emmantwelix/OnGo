@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.IntegrationTests;
+package com.group9.ongo.integration;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_DELETE_ERROR;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.USER_INVALID_EMAIL;
@@ -36,7 +36,7 @@ public class UserServiceIntegrationTest {
     private static final String VALID_NAME = "John Doe";
     private static final String WEIRD_VALID_NAME = "c$$2s";
     private static final String SHORT_NAME = "";
-    private static final String LONG_NAME = "ThisNameIsTooLong";
+    private static final String LONG_NAME = "Alexanderthegreat Maximilian Christopher Johnson Maximus";
     private static final String VALID_EMAIL = "johnD@gmail.com";
     private static final String WEIRD_VALID_EMAIL = "X@Y.Z";
     private static final String INVALID_EMAIL = "@.";
@@ -44,8 +44,7 @@ public class UserServiceIntegrationTest {
     private static final String INVALID_PHONE = "14203567823";
     private static final String VALID_PASSWORD = "password";
     private static final String SHORT_PASSWORD = "p";
-    private static final String LONG_PASSWORD = "thispasswordiswaytoolongforoursystem";
-
+    private static final String LONG_PASSWORD = "thispasswordistoolongwhowriteslikethiswthidktbhinsanityrightornoman?";
     private UserRepository userRepository;
     private UserService userService;
 
