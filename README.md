@@ -20,7 +20,7 @@ OnGo is a streamlined air travel booking and management application that enables
 - [User Story List](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/issues?sort=created_asc&state=opened&label_name%5B%5D=User%20Story&first_page_size=20)
 
 # Architecture
-- [Architecture](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/readme/docs/architecture.md?ref_type=heads)
+- [Architecture](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/readme/docs/architecture.md)
 
 # Retrospective
 - [Retrospective.md](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/main/docs/RETROSPECTIVE.md?ref_type=heads)
