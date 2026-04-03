@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.IntegrationTests;
+package com.group9.ongo.integration;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.BOOKING_NOT_FOUND;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.FLIGHT_NOT_FOUND;

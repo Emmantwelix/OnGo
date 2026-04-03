@@ -1,4 +1,4 @@
-package com.group9.ongo.business.services.IntegrationTests;
+package com.group9.ongo.integration;
 
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_BOOKED;
 import static com.group9.ongo.business.constants.ErrorMessageConstants.SEAT_ALREADY_UNBOOKED;
