@@ -25,10 +25,11 @@ Each layer adheres to having a single repsonsibility and communicates only with 
 * Includes:
   * `BookingAdapter`
   * `FlightAdapter`
-  * Fragments (Tabs like Home, Search, Setting, UserInfo, FlightDetails)
+  * Fragments (Tabs like Home, Search, Setting, UserInfo, FlightDetails, AuthDialog)
   * `MainActivity`
   * `ModifyBookingBottomSheet`
-  * `SeatSelectionActivity`
+  * `SeatMap`
+  * `SeatSelection`
   * `BookingDetailsActivity`
   * `CancelledBookingActivity`
 * Responsible for:
@@ -39,8 +40,8 @@ Each layer adheres to having a single repsonsibility and communicates only with 
   * Looking up flights based on origin and destination
   * Letting users cancel flights and displaying cancelled flights
   * Talks to logic layer when data (like flight details) is needed
-  
-UserInfoFragment does not store any user data, at the moment we only handle one user and their booking. Single user can book multiple flight under different people's name but it is the same user.
+  * Gets user login info for creating or loggin into an account
+  * Sends user data to logic layer for creating a new user or fetching existing user data
 
 #### 3. Logic
 * Business layer.
@@ -52,6 +53,7 @@ UserInfoFragment does not store any user data, at the moment we only handle one 
     * `LoginService`
     * `PassangerService`
     * `SeatService`
+    * `Generator`
     * Validators
     * Exceptions
     * Constants
@@ -68,6 +70,7 @@ This layer handles the brunt of the workflow ochastration, it communicates with 
   * `PassengerInput`
   * `Seat`
   * `SeatMapConfig`
+  * `SelectedSeat`
   * `Airline`
   * `BookingStatus`
   * `Aircraft`
