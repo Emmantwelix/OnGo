@@ -52,7 +52,10 @@ public class OnGoApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        initializeServices();
+    }
 
+    public void initializeServices() {
         AppDbHelper dbHelper = new AppDbHelper(getApplicationContext());
         boolean USE_SQL = true;
 
@@ -73,7 +76,7 @@ public class OnGoApp extends Application {
         bookingRepo = USE_SQL ? new SqlBookingRepository(dbHelper): new FakeBookingRepository();
         passengerRepo = USE_SQL ? new SqlPassengerRepository(dbHelper): new FakePassengerRepository();
         passengerService = new PassengerServiceImpl(passengerRepo);
-        
+
         // Start in guest mode (-1)
         bookingService = new BookingServiceImpl(-1, bookingRepo, passengerService, flightService, seatService);
     }

@@ -44,4 +44,5 @@ dependencies {
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:5.11.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
 }
