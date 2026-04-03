@@ -34,6 +34,6 @@ Additionally, the number of cross-layer changes required per bug fix dropped not
 
 ## Velocity Chart
 
-![Velocity Chart](./../Velocity%20chart.png)
+![Velocity Chart](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/main/docs/Velocity_chart.png)
 
 Our average velocity across all three iterations is $\frac{29 + 25 + 21}{3} = 25$ story points per iteration. While there is a downward trend, this was an intentional trade-off: Iteration 2 and Iteration 3 were deliberately focused on eliminating technical debt — including the exception handling refactor described above — and improving our documentation rather than adding new features. We view this as a sign of a a better development process rather than a loss of productivity. Addressing these structural issues now positions us to move faster and more confidently in future work without the overhead of debugging a fragile system.
