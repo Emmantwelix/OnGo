@@ -1,0 +1,1327 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>OnGo ✈️ | Project Website</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --bg: #f9f8ff;
+                --bg-soft: #fffdf8;
+                --surface: rgba(255, 255, 255, 0.82);
+                --surface-strong: rgba(255, 255, 255, 0.94);
+                --line: rgba(86, 92, 153, 0.12);
+                --text: #23304f;
+                --muted: #5f6c8f;
+                --primary: #5d88ff;
+                --primary-strong: #446fe5;
+                --secondary: #ff9b9b;
+                --accent: #7bdcc3;
+                --shadow: 0 18px 50px rgba(87, 106, 164, 0.14);
+                --radius-lg: 26px;
+                --radius-md: 18px;
+                --radius-sm: 14px;
+                --max-width: 1140px;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                font-family: "Manrope", sans-serif;
+                color: var(--text);
+                background:
+                    radial-gradient(
+                        circle at top left,
+                        rgba(123, 220, 195, 0.28),
+                        transparent 28%
+                    ),
+                    radial-gradient(
+                        circle at top right,
+                        rgba(255, 179, 179, 0.24),
+                        transparent 24%
+                    ),
+                    linear-gradient(
+                        180deg,
+                        #fbfbff 0%,
+                        #f5f8ff 45%,
+                        #fffdf8 100%
+                    );
+                line-height: 1.65;
+                overflow-x: hidden;
+            }
+
+            body::before,
+            body::after {
+                content: "";
+                position: fixed;
+                inset: auto;
+                width: 320px;
+                height: 320px;
+                border-radius: 50%;
+                filter: blur(60px);
+                z-index: -1;
+                pointer-events: none;
+            }
+
+            body::before {
+                top: -110px;
+                right: -60px;
+                background: rgba(93, 136, 255, 0.16);
+            }
+
+            body::after {
+                bottom: -140px;
+                left: -100px;
+                background: rgba(123, 220, 195, 0.16);
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+
+            img,
+            video {
+                max-width: 100%;
+                display: block;
+            }
+
+            .container {
+                width: min(calc(100% - 2rem), var(--max-width));
+                margin: 0 auto;
+            }
+
+            .site-header {
+                position: sticky;
+                top: 0;
+                z-index: 30;
+                padding: 1rem 0;
+                backdrop-filter: blur(16px);
+                background: linear-gradient(
+                    180deg,
+                    rgba(249, 248, 255, 0.88),
+                    rgba(249, 248, 255, 0.58)
+                );
+                border-bottom: 1px solid rgba(86, 92, 153, 0.08);
+            }
+
+            .nav-wrap {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                padding: 0.35rem 0;
+            }
+
+            .brand {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.7rem;
+                font-weight: 800;
+                letter-spacing: -0.03em;
+            }
+
+            .brand-badge {
+                display: grid;
+                place-items: center;
+                width: 42px;
+                height: 42px;
+                border-radius: 14px;
+                background: linear-gradient(
+                    135deg,
+                    rgba(93, 136, 255, 0.22),
+                    rgba(123, 220, 195, 0.28)
+                );
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+            }
+
+            .nav-links {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: flex-end;
+                gap: 0.55rem;
+            }
+
+            .nav-links a {
+                padding: 0.7rem 0.95rem;
+                border-radius: 999px;
+                color: var(--muted);
+                font-size: 0.96rem;
+                transition:
+                    transform 180ms ease,
+                    background-color 180ms ease,
+                    color 180ms ease;
+            }
+
+            .nav-links a:hover,
+            .nav-links a:focus-visible {
+                background: rgba(93, 136, 255, 0.12);
+                color: var(--primary-strong);
+                transform: translateY(-1px);
+                outline: none;
+            }
+
+            main {
+                padding-bottom: 3rem;
+            }
+
+            section {
+                padding: 4.5rem 0;
+                scroll-margin-top: 6.5rem;
+            }
+
+            .hero {
+                min-height: calc(100vh - 88px);
+                display: flex;
+                align-items: center;
+                padding-top: 2rem;
+            }
+
+            .hero-grid {
+                display: grid;
+                grid-template-columns: 1.2fr 0.8fr;
+                align-items: center;
+                gap: 2rem;
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.55rem 0.85rem;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.7);
+                border: 1px solid rgba(93, 136, 255, 0.13);
+                color: var(--primary-strong);
+                font-size: 0.92rem;
+                font-weight: 700;
+                margin-bottom: 1.25rem;
+                box-shadow: 0 10px 30px rgba(101, 123, 184, 0.08);
+            }
+
+            .hero h1,
+            .section-title,
+            .card-title,
+            .spotlight-title {
+                font-family: "Fraunces", serif;
+                letter-spacing: -0.04em;
+            }
+
+            .hero h1 {
+                margin: 0;
+                font-size: clamp(3rem, 8vw, 5.4rem);
+                line-height: 0.96;
+            }
+
+            .hero h1 span {
+                display: inline-block;
+                transform: rotate(-4deg);
+            }
+
+            .hero-subtitle {
+                margin: 1rem 0 0.6rem;
+                font-size: clamp(1.15rem, 2vw, 1.45rem);
+                color: var(--muted);
+                max-width: 40rem;
+            }
+
+            .hero-tagline {
+                margin: 0 0 1.8rem;
+                font-size: 1.05rem;
+                color: var(--text);
+                max-width: 34rem;
+            }
+
+            .hero-actions {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 0.9rem;
+            }
+
+            .cta-button,
+            .ghost-button {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.55rem;
+                min-height: 52px;
+                padding: 0.95rem 1.3rem;
+                border-radius: 999px;
+                border: 1px solid transparent;
+                font-weight: 800;
+                transition:
+                    transform 200ms ease,
+                    box-shadow 200ms ease,
+                    background-color 200ms ease;
+            }
+
+            .cta-button {
+                background: linear-gradient(135deg, var(--primary), #79a0ff);
+                color: #ffffff;
+                box-shadow: 0 16px 35px rgba(93, 136, 255, 0.28);
+            }
+
+            .ghost-button {
+                background: rgba(255, 255, 255, 0.78);
+                border-color: rgba(93, 136, 255, 0.16);
+                color: var(--text);
+            }
+
+            .cta-button:hover,
+            .cta-button:focus-visible,
+            .ghost-button:hover,
+            .ghost-button:focus-visible {
+                transform: translateY(-2px);
+                box-shadow: 0 18px 38px rgba(93, 136, 255, 0.18);
+                outline: none;
+            }
+
+            .hero-panel {
+                position: relative;
+                padding: 1.2rem;
+                border-radius: 30px;
+                background: linear-gradient(
+                    160deg,
+                    rgba(255, 255, 255, 0.95),
+                    rgba(246, 249, 255, 0.82)
+                );
+                border: 1px solid rgba(93, 136, 255, 0.12);
+                box-shadow: var(--shadow);
+                overflow: hidden;
+            }
+
+            .hero-panel::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background:
+                    radial-gradient(
+                        circle at 18% 12%,
+                        rgba(123, 220, 195, 0.22),
+                        transparent 22%
+                    ),
+                    radial-gradient(
+                        circle at 80% 16%,
+                        rgba(255, 171, 171, 0.26),
+                        transparent 22%
+                    );
+                pointer-events: none;
+            }
+
+            .plane-orbit {
+                position: absolute;
+                top: 18px;
+                right: 22px;
+                font-size: 1.35rem;
+                animation: drift 4.5s ease-in-out infinite;
+            }
+
+            .stats-card,
+            .mini-card,
+            .content-card,
+            .feature-card,
+            .team-card,
+            .skills-card,
+            .check-card,
+            .post-card,
+            .overview-bullets,
+            .demo-box,
+            .project-card {
+                background: var(--surface);
+                border: 1px solid var(--line);
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow);
+                backdrop-filter: blur(16px);
+            }
+
+            .stats-card {
+                position: relative;
+                padding: 1.25rem;
+                min-height: 390px;
+                display: grid;
+                grid-template-rows: auto auto auto 1fr;
+                gap: 1rem;
+                z-index: 1;
+            }
+
+            .pill-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.7rem;
+            }
+
+            .pill {
+                padding: 0.45rem 0.8rem;
+                border-radius: 999px;
+                font-size: 0.85rem;
+                font-weight: 700;
+                background: rgba(93, 136, 255, 0.11);
+                color: var(--primary-strong);
+            }
+
+            .spotlight {
+                display: grid;
+                gap: 0.9rem;
+                padding: 1rem;
+                border-radius: 22px;
+                background: linear-gradient(
+                    145deg,
+                    rgba(123, 220, 195, 0.18),
+                    rgba(93, 136, 255, 0.08)
+                );
+            }
+
+            .spotlight-title {
+                margin: 0;
+                font-size: 1.45rem;
+            }
+
+            .spotlight p,
+            .section-copy,
+            .card-copy,
+            .overview-bullets p {
+                margin: 0;
+                color: var(--muted);
+            }
+
+            .mini-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.9rem;
+            }
+
+            .mini-card {
+                padding: 1rem;
+                border-radius: 20px;
+            }
+
+            .mini-card strong {
+                display: block;
+                margin-bottom: 0.25rem;
+                font-size: 1.1rem;
+            }
+
+            .section-heading {
+                display: grid;
+                gap: 0.75rem;
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+
+            .section-kicker {
+                color: var(--primary-strong);
+                font-size: 0.92rem;
+                font-weight: 800;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+
+            .section-title {
+                margin: 0;
+                font-size: clamp(2rem, 5vw, 3.2rem);
+            }
+
+            .section-copy {
+                max-width: 44rem;
+                margin: 0 auto;
+            }
+
+            .overview-layout {
+                display: grid;
+                gap: 1.3rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+
+            .content-card h3,
+            .card-title {
+                margin: 0 0 0.8rem;
+                font-size: 1.35rem;
+            }
+
+            .bullet-list,
+            .demo-list,
+            .team-list,
+            .skills-list,
+            .check-list {
+                margin: 0;
+                padding-left: 1.2rem;
+            }
+
+            .bullet-list li,
+            .demo-list li,
+            .team-list li,
+            .skills-list li,
+            .check-list li {
+                margin: 0.45rem 0;
+                color: var(--text);
+            }
+
+            .features-grid,
+            .support-grid,
+            .post-grid,
+            .project-grid {
+                display: grid;
+                gap: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .feature-card {
+                position: relative;
+                padding: 1.25rem;
+                min-height: 170px;
+                overflow: hidden;
+                transition:
+                    transform 220ms ease,
+                    box-shadow 220ms ease,
+                    border-color 220ms ease;
+            }
+
+            .feature-card::after {
+                content: "";
+                position: absolute;
+                inset: auto -20px -30px auto;
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+                background: radial-gradient(
+                    circle,
+                    rgba(93, 136, 255, 0.16),
+                    transparent 72%
+                );
+            }
+
+            .feature-card:hover,
+            .feature-card:focus-within {
+                transform: translateY(-5px);
+                box-shadow: 0 24px 45px rgba(95, 116, 184, 0.16);
+                border-color: rgba(93, 136, 255, 0.24);
+            }
+
+            .feature-icon {
+                display: inline-grid;
+                place-items: center;
+                width: 46px;
+                height: 46px;
+                border-radius: 14px;
+                margin-bottom: 0.9rem;
+                background: linear-gradient(
+                    145deg,
+                    rgba(93, 136, 255, 0.16),
+                    rgba(123, 220, 195, 0.24)
+                );
+                font-size: 1.15rem;
+            }
+
+            .feature-card h4 {
+                margin: 0 0 0.35rem;
+                font-size: 1.05rem;
+            }
+
+            .feature-card p {
+                margin: 0;
+                color: var(--muted);
+                font-size: 0.96rem;
+            }
+
+            .support-grid,
+            .project-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .team-card,
+            .skills-card,
+            .check-card,
+            .post-card,
+            .project-card {
+                padding: 1.45rem;
+            }
+
+            .demo-box {
+                min-height: 320px;
+                display: grid;
+                place-items: center;
+                text-align: center;
+                width: min(100%, 560px);
+                padding: 2rem;
+                margin: 0 auto 1.4rem;
+                background:
+                    linear-gradient(
+                        145deg,
+                        rgba(255, 255, 255, 0.96),
+                        rgba(243, 248, 255, 0.88)
+                    ),
+                    repeating-linear-gradient(
+                        135deg,
+                        rgba(93, 136, 255, 0.03),
+                        rgba(93, 136, 255, 0.03) 10px,
+                        transparent 10px,
+                        transparent 20px
+                    );
+                border-style: dashed;
+                border-width: 1.5px;
+            }
+
+            .demo-box .play {
+                display: inline-grid;
+                place-items: center;
+                width: 72px;
+                height: 72px;
+                margin: 0 auto 1rem;
+                border-radius: 50%;
+                background: linear-gradient(
+                    145deg,
+                    rgba(93, 136, 255, 0.18),
+                    rgba(123, 220, 195, 0.22)
+                );
+                font-size: 1.6rem;
+            }
+
+            .demo-box h3 {
+                margin: 0 0 0.4rem;
+                font-size: 1.55rem;
+            }
+
+            .demo-video {
+                width: min(100%, 420px);
+                border-radius: 20px;
+                border: 1px solid rgba(93, 136, 255, 0.18);
+                box-shadow: 0 18px 40px rgba(86, 100, 154, 0.16);
+                background: #111827;
+            }
+
+            .demo-description {
+                max-width: 34rem;
+                margin: 0 auto;
+                text-align: center;
+            }
+
+            .postmortem {
+                position: relative;
+            }
+
+            .post-shell {
+                padding: 1.4rem;
+                border-radius: 34px;
+                background: linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.9),
+                    rgba(247, 249, 255, 0.85)
+                );
+                border: 1px solid rgba(93, 136, 255, 0.12);
+                box-shadow: var(--shadow);
+            }
+
+            .post-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .post-card h3 {
+                margin: 0 0 0.75rem;
+                font-size: 1.2rem;
+            }
+
+            .post-card p,
+            .post-card li,
+            .project-card p {
+                color: var(--muted);
+            }
+
+            .inline-note {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.45rem;
+                margin-top: 0.8rem;
+                padding: 0.48rem 0.72rem;
+                border-radius: 999px;
+                background: rgba(123, 220, 195, 0.16);
+                color: #2d6e61;
+                font-size: 0.9rem;
+                font-weight: 700;
+            }
+
+            .check-list {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .check-list li {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                padding: 0.95rem 1rem;
+                border-radius: 16px;
+                background: rgba(255, 255, 255, 0.66);
+                border: 1px solid rgba(93, 136, 255, 0.08);
+            }
+
+            .check-icon {
+                flex: 0 0 auto;
+                display: inline-grid;
+                place-items: center;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
+                background: rgba(123, 220, 195, 0.24);
+                color: #1e7767;
+                font-weight: 800;
+            }
+
+            .site-footer {
+                padding: 2rem 0 3rem;
+            }
+
+            .footer-shell {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                padding: 1.15rem 1.4rem;
+                border-radius: 22px;
+                background: rgba(255, 255, 255, 0.72);
+                border: 1px solid rgba(93, 136, 255, 0.1);
+                box-shadow: 0 16px 40px rgba(86, 100, 154, 0.08);
+            }
+
+            .footer-shell p {
+                margin: 0;
+                color: var(--muted);
+            }
+
+            .reveal {
+                opacity: 0;
+                transform: translateY(26px);
+                transition:
+                    opacity 650ms ease,
+                    transform 650ms ease;
+            }
+
+            .reveal.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .delay-1 {
+                transition-delay: 90ms;
+            }
+
+            .delay-2 {
+                transition-delay: 180ms;
+            }
+
+            .delay-3 {
+                transition-delay: 260ms;
+            }
+
+            @keyframes drift {
+                0%,
+                100% {
+                    transform: translateY(0) rotate(-4deg);
+                }
+                50% {
+                    transform: translateY(-8px) rotate(3deg);
+                }
+            }
+
+            @media (max-width: 920px) {
+                .hero {
+                    min-height: auto;
+                    padding-top: 1rem;
+                }
+
+                .hero-grid,
+                .support-grid,
+                .project-grid,
+                .post-grid,
+                .features-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .nav-wrap {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .nav-links {
+                    justify-content: flex-start;
+                }
+            }
+
+            @media (max-width: 640px) {
+                section {
+                    padding: 3.6rem 0;
+                }
+
+                .container {
+                    width: min(calc(100% - 1.2rem), var(--max-width));
+                }
+
+                .site-header {
+                    padding: 0.8rem 0;
+                }
+
+                .nav-links a {
+                    padding: 0.6rem 0.85rem;
+                    font-size: 0.92rem;
+                }
+
+                .hero-actions {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+
+                .mini-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .stats-card,
+                .content-card,
+                .team-card,
+                .skills-card,
+                .check-card,
+                .post-card,
+                .project-card {
+                    padding: 1.15rem;
+                }
+
+                .footer-shell {
+                    padding: 1rem 1.1rem;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                html {
+                    scroll-behavior: auto;
+                }
+
+                *,
+                *::before,
+                *::after {
+                    animation: none !important;
+                    transition: none !important;
+                }
+
+                .reveal {
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <header class="site-header">
+            <div class="container nav-wrap">
+                <a class="brand" href="#top" aria-label="OnGo home">
+                    <span class="brand-badge">✈️</span>
+                    <span>OnGo</span>
+                </a>
+
+                <nav class="nav-links" aria-label="Primary">
+                    <a href="#overview">Overview</a>
+                    <a href="#demo">Demo</a>
+                    <a href="#postmortem">Postmortem</a>
+                    <a href="#description">Description</a>
+                    <a href="#success">Success</a>
+                </nav>
+            </div>
+        </header>
+
+        <main id="top">
+            <section class="hero">
+                <div class="container hero-grid">
+                    <div class="reveal visible">
+                        <div class="eyebrow">
+                            Boarding a smoother booking experience
+                        </div>
+                        <h1>OnGo <span>✈️</span></h1>
+                        <p class="hero-subtitle">
+                            A Simplified Air Travel Booking and Management
+                            Platform
+                        </p>
+                        <p class="hero-tagline">
+                            Search, book, and manage flights — all in one place.
+                        </p>
+
+                        <div class="hero-actions">
+                            <a class="cta-button" href="#overview"
+                                >Explore Project ↓</a
+                            >
+                            <a class="ghost-button" href="#demo"
+                                >See Demo Area</a
+                            >
+                        </div>
+                    </div>
+
+                    <div class="hero-panel reveal delay-1">
+                        <div class="plane-orbit" aria-hidden="true">🛫</div>
+                        <div class="stats-card">
+                            <div
+                                class="pill-row"
+                                aria-label="Project highlights"
+                            >
+                                <span class="pill">Simple booking</span>
+                                <span class="pill">Seat selection</span>
+                                <span class="pill">Flight management</span>
+                            </div>
+
+                            <div class="spotlight">
+                                <h2 class="spotlight-title">
+                                    Clean flows for real travelers
+                                </h2>
+                                <p>
+                                    OnGo keeps flight discovery, booking, and
+                                    management in one intuitive experience with
+                                    fewer clicks and less stress.
+                                </p>
+                            </div>
+
+                            <div class="mini-grid">
+                                <article class="mini-card">
+                                    <strong>9 core features</strong>
+                                    <span
+                                        >From search to sorting to seat
+                                        choice.</span
+                                    >
+                                </article>
+                                <article class="mini-card">
+                                    <strong>1 shared hub</strong>
+                                    <span
+                                        >Everything travelers need in one
+                                        place.</span
+                                    >
+                                </article>
+                            </div>
+
+                            <article class="mini-card">
+                                <strong>Why it feels light</strong>
+                                <span
+                                    >Soft visuals, focused sections, and a
+                                    little motion keep the site welcoming
+                                    without being distracting.</span
+                                >
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="overview">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Section 2</span>
+                        <h2 class="section-title">Project Overview</h2>
+                        <p class="section-copy">
+                            A quick look at the vision, audience, key
+                            functionality, and the people behind OnGo.
+                        </p>
+                    </div>
+
+                    <div class="overview-layout">
+                        <article class="content-card reveal">
+                            <h3>Vision Statement</h3>
+                            <p>
+                                "OnGo is a streamlined air travel booking and
+                                management application that enables travelers to
+                                search, book, and manage flights in one
+                                intuitive, user-focused platform."
+                            </p>
+                        </article>
+
+                        <div class="support-grid">
+                            <article
+                                class="content-card overview-bullets reveal delay-1"
+                            >
+                                <h3>Intended Users</h3>
+                                <ul class="bullet-list">
+                                    <li>Business travelers</li>
+                                    <li>Families and group travelers</li>
+                                    <li>Frequent and occasional flyers</li>
+                                </ul>
+                            </article>
+
+                            <article class="content-card reveal delay-2">
+                                <h3>Team Members</h3>
+                                <ul class="team-list">
+                                    <li>Noor Shamil</li>
+                                    <li>Tomas Hagos</li>
+                                    <li>Emmanuel Opoola</li>
+                                    <li>Ohang Satishkumar Patel</li>
+                                </ul>
+                            </article>
+                        </div>
+
+                        <article class="content-card reveal">
+                            <h3>Overview of Major Features</h3>
+                            <div class="features-grid">
+                                <article class="feature-card">
+                                    <div class="feature-icon">🧾</div>
+                                    <h4>View booked flights</h4>
+                                    <p>
+                                        Review upcoming and confirmed itinerary
+                                        details quickly.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">🎟️</div>
+                                    <h4>Book a flight</h4>
+                                    <p>
+                                        Complete a booking flow in one organized
+                                        experience.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">ℹ️</div>
+                                    <h4>View general flight details</h4>
+                                    <p>
+                                        Check timing, routes, and helpful trip
+                                        information.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">🔎</div>
+                                    <h4>Search for available flights</h4>
+                                    <p>
+                                        Find matching flights based on traveler
+                                        needs and timing.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">💺</div>
+                                    <h4>Choose a seat</h4>
+                                    <p>
+                                        Select seating confidently with a
+                                        clearer booking flow.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">🛠️</div>
+                                    <h4>Modify booked flights</h4>
+                                    <p>
+                                        Adjust existing bookings without
+                                        starting over.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">📍</div>
+                                    <h4>View selected flight details</h4>
+                                    <p>
+                                        Inspect the specific flight before final
+                                        confirmation.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">🔐</div>
+                                    <h4>Register and login</h4>
+                                    <p>
+                                        Support account-based access and booking
+                                        management.
+                                    </p>
+                                </article>
+                                <article class="feature-card">
+                                    <div class="feature-icon">↕️</div>
+                                    <h4>Sort available flights</h4>
+                                    <p>
+                                        Compare options by criteria that matter
+                                        to the traveler.
+                                    </p>
+                                </article>
+                            </div>
+                        </article>
+
+                        <article class="skills-card reveal delay-1">
+                            <h3 class="card-title">Technical Skills Gained</h3>
+                            <ul class="skills-list">
+                                <li>Noor Shamil – [Add skills]</li>
+                                <li>Tomas Hagos – [Add skills]</li>
+                                <li>Emmanuel Opoola – [Add skills]</li>
+                                <li>Ohang Satishkumar Patel – [Add skills]</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="demo">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Section 3</span>
+                        <h2 class="section-title">Product Demo 🎥</h2>
+                        <p class="section-copy">
+                            A space reserved for the walkthrough that will bring
+                            the OnGo experience to life.
+                        </p>
+                    </div>
+
+                    <div class="demo-box reveal">
+                        <video
+                            class="demo-video"
+                            controls
+                            preload="metadata"
+                            playsinline
+                        >
+                            <source
+                                src="assets/3350_video.mp4"
+                                type="video/mp4"
+                            />
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="postmortem" class="postmortem">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Section 4</span>
+                        <h2 class="section-title">Development Postmortem</h2>
+                        <p class="section-copy">
+                            A readable look at what improved, what needed
+                            attention, and how the team responded.
+                        </p>
+                    </div>
+
+                    <div class="post-shell reveal">
+                        <div class="post-grid">
+                            <article class="post-card">
+                                <h3>Iteration 2 Reflection</h3>
+                                <ul class="bullet-list">
+                                    <li>Improved time estimation</li>
+                                    <li>
+                                        Better testing practices with unit tests
+                                        added earlier
+                                    </li>
+                                    <li>
+                                        Increased communication across the team
+                                    </li>
+                                    <li>
+                                        More collaboration across all layers
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article class="post-card">
+                                <h3>Design Pattern Used</h3>
+                                <p><strong>Facade Pattern</strong></p>
+                                <p>
+                                    The <code>CreateBooking()</code> method acts
+                                    as a facade by coordinating multiple
+                                    subsystems such as
+                                    <code>flightService</code>,
+                                    <code>seatService</code>,
+                                    <code>bookingsRepo</code>,
+                                    <code>passengerService</code>, and
+                                    <code>BookingValidator</code>.
+                                </p>
+                                <span class="inline-note"
+                                    >Keeps complex booking steps feeling
+                                    unified</span
+                                >
+                            </article>
+
+                            <article class="post-card">
+                                <h3>Iteration 3 Improvements</h3>
+                                <ul class="bullet-list">
+                                    <li>
+                                        <strong
+                                            >Technical Debt (Design):</strong
+                                        >
+                                        Replaced string-based seat parsing with
+                                        a structured
+                                        <code>SelectedSeat</code> object
+                                    </li>
+                                    <li>
+                                        <strong>Technical Debt (Bug):</strong>
+                                        Fixed incorrect sorting logic for
+                                        available seats
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article class="post-card">
+                                <h3>Weakness Identified</h3>
+                                <ul class="bullet-list">
+                                    <li>Poor exception handling</li>
+                                    <li>
+                                        Presentation layer incorrectly throwing
+                                        exceptions
+                                    </li>
+                                    <li>
+                                        Use of generic
+                                        <code>RuntimeException</code>
+                                    </li>
+                                    <li>Silent failures in tests</li>
+                                </ul>
+                            </article>
+
+                            <article class="post-card">
+                                <h3>Corrective Actions</h3>
+                                <ul class="bullet-list">
+                                    <li>
+                                        Moved exception logic to business layer
+                                    </li>
+                                    <li>
+                                        Created custom exceptions:
+                                        <code>BookingException</code> and
+                                        <code>ValidationException</code>
+                                    </li>
+                                    <li>
+                                        Enforced exception handling in method
+                                        signatures
+                                    </li>
+                                </ul>
+                            </article>
+
+                            <article class="post-card">
+                                <h3>Evidence of Improvement</h3>
+                                <ul class="bullet-list">
+                                    <li>Tests now fail properly on errors</li>
+                                    <li>Can test error scenarios directly</li>
+                                    <li>
+                                        Reduced cross-layer changes when fixing
+                                        bugs
+                                    </li>
+                                </ul>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="description">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Section 5</span>
+                        <h2 class="section-title">Project Description</h2>
+                        <p class="section-copy">
+                            The core problem, the product response, and the
+                            value travelers gain from a simpler experience.
+                        </p>
+                    </div>
+
+                    <div class="project-grid">
+                        <article class="project-card reveal">
+                            <h3 class="card-title">Problem</h3>
+                            <p>
+                                "Flight booking is often confusing and scattered
+                                across multiple platforms."
+                            </p>
+                        </article>
+
+                        <article class="project-card reveal delay-1">
+                            <h3 class="card-title">Solution</h3>
+                            <p>
+                                "OnGo centralizes everything into one simple
+                                platform."
+                            </p>
+                        </article>
+
+                        <article
+                            class="project-card reveal delay-2"
+                            style="grid-column: 1 / -1"
+                        >
+                            <h3 class="card-title">Value</h3>
+                            <ul class="bullet-list">
+                                <li>Saves time</li>
+                                <li>Reduces stress</li>
+                                <li>Improves booking accuracy</li>
+                            </ul>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section id="success">
+                <div class="container">
+                    <div class="section-heading reveal">
+                        <span class="section-kicker">Section 6</span>
+                        <h2 class="section-title">Success Criteria</h2>
+                        <p class="section-copy">
+                            A simple checklist for whether the platform is
+                            delivering the intended experience.
+                        </p>
+                    </div>
+
+                    <article class="check-card reveal">
+                        <ul class="check-list">
+                            <li>
+                                <span class="check-icon">✓</span>Book flights in
+                                under 5 minutes
+                            </li>
+                            <li>
+                                <span class="check-icon">✓</span>80% users
+                                manage bookings independently
+                            </li>
+                            <li>
+                                <span class="check-icon">✓</span>4/5 user
+                                satisfaction rating
+                            </li>
+                            <li>
+                                <span class="check-icon">✓</span>Fewer booking
+                                mistakes
+                            </li>
+                            <li>
+                                <span class="check-icon">✓</span>High return
+                                usage rate
+                            </li>
+                        </ul>
+                    </article>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="footer-shell reveal">
+                    <p>© 2026 OnGo Team</p>
+                    <p>Built with ✈️ and teamwork</p>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            const revealElements = document.querySelectorAll(".reveal");
+
+            const observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("visible");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                },
+                {
+                    threshold: 0.15,
+                    rootMargin: "0px 0px -40px 0px",
+                },
+            );
+
+            revealElements.forEach((element) => {
+                if (!element.classList.contains("visible")) {
+                    observer.observe(element);
+                }
+            });
+        </script>
+    </body>
+</html>
