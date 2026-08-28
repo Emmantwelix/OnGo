@@ -8,13 +8,13 @@ OnGo is a streamlined air travel booking and management application that enables
 - Ohang Satishkumar Patel
 
 # Vision Statement
-- Our [Vision Statement](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/main/docs/Vision_Statement_v2.md) 
+- Our [Vision Statement](docs/Vision_Statement_v2.md) 
 
 # Architecture
-- [Architecture](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/90b2881f01d4a35df38bd679ad4c2ae01207a4bc/docs/architecture.md)
+- [Architecture](docs/architecture.md)
 
 # Retrospective
-- [Retrospective.md](https://code.cs.umanitoba.ca/comp3350-winter2026/a02-g09-theincredibles/-/blob/main/docs/RETROSPECTIVE.md?ref_type=heads)
+- [Retrospective.md](docs/RETROSPECTIVE.md)
 
 # Before running
 
