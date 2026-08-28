@@ -1,6 +1,9 @@
 # OnGo
 OnGo is a streamlined air travel booking and management application that enables travelers to search, book, and manage flights in one intuitive, user-focused platform.
 
+# Website
+- [Visit OnGo Website](website/index.html)
+
 # Team Members
 - Emmanuel Opoola
 - Noor Shamil
